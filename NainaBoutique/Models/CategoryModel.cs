@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
 namespace NainaBoutique.Models
@@ -8,9 +9,12 @@ namespace NainaBoutique.Models
 		[Key]
 		public int Id { get; set; }
 		[Required]
+		[DisplayName("Category Name")]
 		public string? CategoryName { get; set; }
-		public string? SubCategory { get; set; }
-		public string? DisplayType { get; set; }
+        [DisplayName("Sub Category")]
+        public string? SubCategory { get; set; }
+        [DisplayName("Display Type")]
+        public string? DisplayType { get; set; }
 	}
 }
 
