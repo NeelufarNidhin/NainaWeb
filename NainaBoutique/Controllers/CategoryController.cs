@@ -36,10 +36,67 @@ namespace NainaBoutique.Controllers
                 {
                 _db.Categories.Add(category);
                 _db.SaveChanges();
+                TempData["success"] = "Category Created Successfully";
                 return RedirectToAction("Index");
             }
             return View();
             
+        }
+
+        public IActionResult Edit(int? id)
+        {
+            if(id==null|| id == 0)
+            {
+                return NotFound();
+            }
+            CategoryModel? categoryFromDb = _db.Categories.Find(id);
+            if(categoryFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(categoryFromDb);
+        }
+        [HttpPost]
+        public IActionResult Edit(CategoryModel category)
+        {
+            if (ModelState.IsValid)
+            {
+                _db.Categories.Update(category);
+                _db.SaveChanges();
+                TempData["success"] = "Category Updated Successfully";
+                return RedirectToAction("Index");
+            }
+            return View();
+
+        }
+        public IActionResult Delete(int? id)
+        {
+            if (id == null || id == 0)
+            {
+                return NotFound();
+            }
+            CategoryModel? categoryFromDb = _db.Categories.Find(id);
+            if (categoryFromDb == null)
+            {
+                return NotFound();
+            }
+            return View(categoryFromDb);
+        }
+        [HttpPost,ActionName("Delete")]
+        public IActionResult DeletePost(int? id)
+        {
+            CategoryModel? category = _db.Categories.Find(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            
+                _db.Categories.Remove(category);
+                _db.SaveChanges();
+                TempData["success"] = "Category Deleted Successfully";
+                return RedirectToAction("Index");
+            
+
         }
 
 
