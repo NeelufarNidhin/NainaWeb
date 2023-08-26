@@ -24,17 +24,17 @@
                     Sub Category
                 </th>
                 <th>
-                    Display Order
+                    Description
                 </th>
             </tr>
         </thead>
         <tbody>
-            @foreach (var obj in Model.OrderBy(order => order.DisplayType))
+            @foreach (var obj in Model.OrderBy(order => order.CategoryName))
             {
                 <tr>
                     <td> @obj.CategoryName</td>
                     <td>@obj.SubCategory</td>
-                    <td>@obj.DisplayType</td>
+                    <td>@obj.Description</td>
                 </tr>
 
             }

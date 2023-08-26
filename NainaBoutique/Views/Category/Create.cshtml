@@ -9,17 +9,18 @@
         <div class="mb-3 row p-1">
             <label asp-for="CategoryName" class="p-0"></label>
             <input asp-for="CategoryName" class="form-control" />
-
+            <span asp-validation-for="CategoryName" class="text-danger"></span>
         </div>
         <div class="mb-3 row p-1">
             <label asp-for="SubCategory" class="p-0"></label>
             <input asp-for="SubCategory" class="form-control" />
+            <span asp-validation-for="SubCategory" class="text-danger"></span>
 
         </div>
         <div class="mb-3 row p-1">
-            <label asp-for="DisplayType" class="p-0"></label>
-            <input asp-for="DisplayType" class="form-control" />
-
+            <label asp-for="Description" class="p-0"></label>
+            <input asp-for="Description" class="form-control" />
+            <span asp-validation-for="Description" class="text-danger"></span>
         </div>
         <div class="row">
 
@@ -32,3 +33,8 @@
         </div>
     </div>
 </form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial.cshtml"/>
+    }
+}

@@ -29,6 +29,20 @@ namespace NainaBoutique.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult Create(CategoryModel category)
+        {
+            if(ModelState.IsValid)
+                {
+                _db.Categories.Add(category);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View();
+            
+        }
+
+
     }
 }
 
