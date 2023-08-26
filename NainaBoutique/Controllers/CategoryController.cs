@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using NainaBoutique.DataAccess.Data;
+using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -12,16 +13,16 @@ namespace NainaBoutique.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ApplicationDbContext _db;
-        public CategoryController(ApplicationDbContext db)
+        private readonly ICategoryRepository _categoryRepository;
+        public CategoryController(ICategoryRepository db)
         {
-            _db = db;
+            _categoryRepository = db;
 
         }
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<CategoryModel> categoryList = _db.Categories.ToList();
+            List<CategoryModel> categoryList = _categoryRepository.GetAll().ToList();
             return View(categoryList);
         }
 
@@ -34,8 +35,8 @@ namespace NainaBoutique.Controllers
         {
             if(ModelState.IsValid)
                 {
-                _db.Categories.Add(category);
-                _db.SaveChanges();
+                _categoryRepository.Add(category);
+                _categoryRepository.Save();
                 TempData["success"] = "Category Created Successfully";
                 return RedirectToAction("Index");
             }
@@ -49,7 +50,7 @@ namespace NainaBoutique.Controllers
             {
                 return NotFound();
             }
-            CategoryModel? categoryFromDb = _db.Categories.Find(id);
+            CategoryModel? categoryFromDb = _categoryRepository.Get(u=>u.Id==id);
             if(categoryFromDb == null)
             {
                 return NotFound();
@@ -61,8 +62,8 @@ namespace NainaBoutique.Controllers
         {
             if (ModelState.IsValid)
             {
-                _db.Categories.Update(category);
-                _db.SaveChanges();
+                _categoryRepository.Update(category);
+                _categoryRepository.Save();
                 TempData["success"] = "Category Updated Successfully";
                 return RedirectToAction("Index");
             }
@@ -75,7 +76,7 @@ namespace NainaBoutique.Controllers
             {
                 return NotFound();
             }
-            CategoryModel? categoryFromDb = _db.Categories.Find(id);
+            CategoryModel? categoryFromDb = _categoryRepository.Get(u => u.Id == id);
             if (categoryFromDb == null)
             {
                 return NotFound();
@@ -85,14 +86,14 @@ namespace NainaBoutique.Controllers
         [HttpPost,ActionName("Delete")]
         public IActionResult DeletePost(int? id)
         {
-            CategoryModel? category = _db.Categories.Find(id);
+            CategoryModel? category = _categoryRepository.Get(u => u.Id == id);
             if (category == null)
             {
                 return NotFound();
             }
             
-                _db.Categories.Remove(category);
-                _db.SaveChanges();
+               _categoryRepository.Remove(category);
+            _categoryRepository.Save();
                 TempData["success"] = "Category Deleted Successfully";
                 return RedirectToAction("Index");
             
