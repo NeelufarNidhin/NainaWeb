@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NainaBoutique.Models;
 
-namespace NainaBoutique.Data;
+namespace NainaBoutique.DataAccess.Data;
 
 public class ApplicationDbContext : DbContext 
 {

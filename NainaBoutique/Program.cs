@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using NainaBoutique.Data;
+using NainaBoutique.DataAccess.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 

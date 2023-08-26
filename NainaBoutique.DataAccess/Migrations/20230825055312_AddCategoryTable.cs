@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace NainaBoutique.Migrations
+namespace NainaBoutique.DataAccess.Migrations
 {
     /// <inheritdoc />
     public partial class AddCategoryTable : Migration

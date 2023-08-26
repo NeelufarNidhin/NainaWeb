@@ -1,0 +1,17 @@
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/bin/Debug/net7.0/NainaBoutique.DataAccess.deps.json
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/bin/Debug/net7.0/NainaBoutique.DataAccess.runtimeconfig.json
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/bin/Debug/net7.0/NainaBoutique.DataAccess.dll
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/bin/Debug/net7.0/NainaBoutique.DataAccess.pdb
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/bin/Debug/net7.0/NainaBoutique.Models.dll
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/bin/Debug/net7.0/NainaBoutique.Models.pdb
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/obj/Debug/net7.0/NainaBoutique.DataAccess.csproj.AssemblyReference.cache
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/obj/Debug/net7.0/NainaBoutique.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/obj/Debug/net7.0/NainaBoutique.DataAccess.AssemblyInfoInputs.cache
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/obj/Debug/net7.0/NainaBoutique.DataAccess.AssemblyInfo.cs
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/obj/Debug/net7.0/NainaBoutique.DataAccess.csproj.CoreCompileInputs.cache
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/obj/Debug/net7.0/NainaBoutique.DataAccess.csproj.CopyComplete
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/obj/Debug/net7.0/NainaBoutique.DataAccess.dll
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/obj/Debug/net7.0/refint/NainaBoutique.DataAccess.dll
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/obj/Debug/net7.0/NainaBoutique.DataAccess.pdb
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/obj/Debug/net7.0/NainaBoutique.DataAccess.genruntimeconfig.cache
+/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/obj/Debug/net7.0/ref/NainaBoutique.DataAccess.dll

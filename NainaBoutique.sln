@@ -5,6 +5,12 @@ VisualStudioVersion = 25.0.1706.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NainaBoutique", "NainaBoutique\NainaBoutique.csproj", "{BF516A33-6044-4646-B5A2-051F2E6FAECD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NainaBoutique.DataAccess", "NainaBoutique.DataAccess\NainaBoutique.DataAccess.csproj", "{2ACB7838-6DFC-462E-8F12-47B95E98B78B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NainaBoutique.Models", "NainaBoutique.Models\NainaBoutique.Models.csproj", "{C10A8BEC-0371-4DCB-ACF5-1468F2C0D8D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NainaBoutique.Utility", "NainaBoutique.Utility\NainaBoutique.Utility.csproj", "{9B462BE6-905C-4C03-8DE6-6266DC692B20}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{BF516A33-6044-4646-B5A2-051F2E6FAECD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF516A33-6044-4646-B5A2-051F2E6FAECD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF516A33-6044-4646-B5A2-051F2E6FAECD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2ACB7838-6DFC-462E-8F12-47B95E98B78B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ACB7838-6DFC-462E-8F12-47B95E98B78B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ACB7838-6DFC-462E-8F12-47B95E98B78B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2ACB7838-6DFC-462E-8F12-47B95E98B78B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C10A8BEC-0371-4DCB-ACF5-1468F2C0D8D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C10A8BEC-0371-4DCB-ACF5-1468F2C0D8D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C10A8BEC-0371-4DCB-ACF5-1468F2C0D8D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C10A8BEC-0371-4DCB-ACF5-1468F2C0D8D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B462BE6-905C-4C03-8DE6-6266DC692B20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B462BE6-905C-4C03-8DE6-6266DC692B20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B462BE6-905C-4C03-8DE6-6266DC692B20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B462BE6-905C-4C03-8DE6-6266DC692B20}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
