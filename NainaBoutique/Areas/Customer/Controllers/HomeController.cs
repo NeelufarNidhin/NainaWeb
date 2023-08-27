@@ -2,8 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using NainaBoutique.Models;
 
-namespace NainaBoutique.Controllers;
-
+namespace NainaBoutique.Areas.Customer.Controllers;
+[Area("Customer")]
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
