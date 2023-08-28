@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Models;
+using NainaBoutique.Models.ViewModels;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -28,20 +30,43 @@ namespace NainaBoutique.Areas.Admin.Controllers
         }
         public IActionResult Create()
         {
-            return View();
+            ProductViewModel productViewModel = new()
+            {
+                CategoryLlist = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.CategoryName,
+                    Value = u.Id.ToString()
+                }),
+                Product = new ProductModel()
+            };
+           
+           // ViewBag.CategoryListAll = CategoryList;
+            return View(productViewModel);
         }
 
         [HttpPost]
-        public IActionResult Create(ProductModel product)
+        public IActionResult Create(ProductViewModel productVM)
         {
             if (ModelState.IsValid)
             {
-                _unitOfWork.Product.Add(product);
+                _unitOfWork.Product.Add(productVM.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product Created Successfully";
                 return RedirectToAction("Index");
             }
-            return View();
+            else
+            {
+
+                productVM.CategoryLlist = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.CategoryName,
+                    Value = u.Id.ToString()
+                });
+                   
+               
+                return View(productVM);
+            }
+           
 
         }
 

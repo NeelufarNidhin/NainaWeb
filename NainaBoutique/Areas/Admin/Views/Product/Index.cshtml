@@ -23,6 +23,7 @@
                 <th>
                     Description
                 </th>
+                <th>Category Id</th>
                 <th>
                     Price
                 </th>
@@ -35,6 +36,7 @@
                 <th>
                     Color
                 </th>
+                <th> Image Url</th>
             </tr>
         </thead>
         <tbody>
@@ -44,10 +46,12 @@
                     <td> @obj.ProductName</td>
                
                     <td>@obj.Description</td>
-                    <td>Price</td>
-                    <td>Sale Price</td>
-                    <td>QuantityInStock</td>
-                    <td>Color</td>
+                    <td>@obj.CategoryId</td>
+                    <td>@obj.Price</td>
+                    <td>@obj.Sale_Price</td>
+                    <td>@obj.QuantityInStock</td>
+                    <td>@obj.Color</td>
+                    <td>@obj.ImageUrl</td>
 
                     <td>
                         <div class="w-75 btn-group" role="group">
