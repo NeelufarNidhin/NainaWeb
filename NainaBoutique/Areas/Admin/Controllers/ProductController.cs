@@ -28,7 +28,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
             List<ProductModel> productList = _unitOfWork.Product.GetAll().ToList();
             return View(productList);
         }
-        public IActionResult Create()
+        public IActionResult Upsert(int? id)
         {
             ProductViewModel productViewModel = new()
             {
@@ -39,13 +39,24 @@ namespace NainaBoutique.Areas.Admin.Controllers
                 }),
                 Product = new ProductModel()
             };
+            if(id==0 || id == null)
+            {
+                //create
+                return View(productViewModel);
+            }
+            else
+            {
+                //update
+                productViewModel.Product = _unitOfWork.Product.Get(u => u.Id==id);
+                return View(productViewModel);
+            }
            
            // ViewBag.CategoryListAll = CategoryList;
-            return View(productViewModel);
+           
         }
 
         [HttpPost]
-        public IActionResult Create(ProductViewModel productVM)
+        public IActionResult Upsert(ProductViewModel productVM, IFormFile? file)
         {
             if (ModelState.IsValid)
             {
@@ -70,32 +81,32 @@ namespace NainaBoutique.Areas.Admin.Controllers
 
         }
 
-        public IActionResult Edit(int? id)
-        {
-            if (id == null || id == 0)
-            {
-                return NotFound();
-            }
-            ProductModel? productFromDb = _unitOfWork.Product.Get(u => u.Id == id);
-            if (productFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(productFromDb);
-        }
-        [HttpPost]
-        public IActionResult Edit(ProductModel product)
-        {
-            if (ModelState.IsValid)
-            {
-                _unitOfWork.Product.Update(product);
-                _unitOfWork.Save();
-                TempData["success"] = "Product Updated Successfully";
-                return RedirectToAction("Index");
-            }
-            return View();
+        //public IActionResult Edit(int? id)
+        //{
+        //    if (id == null || id == 0)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ProductModel? productFromDb = _unitOfWork.Product.Get(u => u.Id == id);
+        //    if (productFromDb == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(productFromDb);
+        //}
+        //[HttpPost]
+        //public IActionResult Edit(ProductModel product)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _unitOfWork.Product.Update(product);
+        //        _unitOfWork.Save();
+        //        TempData["success"] = "Product Updated Successfully";
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View();
 
-        }
+        //}
         public IActionResult Delete(int? id)
         {
             if (id == null || id == 0)
