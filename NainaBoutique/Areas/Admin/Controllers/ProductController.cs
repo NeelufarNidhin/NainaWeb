@@ -114,61 +114,40 @@ namespace NainaBoutique.Areas.Admin.Controllers
 
         }
 
-        //public IActionResult Edit(int? id)
-        //{
-        //    if (id == null || id == 0)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ProductModel? productFromDb = _unitOfWork.Product.Get(u => u.Id == id);
-        //    if (productFromDb == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View(productFromDb);
-        //}
-        //[HttpPost]
-        //public IActionResult Edit(ProductModel product)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _unitOfWork.Product.Update(product);
-        //        _unitOfWork.Save();
-        //        TempData["success"] = "Product Updated Successfully";
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View();
 
-        //}
+        
+
+        #region API CALLS
+        [HttpGet]
+        public IActionResult GetAll()
+        {
+            List<ProductModel> objproductList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
+            return Json(new { data = objproductList });
+        }
+
+       
         public IActionResult Delete(int? id)
         {
-            if (id == null || id == 0)
+            var productToBeDeleted = _unitOfWork.Product.Get(u => u.Id == id);
+            if(productToBeDeleted == null)
             {
-                return NotFound();
-            }
-            ProductModel? productFromDb = _unitOfWork.Product.Get(u => u.Id == id);
-            if (productFromDb == null)
-            {
-                return NotFound();
-            }
-            return View(productFromDb);
-        }
-        [HttpPost, ActionName("Delete")]
-        public IActionResult DeletePost(int? id)
-        {
-            ProductModel? product = _unitOfWork.Product.Get(u => u.Id == id);
-            if (product == null)
-            {
-                return NotFound();
+                return Json(new { success = false, message = "Error while deleting" });
             }
 
-            _unitOfWork.Product.Remove(product);
+            var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath,
+                productToBeDeleted.ImageUrl.TrimStart('/'));
+
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+            _unitOfWork.Product.Remove(productToBeDeleted);
             _unitOfWork.Save();
-            TempData["success"] = "Product Deleted Successfully";
-            return RedirectToAction("Index");
 
-
+            return Json(new { success = true, message = "Delete Successfull" });
         }
+
+        #endregion
     }
 }
 
