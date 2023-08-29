@@ -15,7 +15,23 @@ namespace NainaBoutique.DataAccess.Repository
 
         public void Update(ProductModel product)
         {
-            _db.Products.Update(product);
+            var objFromDb = _db.Products.FirstOrDefault(u => u.Id == product.Id);
+            if(objFromDb != null)
+            {
+                objFromDb.ProductName = product.ProductName;
+                objFromDb.Description = product.Description;
+                objFromDb.CategoryId = product.CategoryId;
+                objFromDb.Price = product.Price;
+                objFromDb.Sale_Price = product.Sale_Price;
+                objFromDb.QuantityInStock = product.QuantityInStock;
+                objFromDb.Color = product.Color;
+
+                if(product.ImageUrl != null)
+                {
+                    objFromDb.ImageUrl = product.ImageUrl;
+
+                }
+            }
         }
     }
 }

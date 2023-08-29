@@ -23,7 +23,7 @@ namespace NainaBoutique.Models
         [Required]
         public string? Color { get; set; }
 		
-		public int CategoryId { get; set; }
+		public int? CategoryId { get; set; }
 		[ForeignKey("CategoryId")]
         [ValidateNever]
         public CategoryModel? Category { get; set; }
