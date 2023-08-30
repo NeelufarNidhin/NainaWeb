@@ -51,6 +51,7 @@
     <Folder Include="Areas\Admin\Views\Category\" />
     <Folder Include="Areas\Customer\Views\Home\" />
     <Folder Include="Areas\Admin\Views\Product\" />
+    <Folder Include="wwwroot\images\banner\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NainaBoutique.DataAccess\NainaBoutique.DataAccess.csproj">
@@ -59,5 +60,8 @@
     <ProjectReference Include="..\NainaBoutique.Models\NainaBoutique.Models.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\images\banner\" />
   </ItemGroup>
 </Project>

@@ -135,7 +135,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
             }
 
             var oldImagePath = Path.Combine(_webHostEnvironment.WebRootPath,
-                productToBeDeleted.ImageUrl.TrimStart('/'));
+                productToBeDeleted.ImageUrl!.TrimStart('/'));
 
             if (System.IO.File.Exists(oldImagePath))
             {
