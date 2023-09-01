@@ -61,6 +61,9 @@
     <ProjectReference Include="..\NainaBoutique.Models\NainaBoutique.Models.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+    <ProjectReference Include="..\NainaBoutique.Utility\NainaBoutique.Utility.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\images\banner\" />

@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿using SD;
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -29,6 +31,8 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        @if (User.IsInRole(SD.Role_Admin)){
+
 
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -39,8 +43,11 @@
                                 <li><hr class="dropdown-divider" /></li>
                                 <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Products </a></li>
                                 <li><hr class="dropdown-divider" /></li>
+                                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Create User </a></li>
+                                <li><hr class="dropdown-divider" /></li>
                             </ul>
                         </li>
+                        }
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

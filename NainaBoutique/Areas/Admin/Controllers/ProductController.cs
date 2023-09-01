@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Models;
 using NainaBoutique.Models.ViewModels;
+using NainaBoutique.Utility;
 
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -14,6 +17,7 @@ using NainaBoutique.Models.ViewModels;
 namespace NainaBoutique.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = SD.Role_Admin)]
     public class ProductController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -93,7 +97,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
                     _unitOfWork.Product.Update(productVM.Product);
                 }
 
-                _unitOfWork.Product.Add(productVM.Product);
+               // _unitOfWork.Product.Add(productVM.Product);
                 _unitOfWork.Save();
                 TempData["success"] = "Product Created Successfully";
                 return RedirectToAction("Index");

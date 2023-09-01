@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using NainaBoutique.DataAccess.Data;
 using NainaBoutique.DataAccess.Repository;
 using NainaBoutique.DataAccess.Repository.IRepository;
+using NainaBoutique.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using NainaBoutique.Utility;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,10 +17,18 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddControllersWithViews();
 
+builder.Services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+builder.Services.ConfigureApplicationCookie(options =>
+{
+    options.LoginPath = $"/Identity/Account/Login";
+    options.LoginPath = $"/Identity/Account/Logout";
+    options.LoginPath = $"/Identity/Account/AccessDenied";
+
+});
+builder.Services.AddControllersWithViews();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 var app = builder.Build();
 
@@ -37,7 +48,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(

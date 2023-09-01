@@ -6,7 +6,7 @@ namespace NainaBoutique.Models.ViewModels
 {
 	public class ProductViewModel
 	{
-		public ProductModel Product { get; set; }
+		public ProductModel? Product { get; set; }
 		[ValidateNever]
 		public IEnumerable<SelectListItem>? CategoryLlist { get; set; }
 	}
