@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace NainaBoutique.Models
 {
@@ -9,7 +10,8 @@ namespace NainaBoutique.Models
 		[Key]
 		public int Id { get; set; }
 		[Required]
-		[DisplayName("Category Name")]
+       
+        [DisplayName("Category Name")]
 		[MaxLength(30)]
 		public string? CategoryName { get; set; }
         [DisplayName("Sub Category")]

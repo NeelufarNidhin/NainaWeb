@@ -5,6 +5,7 @@ namespace NainaBoutique.DataAccess.Repository.IRepository
 	{
 		ICategoryRepository Category { get; }
         IProductRepository Product { get; }
+		IUserRepository User { get; }
         void Save();
 
 		

@@ -1,6 +1,7 @@
 ﻿using System;
 using NainaBoutique.DataAccess.Data;
 using NainaBoutique.DataAccess.Repository.IRepository;
+using NainaBoutique.Models;
 
 namespace NainaBoutique.DataAccess.Repository
 {
@@ -12,11 +13,14 @@ namespace NainaBoutique.DataAccess.Repository
 
         public IProductRepository Product { get; private set; }
 
+        public IUserRepository User { get; private set; }
+
         public UnitOfWork(ApplicationDbContext db) 
         {
             _db = db;
             Category = new CategoryRepository(_db);
             Product = new ProductRepository(_db);
+            User = new UserRepository(_db);
         }
         
         public void Save()

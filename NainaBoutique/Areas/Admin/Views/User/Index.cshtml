@@ -1,39 +1,40 @@
-﻿@model List<CategoryModel>
+﻿@model List<ApplicationUser>
 
 <div class="container">
     <div class="row pt-4 pb-3">
         <div class="col-6">
             <h2 class="text-secondary">
-                Category
+                User
             </h2>
         </div>
         <div class="col-6 text-end">
-            <a asp-controller="Category" asp-action="Create" class="btn btn-secondary">
+            <a asp-area="Identity" asp-page="/Account/Register" class="btn btn-secondary">
                 <i class="bi bi-plus-circle"></i> Create New
             </a>
         </div>
     </div>
-    <h1> Category List</h1>
-    <table id="myTable" class="table table-bordered table-striped">
+    <h1> User List</h1>
+    <table id="userTable" class="table table-bordered table-striped">
         <thead>
             <tr>
                 <th>
-                    Category Name
+                    User Name
                 </th>
                 <th>
-                    Sub Category
+                    Email
                 </th>
                 <th>
-                    Description
+                    Address
                 </th>
+                <th>Role</th>
                 <th></th>
             </tr>
         </thead>
-        
+
     </table>
 
 </div>
 @section Scripts{
 
-    <script src="~/js/category.js"></script>
+    <script src="~/js/user.js"></script>
 }

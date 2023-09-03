@@ -57,7 +57,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
                 return View(productViewModel);
             }
            
-           // ViewBag.CategoryListAll = CategoryList;
+          
            
         }
 
@@ -91,15 +91,19 @@ namespace NainaBoutique.Areas.Admin.Controllers
                 if(productVM.Product.Id == 0)
                 {
                     _unitOfWork.Product.Add(productVM.Product);
+                    _unitOfWork.Save();
+                    TempData["success"] = "Product Created Successfully";
                 }
                 else
                 {
                     _unitOfWork.Product.Update(productVM.Product);
+                    _unitOfWork.Save();
+                    TempData["success"] = "Product Updated Successfully";
                 }
 
                // _unitOfWork.Product.Add(productVM.Product);
-                _unitOfWork.Save();
-                TempData["success"] = "Product Created Successfully";
+                //_unitOfWork.Save();
+                //TempData["success"] = "Product Created Successfully";
                 return RedirectToAction("Index");
             }
             else
@@ -129,7 +133,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
             return Json(new { data = objproductList });
         }
 
-       
+        [HttpDelete]
         public IActionResult Delete(int? id)
         {
             var productToBeDeleted = _unitOfWork.Product.Get(u => u.Id == id);
@@ -150,6 +154,9 @@ namespace NainaBoutique.Areas.Admin.Controllers
 
             return Json(new { success = true, message = "Delete Successfull" });
         }
+
+
+
 
         #endregion
     }
