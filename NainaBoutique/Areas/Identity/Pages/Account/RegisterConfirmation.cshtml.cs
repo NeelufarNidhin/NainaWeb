@@ -75,5 +75,20 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
 
             return Page();
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> ValidateOtp(string notp)
+        //{
+        //    if (notp == _sender.SendEmailAsync.htmlMessage)
+        //    {
+        //        TempData["success"] = "Validated";
+        //        return RedirectToPage("./Home/Index");
+        //    }
+        //    else
+        //    {
+        //        TempData["error"] = "Not Validated";
+        //        return Page();
+        //    }
+        //}
     }
 }

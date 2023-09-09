@@ -15,12 +15,19 @@ namespace NainaBoutique.DataAccess.Repository
 
         public IUserRepository User { get; private set; }
 
+        public ICartRepository Cart { get; private set; }
+
+        public ICouponRepository Coupon { get; private set; }
+
         public UnitOfWork(ApplicationDbContext db) 
         {
             _db = db;
             Category = new CategoryRepository(_db);
             Product = new ProductRepository(_db);
             User = new UserRepository(_db);
+            Cart = new CartRepository(_db);
+            Coupon = new CouponRepository(_db);
+
         }
         
         public void Save()

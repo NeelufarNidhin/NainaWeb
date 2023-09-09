@@ -6,6 +6,7 @@ using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using NainaBoutique.Utility;
+using static NainaBoutique.Areas.Customer.Controllers.HomeController;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 });
 builder.Services.AddControllersWithViews();
-builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 var app = builder.Build();
 

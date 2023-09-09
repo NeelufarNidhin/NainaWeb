@@ -21,6 +21,15 @@
     <None Remove="Areas\Customer\Views\Home\" />
     <None Remove="Areas\Admin\Views\Product\" />
     <None Remove="Areas\Admin\Views\User\" />
+    <None Remove="Areas\Admin\Views\Coupon\" />
+    <None Remove="Areas\Customer\Views\Cart\" />
+    <None Remove="Areas\Customer\Views\Favourites\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Areas\Identity\Pages\Account\Testchk.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <None Update="app.db" CopyToOutputDirectory="PreserveNewest" ExcludeFromSingleFile="true" />
@@ -55,6 +64,9 @@
     <Folder Include="Areas\Admin\Views\Product\" />
     <Folder Include="wwwroot\images\banner\" />
     <Folder Include="Areas\Admin\Views\User\" />
+    <Folder Include="Areas\Admin\Views\Coupon\" />
+    <Folder Include="Areas\Customer\Views\Cart\" />
+    <Folder Include="Areas\Customer\Views\Favourites\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NainaBoutique.DataAccess\NainaBoutique.DataAccess.csproj">
@@ -69,5 +81,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\images\banner\" />
+    <Content Remove="Areas\Identity\Pages\Account\Testchk.cshtml" />
   </ItemGroup>
 </Project>

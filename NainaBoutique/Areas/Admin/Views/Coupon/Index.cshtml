@@ -1,0 +1,55 @@
+﻿
+@model List<CouponModel>  
+
+
+<div class="container">
+    <div class="row pt-4 pb-3">
+        <div class="col-6">
+            <h2 class="text-secondary">
+                Coupon
+            </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Coupon" asp-action="Create" class="btn btn-secondary">
+                <i class="bi bi-plus-circle"></i> Create New
+            </a>
+        </div>
+    </div>
+    <h1> Coupon List</h1>
+    <table id="couponTblData" class="table table-bordered table-striped" width="100%">
+        <thead>
+            <tr>
+                <th>
+                    Coupon Code
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>Valid From </th>
+                <th>
+                    Valid From
+                </th>
+                <th>
+                    Discount Type
+                </th>
+                <th>
+                    Discount Amount
+                </th>
+                <th>
+                    Usage Status
+                </th>
+                <th></th>
+
+
+            </tr>
+        </thead>
+
+    </table>
+
+</div>
+
+
+@section Scripts{
+
+    <script src="~/js/coupon.js"></script>
+}

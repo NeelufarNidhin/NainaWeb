@@ -7,9 +7,9 @@ namespace NainaBoutique.DataAccess.Repository.IRepository
 	{
 		//T-CategoryModel
 
-		IEnumerable<T> GetAll(string? includeProperties = null);
+		IEnumerable<T> GetAll(Expression<Func<T,bool>>? filter=null, string? includeProperties = null);
 		//Linq operation in Controller
-		T Get(Expression<Func<T,bool>> filter, string? includeProperties = null);
+		T Get(Expression<Func<T,bool>> filter, string? includeProperties = null, bool tracked = false);
 		void Add(T entity);
 		void Remove(T entity);
 		void RemoveRange(IEnumerable<T> entity);

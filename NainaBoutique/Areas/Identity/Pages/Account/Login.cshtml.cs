@@ -21,12 +21,16 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IEmailSender _sender;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger,IEmailSender sender)
         {
             _signInManager = signInManager;
             _logger = logger;
+            _sender = sender;
         }
+
+        
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -119,7 +123,10 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
                 }
                 if (result.RequiresTwoFactor)
                 {
-                    return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+                return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
+
+
+                  //  return RedirectToPage("./Testchk");
                 }
                 if (result.IsLockedOut)
                 {
@@ -132,9 +139,11 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
                     return Page();
                 }
             }
-
+            
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
+
     }
 }

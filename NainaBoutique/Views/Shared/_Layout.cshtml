@@ -32,6 +32,8 @@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
+
                         @if (User.IsInRole(SD.Role_Admin))
                         {
 
@@ -47,11 +49,23 @@
                                     <li><hr class="dropdown-divider" /></li>
                                     <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">User </a></li>
                                     <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" asp-area="Customer" asp-controller="Cart" asp-action="Index">Cart </a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item" asp-area="Admin" asp-controller="Coupon" asp-action="Index">Coupon </a></li>
+                                    <li><hr class="dropdown-divider" /></li>
                                 </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="Customer" asp-controller="Cart" asp-action="Index"><i class="bi bi-cart"></i>&nbsp;(0)</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light" asp-area="Customer" asp-controller="Favourites" asp-action="Index"><i class="bi bi-heart"></i></a>
                             </li>
                         }
                     </ul>
                     <partial name="_LoginPartial" />
+
+                    
                 </div>
             </div>
         </nav>

@@ -18,8 +18,9 @@ public class ApplicationUser : IdentityUser
         public int PostalCode { get; set; }
         public int MobileNumber { get; set; }
         [NotMapped]
-        public string Role { get; set; }
+        public string? Role { get; set; }
 
+        
     }
 
 }

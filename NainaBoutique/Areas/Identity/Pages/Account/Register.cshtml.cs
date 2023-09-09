@@ -6,6 +6,8 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
@@ -22,6 +24,7 @@ using Microsoft.Extensions.Logging;
 using NainaBoutique.Models;
 using NainaBoutique.Utility;
 
+
 namespace NainaBoutique.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
@@ -33,6 +36,9 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<IdentityUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        public static Random rand = new Random();
+        public static int number = rand.Next(0, 100);
+        string otp = number.ToString();
 
         public RegisterModel(
             UserManager<IdentityUser> userManager,
@@ -115,7 +121,7 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
             public int PostalCode { get; set; }
             public int MobileNumber { get; set; }
         }
-
+       // public string enteredotp { get; set; }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -172,14 +178,19 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+
+                   
+                 
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await SendEmailAsync(Input.Email, "Confirm your email",
+                     //   otp);
+                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
@@ -209,6 +220,39 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
             // If we got this far, something failed, redisplay form
             return Page();
         }
+
+
+        
+            private Task<bool> SendEmailAsync(string email, string subject, string confirmurl)
+            {
+            try
+            {
+                MailMessage message = new MailMessage();
+                SmtpClient smtpClient = new SmtpClient();
+                message.From = new MailAddress("albyjolly149@gmail.com");
+                message.To.Add(email);
+                message.Subject = subject;
+                message.IsBodyHtml = true;
+                message.Body = confirmurl;
+               // message.Body = messageotp;
+
+                smtpClient.Port = 587;
+                smtpClient.Host = "smtp.gmail.com";
+                smtpClient.EnableSsl = true;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential("albyjolly149@gmail.com", "ieivzgnukcrjdape");
+                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtpClient.Send(message);
+                return Task.FromResult(true);
+            }
+            catch (Exception ex)
+            {
+
+                return Task.FromResult(false);
+            }
+        }
+
+       
 
         private ApplicationUser CreateUser()
         {

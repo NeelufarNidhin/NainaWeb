@@ -4,6 +4,8 @@
     ViewData["Title"] = "Register confirmation";
 }
 
+
+
 <h1>@ViewData["Title"]</h1>
 @{
     if (@Model.DisplayConfirmAccountLink)
@@ -18,6 +20,24 @@
 <p>
         Please check your email to confirm your account.
 </p>
+
+<p> Please enter your authentication code in the field below</p>
+<div class="row">
+    <div class="col-md-4">
+        <form  method="post">
+            @*<div asp-validation-summary="All" class="text-danger"></div>*@
+            <div class="form-group">
+                <label name="notp" class="control-label"></label>
+                <input name="notp" class="form-control" />
+                @*<span asp-validation-for="TwoFactorCode" class="text-danger"></span>*@
+            </div>
+            @*<input asp-for="RememberMe" type="hidden" />*@
+            <div class="form-group">
+                <input type="submit" value="Log in" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
     }
 }
 
