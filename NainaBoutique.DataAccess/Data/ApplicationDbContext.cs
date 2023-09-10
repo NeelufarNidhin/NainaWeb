@@ -24,8 +24,9 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<ProductModel> Products { get; set; }
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
     public DbSet<ShoppingCart> Carts { get; set; }
-     public DbSet<SizeModel> Sizes { get; set; }
+    public DbSet<SizeModel> Sizes { get; set; }
     public DbSet<CouponModel> Coupons { get; set; }
+    public DbSet<FavouritesModel> Favourites { get; set; }
 
 
 }

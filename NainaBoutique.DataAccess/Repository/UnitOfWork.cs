@@ -19,6 +19,8 @@ namespace NainaBoutique.DataAccess.Repository
 
         public ICouponRepository Coupon { get; private set; }
 
+        public IFavouritesRepository Favourite { get; private set; }
+
         public UnitOfWork(ApplicationDbContext db) 
         {
             _db = db;
@@ -27,7 +29,7 @@ namespace NainaBoutique.DataAccess.Repository
             User = new UserRepository(_db);
             Cart = new CartRepository(_db);
             Coupon = new CouponRepository(_db);
-
+            Favourite = new FavouritesRepository(_db);
         }
         
         public void Save()

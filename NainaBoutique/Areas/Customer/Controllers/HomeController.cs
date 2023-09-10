@@ -10,6 +10,7 @@ using NainaBoutique.DataAccess.Data;
 using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Models;
 using NainaBoutique.Models.Models;
+using NainaBoutique.Models.ViewModels;
 
 namespace NainaBoutique.Areas.Customer.Controllers;
 [Area("Customer")]
@@ -78,11 +79,13 @@ public class HomeController : Controller
         return View(shoppingCart);
     }
 
+
+   
    
 
     [HttpPost]
     [Authorize]
-    public IActionResult Details(ShoppingCart shoppingCart)
+    public IActionResult AddtoCart(ShoppingCart shoppingCart)
 
     {
         var claimsIdentity = (ClaimsIdentity)User.Identity;
@@ -109,20 +112,42 @@ public class HomeController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    [HttpPost]
+    [Authorize]
+    public IActionResult AddtoFav(FavouritesModel favouritesModel)
 
-    //public IActionResult Privacy()
-    //{
-    //    return View();
-    //}
-
-    public async Task<IActionResult> Privacy()
     {
-        var email = "nehanmohammed@gmail.com";
-        var subject = "otp";
-        var message = "34567";
-        await emailSender.SendEmailAsync(email, subject, message);
+        var claimsIdentity = (ClaimsIdentity)User.Identity;
+
+        var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+        favouritesModel.ApplicationUserId = userId;
+
+        FavouritesModel favouritesFomDb = _unitOfWork.Favourite.Get(u => u.ApplicationUserId == favouritesModel.ApplicationUserId && u.ProductId == favouritesModel.ProductId);
+
+       
+            _unitOfWork.Favourite.Add(favouritesModel);
+
+      
+        
+        TempData["success"] = "Favourites Updated Successfully";
+        _unitOfWork.Save();
+        return RedirectToAction(nameof(Index));
+    }
+
+
+    public IActionResult Privacy()
+    {
         return View();
     }
+
+    //public async Task<IActionResult> Privacy()
+    //{
+    //    var email = "nehanmohammed@gmail.com";
+    //    var subject = "otp";
+    //    var message = "34567";
+    //    await emailSender.SendEmailAsync(email, subject, message);
+    //    return View();
+    //}
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

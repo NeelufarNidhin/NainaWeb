@@ -33,9 +33,10 @@ namespace NainaBoutique.Areas.Customer.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-           
 
-                ShoppingCartVM = new() { 
+
+
+            ShoppingCartVM = new() { 
                 
                     shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
                 includeProperties: "Product")
@@ -43,7 +44,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
             foreach (var cart in ShoppingCartVM.shoppingCartList)
             {
-                cart.Price = cart.Product.Price;
+                cart.Price = cart.Product!.Price;
                 ShoppingCartVM.OrderTotal += (cart.Price * cart.Count);
             }
             return View(ShoppingCartVM);

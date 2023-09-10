@@ -14,7 +14,7 @@ namespace NainaBoutique.Models.Models
 		[ForeignKey("ProductId")]
 		[ValidateNever]
 		public ProductModel? Product { get; set; }
-        [NotMapped ]
+       //[NotMapped ]
 		public float Price { get; set; }
 
         [Range(1, 1000, ErrorMessage = "Enter the value between 1 and 1000")]

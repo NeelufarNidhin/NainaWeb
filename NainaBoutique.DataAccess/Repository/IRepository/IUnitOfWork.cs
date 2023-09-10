@@ -8,6 +8,7 @@ namespace NainaBoutique.DataAccess.Repository.IRepository
 		IUserRepository User { get; }
 		ICartRepository Cart { get; }
 		ICouponRepository Coupon { get; }
+		IFavouritesRepository Favourite { get; }
         void Save();
 
 		
