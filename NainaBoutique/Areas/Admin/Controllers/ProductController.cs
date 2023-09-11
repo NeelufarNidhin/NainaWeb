@@ -90,9 +90,21 @@ namespace NainaBoutique.Areas.Admin.Controllers
                 }
                 if(productVM.Product.Id == 0)
                 {
-                    _unitOfWork.Product.Add(productVM.Product);
-                    _unitOfWork.Save();
-                    TempData["success"] = "Product Created Successfully";
+
+                    ProductModel productName = _unitOfWork.Product.Get(u => u.ProductName == productVM.Product.ProductName);
+
+                    if(productName != null)
+                    {
+                        TempData["error"] = "Product Already Exists";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        _unitOfWork.Product.Add(productVM.Product);
+                        _unitOfWork.Save();
+                        TempData["success"] = "Product Created Successfully";
+                    }
+                   
                 }
                 else
                 {

@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using NainaBoutique.DataAccess.Repository.IRepository;
+using NainaBoutique.Models.Models;
 using NainaBoutique.Models.ViewModels;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -29,8 +32,6 @@ namespace NainaBoutique.Areas.Admin.Controllers
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 
-
-
             FavouritesVM = new()
             {
 
@@ -41,6 +42,9 @@ namespace NainaBoutique.Areas.Admin.Controllers
             
             return View(FavouritesVM);
         }
+       
+
+
         public IActionResult Remove(int favouritesId)
         {
             var favouriteFromDb = _unitOfWork.Favourite.Get(u => u.Id == favouritesId);

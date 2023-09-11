@@ -14,7 +14,7 @@ namespace NainaBoutique.Models.Models
         [ForeignKey("ProductId")]
         [ValidateNever]
         public ProductModel? Product { get; set; }
-
+        public int Count { get; set; }
         public string ApplicationUserId { get; set; }
         [ForeignKey("ApplicationUserId")]
         [ValidateNever]

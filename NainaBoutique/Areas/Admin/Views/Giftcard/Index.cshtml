@@ -1,0 +1,58 @@
+﻿
+@model List<GiftcardModel>
+
+
+<div class="container">
+    <div class="row pt-4 pb-3">
+        <div class="col-6">
+            <h2 class="text-secondary">
+                Giftcard
+            </h2>
+        </div>
+        <div class="col-6 text-end">
+            <a asp-controller="Giftcard" asp-action="Create" class="btn btn-secondary">
+                <i class="bi bi-plus-circle"></i> Create New
+            </a>
+        </div>
+    </div>
+    <h1> Giftcard List</h1>
+    <table id="giftcardTbl" class="table table-bordered table-striped" width="100%">
+        <thead>
+            <tr>
+                <th>
+                    GiftCard Number
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th>Email Receipient </th>
+                <th>
+                    Message
+                </th>
+                <th>
+                    Is Active
+                </th>
+                <th>
+                    Expiry Date
+                </th>
+                <th>
+                    User ID
+                </th>
+                <th>
+                    Order ID
+                </th>
+                <th></th>
+
+
+            </tr>
+        </thead>
+
+    </table>
+
+</div>
+
+
+@section Scripts{
+
+    <script src="~/js/giftcard.js"></script>
+}

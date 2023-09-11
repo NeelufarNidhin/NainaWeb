@@ -95,7 +95,8 @@ public class HomeController : Controller
 
         ShoppingCart cartFomDb = _unitOfWork.Cart.Get(u => u.ApplicationUserId ==shoppingCart.ApplicationUserId &&  u.ProductId== shoppingCart.ProductId);
 
-        if(cartFomDb != null){
+        var favouriteFromDb = _unitOfWork.Favourite.Get(u => u.ProductId == shoppingCart.ProductId);
+        if (cartFomDb != null){
             //cart exists
           cartFomDb.Count += shoppingCart.Count;
             _unitOfWork.Cart.Update(cartFomDb);
@@ -104,13 +105,20 @@ public class HomeController : Controller
         }
         else
         {
+           // favouriteFromDb.Count = 1;
             _unitOfWork.Cart.Add(shoppingCart);
-            
+            if(favouriteFromDb != null)
+            {
+                _unitOfWork.Favourite.Remove(favouriteFromDb);
+            }
+           
+
         }
         TempData["success"] = "Cart Updated Successfully";
         _unitOfWork.Save();
         return RedirectToAction(nameof(Index));
     }
+
 
     [HttpPost]
     [Authorize]
@@ -123,12 +131,12 @@ public class HomeController : Controller
         favouritesModel.ApplicationUserId = userId;
 
         FavouritesModel favouritesFomDb = _unitOfWork.Favourite.Get(u => u.ApplicationUserId == favouritesModel.ApplicationUserId && u.ProductId == favouritesModel.ProductId);
+     
 
-       
-            _unitOfWork.Favourite.Add(favouritesModel);
-
-      
+        _unitOfWork.Favourite.Add(favouritesModel);
         
+       
+
         TempData["success"] = "Favourites Updated Successfully";
         _unitOfWork.Save();
         return RedirectToAction(nameof(Index));

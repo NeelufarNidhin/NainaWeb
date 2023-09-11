@@ -1,5 +1,7 @@
 ﻿@model FavouritesVM
+
 <form method="post">
+
     <div class="card">
         <div class="card-header bg bg-secondary text-center">
             <h3>Favourites </h3>
@@ -11,7 +13,8 @@
 
             <div class="col-md-10 offset-md-1">
                 @foreach (var item in Model.favouritesList)
-                {<div class="row border-bottom pb-3">
+                {
+                        <div class="row border-bottom pb-3">
                         <div class="d-none d-lg-block col-lg-1  py-2">
                             <img src="@item.Product.ImageUrl" class="card-img-top rounded" width="100px" />
                         </div>
@@ -22,7 +25,7 @@
                         <div class="col-12  row">
                             <div class="row">
                                 <div class="col-md-4 offset-md-4">
-                                    <button type="submit"
+                                    <button type="submit" asp-controller="home" asp-route-productid="@item.ProductId" asp-route-count="@item.Count" asp-action="AddtoCart" 
                                             class="btn btn-secondary text-uppercase mr-2 px-4">
                                         Add to cart
                                     </button>

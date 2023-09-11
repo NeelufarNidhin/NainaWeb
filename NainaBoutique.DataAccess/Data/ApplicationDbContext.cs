@@ -27,6 +27,7 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
     public DbSet<SizeModel> Sizes { get; set; }
     public DbSet<CouponModel> Coupons { get; set; }
     public DbSet<FavouritesModel> Favourites { get; set; }
+    public DbSet<GiftcardModel> Giftcards { get; set; }
 
 
 }

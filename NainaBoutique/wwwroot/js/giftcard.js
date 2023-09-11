@@ -1,28 +1,29 @@
 ﻿var dataTable
 
 $(document).ready(function () {
-    loadCouponTable();
+    loadGiftcardTable();
 });
 
-function loadCouponTable() {
-    dataTable = $('#couponTblData').DataTable({
+function loadGiftcardTable() {
+    dataTable = $('#giftcardTbl').DataTable({
         "ajax": {
-            url: '/admin/coupon/getall'
+            url: '/admin/giftcard/getall'
         },
         "columns": [
-            { data: 'couponCode', "autowidth": true },
-            { data: 'description', "autowidth": true },
-            { data: 'validfrom', "autowidth": true },
-            { data: 'validTo', "autowidth": true },
-            { data: 'discountType', "autowidth": true },
-            { data: 'discountAmount', "autowidth": true },
-            { data: 'usageStatus', "autowidth": true },
+            { data: 'cardNumber', "autowidth": true },
+            { data: 'amount', "autowidth": true },
+            { data: 'emailReceipient', "autowidth": true },
+            { data: 'message', "autowidth": true },
+            { data: 'isActive', "autowidth": true },
+            { data: 'expiryDate', "autowidth": true },
+            //{ data: 'userID', "autowidth": true },
+            { data: 'orderId', "autowidth": true },
             {
                 data: 'id',
                 "render": function (data) {
                     return `<div class="w-75 btn-group" role="group">
-                     <a href="/admin/coupon/edit?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> Edit</a>               
-                     <a onclick=DeleteCoupon('/admin/coupon/delete?id=${data}') class="btn btn-danger mx-2"> <i class="bi bi-trash-fill"></i> Delete</a>
+                     <a href="/admin/giftcard/edit?id=${data}" class="btn btn-primary mx-2"> <i class="bi bi-pencil-square"></i> Edit</a>               
+                     <a onclick=DeleteGiftcard('/admin/giftcard/delete?id=${data}') class="btn btn-danger mx-2"> <i class="bi bi-trash-fill"></i> Delete</a>
                     </div>`
                 },
                 "autowidth": true
@@ -34,7 +35,7 @@ function loadCouponTable() {
 
 
 
-function DeleteCoupon(url) {
+function DeleteGiftcard(url) {
     Swal.fire({
         title: 'Are you sure?',
         text: "You won't be able to revert this!",
@@ -56,3 +57,4 @@ function DeleteCoupon(url) {
         }
     })
 }
+

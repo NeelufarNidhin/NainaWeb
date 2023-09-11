@@ -1,0 +1,60 @@
+﻿@model GiftcardModel
+
+<form method="post">
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-secondary">Edit Giftcard</h2>
+            <hr />
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="CardNumber" class="p-0"></label>
+            <input asp-for="CardNumber" class="form-control" />
+            <span asp-validation-for="CardNumber" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="Amount" class="p-0"></label>
+            <input asp-for="Amount" class="form-control" />
+            <span asp-validation-for="Amount" class="text-danger"></span>
+
+        </div>
+        <!--<div class="mb-3 row p-1">
+            <label asp-for="Validfrom" class="p-0"></label>
+            <input asp-for="Validfrom" type="datetime-local" class="form-control" />-->
+            @*<span asp-validation-for="Validfrom" class="text-danger"></span>*@
+        <!--</div>
+        <div class="mb-3 row p-1">
+            <label asp-for="ValidTo" class="p-0"></label>
+            <input asp-for="ValidTo" type="datetime-local" class="form-control" />-->
+            @*<span asp-validation-for="ValidTo" class="text-danger"></span>*@
+        <!--</div>
+        <div class="mb-3 row p-1">
+            <label asp-for="DiscountType" class="p-0"></label>
+            <input asp-for="DiscountType" class="form-control" />
+            <span asp-validation-for="DiscountType" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="DiscountAmount" class="p-0"></label>
+            <input asp-for="DiscountAmount" class="form-control" />
+            <span asp-validation-for="DiscountAmount" class="text-danger"></span>
+        </div>
+        <div class="mb-3 row p-1">
+            <label asp-for="UsageStatus" class="p-0"></label>
+            <input asp-for="UsageStatus" class="form-control" />
+            <span asp-validation-for="UsageStatus" class="text-danger"></span>
+        </div>-->
+        <div class="row">
+
+            <div class="col-6 col-md-6">
+                <button type="submit" class="btn btn-secondary form-control">Update</button>
+            </div>
+            <div class="col-6 col-md-6">
+                <a asp-controller="Giftcard" asp-action="Index" class="btn btn-primary border form-control">Back To list</a>
+            </div>
+        </div>
+    </div>
+</form>
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial.cshtml" />
+    }
+}
