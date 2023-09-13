@@ -16,7 +16,7 @@ using NainaBoutique.Utility;
 namespace NainaBoutique.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    [Authorize]
+    //[Authorize]
     public class CartController : Controller
     {
         public readonly IUnitOfWork _unitOfWork;

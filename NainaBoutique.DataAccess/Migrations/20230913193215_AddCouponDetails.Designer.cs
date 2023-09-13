@@ -12,8 +12,8 @@ using NainaBoutique.DataAccess.Data;
 namespace NainaBoutique.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230905213312_AddCouponTable")]
-    partial class AddCouponTable
+    [Migration("20230913193215_AddCouponDetails")]
+    partial class AddCouponDetails
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -272,15 +272,18 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DiscountAmount")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float>("DiscountAmount")
+                        .HasColumnType("real");
 
                     b.Property<string>("DiscountType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("UsageStatus")
-                        .HasColumnType("bit");
+                    b.Property<float>("MaxRedeemableAmount")
+                        .HasColumnType("real");
+
+                    b.Property<float>("MinCartAmount")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("ValidTo")
                         .HasColumnType("datetime2");
@@ -291,6 +294,71 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Coupons");
+                });
+
+            modelBuilder.Entity("NainaBoutique.Models.Models.FavouritesModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Favourites");
+                });
+
+            modelBuilder.Entity("NainaBoutique.Models.Models.GiftcardModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<float>("Amount")
+                        .HasColumnType("real");
+
+                    b.Property<string>("CardNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmailReceipient")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("ExpiryDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("IsActive")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Message")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserrId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Giftcards");
                 });
 
             modelBuilder.Entity("NainaBoutique.Models.Models.ShoppingCart", b =>
@@ -308,13 +376,10 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<float?>("Price")
+                    b.Property<float>("Price")
                         .HasColumnType("real");
 
                     b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SizeId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -322,8 +387,6 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.HasIndex("ApplicationUserId");
 
                     b.HasIndex("ProductId");
-
-                    b.HasIndex("SizeId");
 
                     b.ToTable("Carts");
                 });
@@ -341,7 +404,7 @@ namespace NainaBoutique.DataAccess.Migrations
 
                     b.HasKey("ID");
 
-                    b.ToTable("SizeModel");
+                    b.ToTable("Sizes");
                 });
 
             modelBuilder.Entity("NainaBoutique.Models.ProductModel", b =>
@@ -463,6 +526,25 @@ namespace NainaBoutique.DataAccess.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("NainaBoutique.Models.Models.FavouritesModel", b =>
+                {
+                    b.HasOne("NainaBoutique.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("NainaBoutique.Models.ProductModel", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ApplicationUser");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("NainaBoutique.Models.Models.ShoppingCart", b =>
                 {
                     b.HasOne("NainaBoutique.Models.ApplicationUser", "ApplicationUser")
@@ -471,23 +553,15 @@ namespace NainaBoutique.DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NainaBoutique.Models.ProductModel", "product")
+                    b.HasOne("NainaBoutique.Models.ProductModel", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("NainaBoutique.Models.Models.SizeModel", "size")
-                        .WithMany()
-                        .HasForeignKey("SizeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("ApplicationUser");
 
-                    b.Navigation("product");
-
-                    b.Navigation("size");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("NainaBoutique.Models.ProductModel", b =>

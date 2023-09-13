@@ -250,7 +250,7 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
 
                 return Task.FromResult(false);
             }
-        }
+            }
 
        
 
@@ -276,5 +276,8 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
             }
             return (IUserEmailStore<IdentityUser>)_userStore;
         }
+
+
+        
     }
 }

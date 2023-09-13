@@ -16,7 +16,8 @@ function loadCouponTable() {
             { data: 'validTo', "autowidth": true },
             { data: 'discountType', "autowidth": true },
             { data: 'discountAmount', "autowidth": true },
-            { data: 'usageStatus', "autowidth": true },
+            { data: 'minCartAmount', "autowidth": true },
+            { data: 'maxRedeemableAmount', "autowidth": true },
             {
                 data: 'id',
                 "render": function (data) {

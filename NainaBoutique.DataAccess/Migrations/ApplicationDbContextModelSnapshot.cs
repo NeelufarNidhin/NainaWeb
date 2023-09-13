@@ -269,15 +269,18 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DiscountAmount")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<float>("DiscountAmount")
+                        .HasColumnType("real");
 
                     b.Property<string>("DiscountType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("UsageStatus")
-                        .HasColumnType("bit");
+                    b.Property<float>("MaxRedeemableAmount")
+                        .HasColumnType("real");
+
+                    b.Property<float>("MinCartAmount")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("ValidTo")
                         .HasColumnType("datetime2");

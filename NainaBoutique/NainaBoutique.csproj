@@ -25,6 +25,7 @@
     <None Remove="Areas\Customer\Views\Cart\" />
     <None Remove="Areas\Customer\Views\Favourites\" />
     <None Remove="Areas\Admin\Views\Giftcard\" />
+    <None Remove="Areas\Customer\Views\Otp\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Areas\Identity\Pages\Account\Testchk.cshtml">
@@ -69,6 +70,7 @@
     <Folder Include="Areas\Customer\Views\Cart\" />
     <Folder Include="Areas\Customer\Views\Favourites\" />
     <Folder Include="Areas\Admin\Views\Giftcard\" />
+    <Folder Include="Areas\Customer\Views\Otp\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NainaBoutique.DataAccess\NainaBoutique.DataAccess.csproj">

@@ -7,6 +7,7 @@ using NainaBoutique.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using NainaBoutique.Utility;
 using static NainaBoutique.Areas.Customer.Controllers.HomeController;
+using NainaBoutique.Areas.Identity.Pages.Account;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,7 +18,7 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+builder.Services.AddSingleton<OtpService>();
 
 builder.Services.AddIdentity<IdentityUser,IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();

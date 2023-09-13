@@ -29,7 +29,7 @@
             </div>
             <div class="mb-3 row p-1">
                 <label asp-for="DiscountType" class="p-0"></label>
-                <input asp-for="DiscountType"  class="form-control" />
+                <input asp-for="DiscountType" class="form-control" />
                 <span asp-validation-for="DiscountType" class="text-danger"></span>
             </div>
             <div class="mb-3 row p-1">
@@ -38,9 +38,14 @@
                 <span asp-validation-for="DiscountAmount" class="text-danger"></span>
             </div>
             <div class="mb-3 row p-1">
-                <label asp-for="UsageStatus" class="p-0"></label>
-                <input asp-for="UsageStatus" class="form-control" />
-                <span asp-validation-for="UsageStatus" class="text-danger"></span>
+                <label asp-for="MinCartAmount" class="p-0"></label>
+                <input asp-for="MinCartAmount" class="form-control" />
+                <span asp-validation-for="MinCartAmount" class="text-danger"></span>
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="MaxRedeemableAmount" class="p-0"></label>
+                <input asp-for="MaxRedeemableAmount" class="form-control" />
+                <span asp-validation-for="MaxRedeemableAmount" class="text-danger"></span>
             </div>
             <div class="row">
 

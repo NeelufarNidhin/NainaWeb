@@ -37,17 +37,17 @@
                                 <p class="about">@Html.Raw(Model.Product.Description)</p>
                                 <div class="sizes mt-5">
                                     @*<select asp-for="Size" asp-items="@Model.SizeModel." class="form-select mb-3">
-                                            <option disabled selected>-Select Role-</option>
-                                        </select>*@
+                <option disabled selected>-Select Role-</option>
+            </select>*@
                                     @*<h6 class="text-uppercase">Size</h6> <label class="radio">
-                                            <input asp-for="Size" type="radio" name="size" value="0-6 months" checked> <span>0-6 months</span>
-                                        </label> <label class="radio">
-                                            <input asp-for="Size" type="radio" name="size"  value="6-12 months"> <span>6-12 months</span>
-                                        </label> <label class="radio">
-                                            <input asp-for="Size" type="radio" name="size" value="1-2 years" > <span>1-2 years</span>
-                                        </label> <label class="radio"> <input type="radio" name="size" value="2-3 years"> <span>2-3 years</span> </label> <label class="radio">
-                                            <input asp-for="Size" type="radio" name="size" value="3-4 years" > <span>3-4 years</span>
-                                        </label>*@
+                <input asp-for="Size" type="radio" name="size" value="0-6 months" checked> <span>0-6 months</span>
+            </label> <label class="radio">
+                <input asp-for="Size" type="radio" name="size"  value="6-12 months"> <span>6-12 months</span>
+            </label> <label class="radio">
+                <input asp-for="Size" type="radio" name="size" value="1-2 years" > <span>1-2 years</span>
+            </label> <label class="radio"> <input type="radio" name="size" value="2-3 years"> <span>2-3 years</span> </label> <label class="radio">
+                <input asp-for="Size" type="radio" name="size" value="3-4 years" > <span>3-4 years</span>
+            </label>*@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-4">
@@ -60,19 +60,23 @@
 
                                     </div>
                                 </div>
-                                <div class="mt-4 align-items-center">
-                                    <button asp-controller="Home"  asp-action="AddtoCart" type="submit"
-                                          class="btn btn-secondary text-uppercase mr-2 px-4">
-                                        Add to cart
-                                    </button>
 
-                                    <button  type="submit" asp-controller="Home"  asp-action="AddtoFav"
-                                           class="btn btn-secondary text-uppercase mr-2 px-4">
-                                       favourites
-                                    </button>
-                                    @*<a asp- asp-action="Index" class="btn btn-secondary border-0 bg-gradient w-100 py-2">Favourites</a>*@
-                                    @*<i class="fa fa-heart text-muted"></i> <i class="fa fa-share-alt text-muted"></i>*@
-                                </div>
+                                @if (User.IsInRole(SD.Role_User))
+                                    {
+                                    <div class="mt-4 align-items-center">
+                                        <button asp-controller="Home" asp-action="AddtoCart" type="submit"
+                                                class="btn btn-secondary text-uppercase mr-2 px-4">
+                                            Add to cart
+                                        </button>
+
+                                        <button type="submit" asp-controller="Home" asp-action="AddtoFav"
+                                                class="btn btn-secondary text-uppercase mr-2 px-4">
+                                            favourites
+                                        </button>
+                                        @*<a asp- asp-action="Index" class="btn btn-secondary border-0 bg-gradient w-100 py-2">Favourites</a>*@
+                                        @*<i class="fa fa-heart text-muted"></i> <i class="fa fa-share-alt text-muted"></i>*@
+                                    </div>
+                                    }
                             </div>
                         </div>
                     </div>

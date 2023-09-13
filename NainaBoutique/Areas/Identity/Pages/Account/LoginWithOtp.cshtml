@@ -1,0 +1,19 @@
+﻿@page
+@model NainaBoutique.Areas.Identity.Pages.Account.LoginWithOtpModel
+@{
+}
+
+
+<form method="post">
+    <h3>Login Using Otp</h3>
+    <p> Enter you Email Id to send Otp</p>
+    <div class="form-floating mb-3">
+        <input asp-for="Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+        <label asp-for="Email" class="form-label">Email</label>
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div>
+        <button type="submit" id="otpsubmit" class="w-100 btn btn-lg btn-primary">Send Otp</button>
+    </div>
+</form>

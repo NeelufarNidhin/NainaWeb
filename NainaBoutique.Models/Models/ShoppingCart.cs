@@ -20,10 +20,6 @@ namespace NainaBoutique.Models.Models
         [Range(1, 1000, ErrorMessage = "Enter the value between 1 and 1000")]
         public int Count { get; set; }
 
-       // public string Size { get; set; }
-        //[ForeignKey("SizeId")]
-        //[ValidateNever]
-        //public SizeModel? size { get; set; }
 
         public string ApplicationUserId { get; set; }
         [ForeignKey("ApplicationUserId")]

@@ -14,6 +14,11 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using NainaBoutique.Models.Models;
+using static System.Net.WebRequestMethods;
+using System.Net;
+using System.Net.Mail;
+using System.Security.Claims;
 
 namespace NainaBoutique.Areas.Identity.Pages.Account
 {
@@ -22,12 +27,18 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
         private readonly IEmailSender _sender;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger,IEmailSender sender)
+
+        public static Random random = new Random();
+        string otp = random.Next(100000, 999999).ToString();
+
+        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger,IEmailSender sender, UserManager<IdentityUser> userManager)
         {
             _signInManager = signInManager;
             _logger = logger;
             _sender = sender;
+            _userManager = userManager;
         }
 
         
@@ -38,6 +49,9 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
         /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
+
+        //[BindProperty]
+        //public OtpModel Otp { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -144,6 +158,61 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
             return Page();
         }
 
+        public async Task<IActionResult> SendMail(string email)
+        {
+             var user = await _userManager.GetUserAsync(User);
+
+            //var claimsIdentity = (ClaimsIdentity)User.Identity;
+
+            //var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            // Generate a random OTP (e.g., a 6-digit number)
+
+            string otp = GenerateRandomOtp();
+
+
+            await SendEmailAsync(email, "Confirm your email",
+            //   otp);
+                   $"Please confirm your account by <a href={otp}>clicking here</a>.");
+
+
+            return (IActionResult)Task.FromResult(false);
+        }
+
+
+        private Task<bool> SendEmailAsync(string email, string subject, string messageotp)
+        {
+            try
+            {
+                MailMessage message = new MailMessage();
+                SmtpClient smtpClient = new SmtpClient();
+                message.From = new MailAddress("albyjolly149@gmail.com");
+                message.To.Add(email);
+                message.Subject = subject;
+                message.IsBodyHtml = true;
+                // message.Body = confirmurl;
+                message.Body = messageotp;
+
+                smtpClient.Port = 587;
+                smtpClient.Host = "smtp.gmail.com";
+                smtpClient.EnableSsl = true;
+                smtpClient.UseDefaultCredentials = false;
+                smtpClient.Credentials = new NetworkCredential("albyjolly149@gmail.com", "ieivzgnukcrjdape");
+                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+                smtpClient.Send(message);
+                return Task.FromResult(true);
+            }
+            catch (Exception ex)
+            {
+
+                return Task.FromResult(false);
+            }
+        }
+
+        private string GenerateRandomOtp()
+        {
+            Random random = new Random();
+            return random.Next(100000, 999999).ToString();
+        }
 
     }
 }
