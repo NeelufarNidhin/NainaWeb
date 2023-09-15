@@ -1,4 +1,4 @@
-﻿var dataTable;
+﻿  var dataTable;
 
 
 
@@ -58,8 +58,9 @@ function LockUnlock(id) {
                 data: JSON.stringify(id),
                 contentType:"application/json",
                 success: function (data) {
-                    dataTable.ajax.reload();
                     toastr.success(data.message);
+                    dataTable.ajax.reload();
+                   
                 }
             })
         }

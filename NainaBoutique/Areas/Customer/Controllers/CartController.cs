@@ -10,6 +10,7 @@ using NainaBoutique.DataAccess.Repository;
 using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Models.ViewModels;
 using NainaBoutique.Utility;
+using NainaBoutique.Models.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -36,14 +37,18 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
 
 
-            ShoppingCartVM = new() { 
+            ShoppingCartVM = new() {
+
+                shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
+                includeProperties: "Product"),
                 
-                    shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
-                includeProperties: "Product")
                 };
 
+
+            IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
             foreach (var cart in ShoppingCartVM.shoppingCartList)
             {
+                cart.Product.ProductImage = productImages.Where(u =>u.ProductId==cart.ProductId).ToList();
                 cart.Price = cart.Product!.Price;
                 ShoppingCartVM.OrderTotal += (cart.Price * cart.Count);
             }

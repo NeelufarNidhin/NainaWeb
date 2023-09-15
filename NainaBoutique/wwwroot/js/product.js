@@ -15,6 +15,7 @@ function loadDataTable() {
             { data: 'productName', "autowidth": true },
             { data: 'description', "autowidth": true },
             { data: 'category.categoryName', "autowidth": true },
+            //{ data: 'size', "autowidth": true },
             { data: 'price', "autowidth": true },
             { data: 'sale_Price', "autowidth": true },
             { data: 'quantityInStock', "autowidth": true },

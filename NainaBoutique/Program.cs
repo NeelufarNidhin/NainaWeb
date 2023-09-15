@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using NainaBoutique.DataAccess.Data;
 using NainaBoutique.DataAccess.Repository;
 using NainaBoutique.DataAccess.Repository.IRepository;
-using NainaBoutique.Areas.Identity.Data;
+//using NainaBoutique.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using NainaBoutique.Utility;
 using static NainaBoutique.Areas.Customer.Controllers.HomeController;
@@ -14,7 +14,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 // Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??
+    throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
@@ -31,9 +32,12 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.AddTransient<ErrorHandlingMiddleware>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 var app = builder.Build();
 
+
+app.UseMiddleware<ErrorHandlingMiddleware>();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -43,9 +47,15 @@ else
 {
     app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+   // app.UseHsts();
 }
 
+
+
+//if (!app.Environment.IsDevelopment())
+//{
+//    app.UseExceptionHandler("Home/Error");
+//}
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 //StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();

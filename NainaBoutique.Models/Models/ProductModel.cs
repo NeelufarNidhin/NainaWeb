@@ -2,10 +2,11 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using NainaBoutique.Models.Models;
 
 namespace NainaBoutique.Models
 {
-	public class ProductModel
+	public class ProductModel : ISoftDelete
 	{
 		[Key]
 		public int Id { get; set; }
@@ -22,16 +23,23 @@ namespace NainaBoutique.Models
         public int QuantityInStock { get; set; }
         [Required]
         public string? Color { get; set; }
+		[Required]
+		public string? Size { get; set; }
 		
 		public int? CategoryId { get; set; }
 		[ForeignKey("CategoryId")]
         [ValidateNever]
         public CategoryModel? Category { get; set; }
+
 		[ValidateNever]
-		public string? ImageUrl { get; set; }
+		public List<ProductImage> ProductImage { get; set; }
+
+        public char RecStatus { get; set; } = 'A';
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
 
 
-	}
+
+    }
 }
 

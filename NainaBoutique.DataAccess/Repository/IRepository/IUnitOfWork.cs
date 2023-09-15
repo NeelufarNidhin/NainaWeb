@@ -10,6 +10,7 @@ namespace NainaBoutique.DataAccess.Repository.IRepository
 		ICouponRepository Coupon { get; }
 		IFavouritesRepository Favourite { get; }
 		IGiftcardRepository Giftcard { get; }
+		IProductImageRepository ProductImage { get; }
         void Save();
 
 		

@@ -16,7 +16,8 @@ namespace NainaBoutique.DataAccess.Repository
 
             _db = db;
             this.dbSet = _db.Set<T>();
-            _db.Products.Include(u => u.Category).Include(u => u.CategoryId); 
+            _db.Products.Include(u => u.Category).Include(u => u.CategoryId);
+           // _db.Categories.Include(u => u.RecStatus == 'A');
 
         }
         public void Add(T entity)

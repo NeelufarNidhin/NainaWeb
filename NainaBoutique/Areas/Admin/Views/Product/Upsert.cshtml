@@ -12,7 +12,7 @@
     <div class="card-body p-4">
         <form method="post" class="row" enctype="multipart/form-data">
             <input asp-for="@Model.Product.Id" hidden />
-            <input asp-for="@Model.Product.ImageUrl" hidden />
+           
             <div class="row">
                 <div class="col-10">
                     <div class="border p-3 ">
@@ -38,6 +38,13 @@
 
                         </div>
                         <div class="mb-3 row p-1">
+                            <label asp-for="@Model.Product.Size" class="p-0"></label>
+                            <input asp-for="@Model.Product.Size" class="form-control" />
+                            <span asp-validation-for="@Model.Product.Size" class="text-danger"></span>
+
+                        </div>
+
+                        <div class="mb-3 row p-1">
                             <label asp-for="@Model.Product.Price" class="p-0"></label>
                             <input asp-for="@Model.Product.Price" class="form-control" />
                             <span asp-validation-for="@Model.Product.Price" class="text-danger"></span>
@@ -62,8 +69,8 @@
 
                         </div>
                         <div class="mb-3 row p-1">
-                            <label asp-for="@Model.Product.ImageUrl" class="p-0"></label>
-                            <input type="file" name="file" class="form-control" />
+                            <label asp-for="@Model.Product.ProductImage" class="p-0"></label>
+                            <input type="file" name="files" class="form-control" multiple />
 
 
                         </div>
@@ -90,7 +97,21 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    <img src="@Model.Product.ImageUrl" width="100px" height="100px" style="border-radius:5px;border:1px solid #bbb9b9" />
+                    @if (Model.Product.ProductImage != null) { 
+                        
+                            
+                                foreach (var image in Model.Product.ProductImage) { 
+                                
+                                <div class="border p-1 m-2 text-center">
+                                    <img src="@image.ImageUrl" width="100%"
+                                         style="border-radius:5px; border:1px solid #bbb969"/>
+                                    <a asp-action ="DeleteImage" class="btn btn-danger" asp-route-imageId="@image.Id">
+                                        <i class ="bi bi-trash-fill "></i> Delete
+                                    </a>
+                                </div>
+                                }
+                           
+                        }
                 </div>
             </div>
 

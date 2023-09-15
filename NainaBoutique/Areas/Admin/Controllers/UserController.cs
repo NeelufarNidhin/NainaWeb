@@ -50,7 +50,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
             var userRoles = _db.UserRoles.ToList();
             var roles = _db.Roles.ToList();
 
-            foreach(var user in objUserList)
+            foreach (var user in objUserList)
             {
                 var roleId = userRoles.FirstOrDefault(u => u.UserId == user.Id).RoleId;
                 user.Role = roles.FirstOrDefault(u => u.Id == roleId).Name;

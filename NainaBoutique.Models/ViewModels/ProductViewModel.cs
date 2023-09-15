@@ -9,6 +9,7 @@ namespace NainaBoutique.Models.ViewModels
 		public ProductModel? Product { get; set; }
 		[ValidateNever]
 		public IEnumerable<SelectListItem>? CategoryLlist { get; set; }
+		public IEnumerable<SelectListItem>? ProductImageList { get; set; }
 	}
 }
 

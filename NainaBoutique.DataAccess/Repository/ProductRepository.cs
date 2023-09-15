@@ -21,16 +21,17 @@ namespace NainaBoutique.DataAccess.Repository
                 objFromDb.ProductName = product.ProductName;
                 objFromDb.Description = product.Description;
                 objFromDb.CategoryId = product.CategoryId;
+                objFromDb.Size = product.Size;
                 objFromDb.Price = product.Price;
                 objFromDb.Sale_Price = product.Sale_Price;
                 objFromDb.QuantityInStock = product.QuantityInStock;
                 objFromDb.Color = product.Color;
+                objFromDb.ProductImage = product.ProductImage;
+                //if(product.ImageUrl != null)
+                //{
+                //    objFromDb.ImageUrl = product.ImageUrl;
 
-                if(product.ImageUrl != null)
-                {
-                    objFromDb.ImageUrl = product.ImageUrl;
-
-                }
+                //}
             }
         }
     }

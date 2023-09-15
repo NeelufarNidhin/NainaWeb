@@ -1,4 +1,6 @@
 ﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NainaBoutique.DataAccess.Data;
 using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Models;
@@ -22,6 +24,7 @@ namespace NainaBoutique.DataAccess.Repository
         public IFavouritesRepository Favourite { get; private set; }
 
         public IGiftcardRepository Giftcard { get; private set; }
+        public IProductImageRepository ProductImage { get; private set; }
 
         public UnitOfWork(ApplicationDbContext db) 
         {
@@ -33,6 +36,7 @@ namespace NainaBoutique.DataAccess.Repository
             Coupon = new CouponRepository(_db);
             Favourite = new FavouritesRepository(_db);
             Giftcard = new GiftcardRepository(_db);
+            ProductImage = new ProductImageRepository(_db);
         }
         
         public void Save()

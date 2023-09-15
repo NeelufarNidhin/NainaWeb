@@ -28,7 +28,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<CategoryModel> categoryList = _unitOfWork.Category.GetAll().ToList();
+            List<CategoryModel> categoryList = _unitOfWork.Category.GetAll(u=> u.RecStatus =='A').ToList();
             return View(categoryList);
         }
 
@@ -98,7 +98,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<CategoryModel> objcategoryList = _unitOfWork.Category.GetAll().ToList();
+            List<CategoryModel> objcategoryList = _unitOfWork.Category.GetAll(u => u.RecStatus == 'A').ToList();
             return Json(new { data = objcategoryList });
         }
 

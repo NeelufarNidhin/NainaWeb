@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Models;
 using NainaBoutique.Models.Models;
 
@@ -30,7 +31,23 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<CouponModel> Coupons { get; set; }
     public DbSet<FavouritesModel> Favourites { get; set; }
     public DbSet<GiftcardModel> Giftcards { get; set; }
+    public DbSet<ProductImage> ProductImages { get; set; }
 
+    public override int SaveChanges()
+    {
+        foreach (var entry in ChangeTracker.Entries())
+        {
+            var entity = entry.Entity;
+            if (entry.State == EntityState.Deleted && entity is ISoftDelete)
+            {
+                entry.State = EntityState.Modified;
+                entity.GetType().GetProperty("RecStatus").SetValue(entity, 'D');
+
+            }
+        }
+
+        return base.SaveChanges();
+    }
 
 }
 

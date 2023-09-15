@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NainaBoutique.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using NainaBoutique.DataAccess.Data;
 namespace NainaBoutique.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230914200936_AddProductImageTable")]
+    partial class AddProductImageTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -241,16 +244,9 @@ namespace NainaBoutique.DataAccess.Migrations
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("RecStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1)");
 
                     b.Property<string>("SubCategory")
                         .HasMaxLength(30)
@@ -448,9 +444,6 @@ namespace NainaBoutique.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -465,16 +458,8 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Property<int>("QuantityInStock")
                         .HasColumnType("int");
 
-                    b.Property<string>("RecStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(1)");
-
                     b.Property<float>("Sale_Price")
                         .HasColumnType("real");
-
-                    b.Property<string>("Size")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
