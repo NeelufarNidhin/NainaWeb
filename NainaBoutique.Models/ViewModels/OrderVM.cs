@@ -3,11 +3,10 @@ using NainaBoutique.Models.Models;
 
 namespace NainaBoutique.Models.ViewModels
 {
-
-	public class ShoppingCartVM
+	public class OrderVM
 	{
-		public IEnumerable<ShoppingCart>? shoppingCartList { get; set; }
 		public OrderSummary OrderSummary { get; set; }
+		public IEnumerable<OrderDetail> OrderDetail { get; set; }
 	}
 }
 

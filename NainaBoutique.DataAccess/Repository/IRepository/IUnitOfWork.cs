@@ -5,12 +5,14 @@ namespace NainaBoutique.DataAccess.Repository.IRepository
 	{
 		ICategoryRepository Category { get; }
         IProductRepository Product { get; }
-		IUserRepository User { get; }
+		IUserRepository ApplicationUser { get; }
 		ICartRepository Cart { get; }
 		ICouponRepository Coupon { get; }
 		IFavouritesRepository Favourite { get; }
 		IGiftcardRepository Giftcard { get; }
 		IProductImageRepository ProductImage { get; }
+		IOrderSummaryRepository OrderSummary { get; }
+		IOrderDetailRepository OrderDetail { get; }
         void Save();
 
 		

@@ -32,6 +32,9 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<FavouritesModel> Favourites { get; set; }
     public DbSet<GiftcardModel> Giftcards { get; set; }
     public DbSet<ProductImage> ProductImages { get; set; }
+    public DbSet<OrderSummary> OrderSummaries { get; set; }
+    public DbSet<OrderDetail> OrderDetails { get; set; }
+    public DbSet<OtpModel> OtpModels { get; set; }
 
     public override int SaveChanges()
     {

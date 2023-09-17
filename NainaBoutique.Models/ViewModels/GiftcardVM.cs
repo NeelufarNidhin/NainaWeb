@@ -6,7 +6,7 @@ namespace NainaBoutique.Models.ViewModels
 {
 	public class GiftcardVM
 	{
-		public IEnumerator<GiftcardModel> GiftcardList {get;set;}
+		public IEnumerator<GiftcardModel>? GiftcardList {get;set;}
 	}
 }
 

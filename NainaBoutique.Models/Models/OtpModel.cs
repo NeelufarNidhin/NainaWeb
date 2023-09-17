@@ -5,10 +5,10 @@ namespace NainaBoutique.Models.Models
 {
 	public class OtpModel
 	{
-        [Required]
-        [DataType(DataType.Text)]
-        public string? OtpCode { get; set; }
-        public bool RememberMe { get; set; }
+        [Key]
+        public int Id { get; set; }
+        public string? Otp { get; set; }
+        public string? Email { get; set; }
     }
 }
 

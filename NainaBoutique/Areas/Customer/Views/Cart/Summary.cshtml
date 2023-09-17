@@ -3,8 +3,138 @@
 <form method="post">
     <div class="container">
         <div class="card show border-0">
-            <div class="card-header">
-                <p>Summary</p>
+            <div class="card-header bg-secondary bg-gradient text-light ml-0 py-4">
+                <div class="row px-4">
+                    <div class="col-6">
+                        <h5> Order Summary</h5>
+                    </div>
+                    <div class="col-6 text-end">
+                        <a asp-action="Index" class="btn btn-outline-danger text-light btn-sm">Back to Cart</a>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="card-body">
+                <div class="container rounded p-2">
+                    <div class="row">
+                        <div class="col-12 col-12 col-lg-6 pb-4">
+                            <div class="row">
+                                <h4 class="d-flex align-items-center mb-3">
+                                    <span class="text-info ">Shipping Details</span>
+                                </h4>
+
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">
+                                    <label >Name</label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="OrderSummary.Name" class="form-control" />
+                                    <span asp-validation-for="OrderSummary.Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1 ">
+                                <div class="col-3">
+                                    <label>Phone </label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="OrderSummary.MobileNumber" class="form-control" />
+                                    <span asp-validation-for="OrderSummary.MobileNumber" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1">
+                                <div class="col-3">
+                                    <label> Address</label>
+                                </div>
+                                <div class="col-9" my-1>
+                                    <input asp-for="OrderSummary.Address" class="form-control" />
+                                    <span asp-validation-for="OrderSummary.Address" class="text-danger"></span>
+                                </div>
+                            </div><div class="row my-1 ">
+                                <div class="col-3">
+                                    <label>City</label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="OrderSummary.City" class="form-control" />
+                                    <span asp-validation-for="OrderSummary.City" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row  my-1">
+                                <div class="col-3">
+                                    <label>State</label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="OrderSummary.State" class="form-control" />
+                                    <span asp-validation-for="OrderSummary.State" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row my-1 ">
+                                <div class="col-3">
+                                    <label>Postal Code</label>
+                                </div>
+                                <div class="col-9">
+                                    <input asp-for="OrderSummary.PostalCode" class="form-control" />
+                                    <span asp-validation-for="OrderSummary.PostalCode" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                   
+                        <div class="col-12 col-12 col-lg-6 pb-4">
+                            <h4 class="d-flex align-items-center mb-3">
+                                <span class="text-info ">Order Summary</span>
+                            </h4>
+                            <ul class="list-group mb-3 ">
+                                @foreach (var details in Model.shoppingCartList)
+                                {
+
+
+                                    <li class="list-group-items d-flex">
+                                        <div>
+                                            <h6 class="my-0">@details.Product.ProductName</h6>
+                                            <small class="text-muted">Quantity: @details.Count</small>
+                                        </div>
+
+                                    </li>
+                                    <li class="list-group-items d-flex">
+                                        <div>
+                                            <small class="text-muted">@details.Price * @details.Count AED</small>
+                                        </div>
+                                    </li>
+
+
+                                }
+                            </ul>
+                            <div>
+
+                                <small class="text-info">Total (AED)</small>
+                                <strong class="text-info">@Model.OrderSummary.OrderTotal</strong>
+
+                            </div>
+
+
+                            <div>
+                                <p>Please select your Payment Method</p>
+                                <input type="radio" id="COD" name="PaymentMethod" value="COD">
+                                <label for="html">Cash On Delivery</label><br>
+                                <input type="radio" id="Card" name="PaymentMethod" value="Card">
+                                <label for="html">Card Payment</label><br>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-12 col-md-8 pt-2">
+                        <p>
+                            Estimate Delivery Time:@DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString();
+                        </p>
+                    </div>
+                    <div class="col-12  col-md-4 pt-2">
+                        <button type="submit" value="Place Order" class="btn btn-secondary form-control">Checkout</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

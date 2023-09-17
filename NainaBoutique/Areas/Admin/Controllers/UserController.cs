@@ -29,7 +29,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<ApplicationUser> userList = _unitOfWork.User.GetAll().ToList();
+            List<ApplicationUser> userList = _unitOfWork.ApplicationUser.GetAll().ToList();
             return View(userList);
         }
         public IActionResult Create()
@@ -45,7 +45,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            List<ApplicationUser> objUserList = _unitOfWork.User.GetAll().ToList();
+            List<ApplicationUser> objUserList = _unitOfWork.ApplicationUser.GetAll().ToList();
 
             var userRoles = _db.UserRoles.ToList();
             var roles = _db.Roles.ToList();
@@ -63,7 +63,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
         public IActionResult BlockUnblock([FromBody] string id)
         {
 
-            var userFromDb = _unitOfWork.User.Get(u => u.Id == id);
+            var userFromDb = _unitOfWork.ApplicationUser.Get(u => u.Id == id);
             if (userFromDb == null)
             {
                 return Json(new { success = false, message = "Error while Opertaion" });

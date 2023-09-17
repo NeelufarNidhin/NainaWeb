@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NainaBoutique.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using NainaBoutique.DataAccess.Data;
 namespace NainaBoutique.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230916093257_AddOrder")]
+    partial class AddOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -365,38 +368,6 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.ToTable("Giftcards");
                 });
 
-            modelBuilder.Entity("NainaBoutique.Models.Models.OrderDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderSummaryId")
-                        .HasColumnType("int");
-
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Size")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderSummaryId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderDetails");
-                });
-
             modelBuilder.Entity("NainaBoutique.Models.Models.OrderSummary", b =>
                 {
                     b.Property<int>("Id")
@@ -470,25 +441,6 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.ToTable("OrderSummaries");
                 });
 
-            modelBuilder.Entity("NainaBoutique.Models.Models.OtpModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Otp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OtpModels");
-                });
-
             modelBuilder.Entity("NainaBoutique.Models.Models.ProductImage", b =>
                 {
                     b.Property<int>("Id")
@@ -520,6 +472,7 @@ namespace NainaBoutique.DataAccess.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ApplicationUserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Count")
@@ -702,25 +655,6 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("NainaBoutique.Models.Models.OrderDetail", b =>
-                {
-                    b.HasOne("NainaBoutique.Models.Models.OrderSummary", "OrderSummary")
-                        .WithMany()
-                        .HasForeignKey("OrderSummaryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("NainaBoutique.Models.ProductModel", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OrderSummary");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("NainaBoutique.Models.Models.OrderSummary", b =>
                 {
                     b.HasOne("NainaBoutique.Models.ApplicationUser", "ApplicationUser")
@@ -745,7 +679,9 @@ namespace NainaBoutique.DataAccess.Migrations
                 {
                     b.HasOne("NainaBoutique.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("ApplicationUserId");
+                        .HasForeignKey("ApplicationUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("NainaBoutique.Models.ProductModel", "Product")
                         .WithMany()

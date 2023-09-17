@@ -26,6 +26,7 @@
     <None Remove="Areas\Customer\Views\Favourites\" />
     <None Remove="Areas\Admin\Views\Giftcard\" />
     <None Remove="Areas\Customer\Views\Otp\" />
+    <None Remove="Areas\Admin\Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Areas\Identity\Pages\Account\Testchk.cshtml">
@@ -51,6 +52,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.9" />
+    <PackageReference Include="Stripe.net" Version="42.5.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -71,6 +73,7 @@
     <Folder Include="Areas\Customer\Views\Favourites\" />
     <Folder Include="Areas\Admin\Views\Giftcard\" />
     <Folder Include="Areas\Customer\Views\Otp\" />
+    <Folder Include="Areas\Admin\Views\Order\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NainaBoutique.DataAccess\NainaBoutique.DataAccess.csproj">

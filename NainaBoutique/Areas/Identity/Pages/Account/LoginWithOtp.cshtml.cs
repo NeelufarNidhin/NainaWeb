@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using static NainaBoutique.Areas.Identity.Pages.Account.VerifyOTPModel;
 
 namespace NainaBoutique.Areas.Identity.Pages.Account
 {
@@ -25,10 +26,13 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
         }
 
         [BindProperty]
-        public string? Email { get; set; }
+        public string Email { get; set; }
 
         [BindProperty]
         public string? OTP { get; set; }
+
+
+
 
         public IActionResult
             OnGet()

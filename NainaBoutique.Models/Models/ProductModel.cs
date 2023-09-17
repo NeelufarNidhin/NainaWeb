@@ -32,7 +32,7 @@ namespace NainaBoutique.Models
         public CategoryModel? Category { get; set; }
 
 		[ValidateNever]
-		public List<ProductImage> ProductImage { get; set; }
+		public List<ProductImage>? ProductImage { get; set; }
 
         public char RecStatus { get; set; } = 'A';
         public DateTime CreatedAt { get; set; } = DateTime.Now;
