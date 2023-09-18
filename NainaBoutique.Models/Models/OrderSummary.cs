@@ -22,6 +22,7 @@ namespace NainaBoutique.Models.Models
         public string? TrackingNumber { get; set; }
 		public string? Carrier { get; set; }
 		public DateTime PaymentDate { get; set; }
+        public DateTime PaymentDueDate { get; set; }
         public string? PaymentIntendId { get; set; }
 		public string? SessionId { get; set; }
 

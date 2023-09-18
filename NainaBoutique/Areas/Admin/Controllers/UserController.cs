@@ -18,12 +18,12 @@ namespace NainaBoutique.Areas.Admin.Controllers
     [Authorize(Roles = SD.Role_Admin)]
     public class UserController : Controller
     {
-        private readonly ApplicationDbContext _db;
+       // private readonly ApplicationDbContext _db;
         private readonly IUnitOfWork _unitOfWork;
-        public UserController(IUnitOfWork unitOfWork,ApplicationDbContext db)
+        public UserController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _db = db;
+           // _db = db;
 
         }
         // GET: /<controller>/
