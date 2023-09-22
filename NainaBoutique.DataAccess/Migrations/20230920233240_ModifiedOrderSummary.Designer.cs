@@ -12,7 +12,7 @@ using NainaBoutique.DataAccess.Data;
 namespace NainaBoutique.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230918092331_ModifiedOrderSummary")]
+    [Migration("20230920233240_ModifiedOrderSummary")]
     partial class ModifiedOrderSummary
     {
         /// <inheritdoc />
@@ -276,26 +276,16 @@ namespace NainaBoutique.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("DiscountAmount")
+                    b.Property<float>("Discount")
                         .HasColumnType("real");
 
-                    b.Property<string>("DiscountType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<float>("MaxRedeemableAmount")
+                    b.Property<float>("MaxAmount")
                         .HasColumnType("real");
 
                     b.Property<float>("MinCartAmount")
                         .HasColumnType("real");
 
-                    b.Property<DateTime>("ValidTo")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Validfrom")
+                    b.Property<DateTime>("ValidTill")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -448,6 +438,7 @@ namespace NainaBoutique.DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentMethod")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentStatus")

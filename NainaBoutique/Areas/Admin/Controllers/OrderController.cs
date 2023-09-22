@@ -80,11 +80,15 @@ namespace NainaBoutique.Areas.Admin.Controllers
             return RedirectToAction(nameof(Details), new { orderId = orderSummaryFromDb.Id });
         }
 
+
+
         [HttpPost]
         [Authorize(Roles = SD.Role_Admin)]
         public IActionResult StartProcessing()
         {
+
             _unitOfWork.OrderSummary.UpdateStatus(OrderVM.OrderSummary.Id, SD.StatusInProcess);
+
             _unitOfWork.Save();
             TempData["Success"] = "Order Details Updated Successfully";
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderSummary.Id });
@@ -96,22 +100,22 @@ namespace NainaBoutique.Areas.Admin.Controllers
         {
 
             var orderSummary = _unitOfWork.OrderSummary.Get(u => u.Id == OrderVM.OrderSummary.Id);
-
+            
             orderSummary.TrackingNumber = OrderVM.OrderSummary.TrackingNumber;
             orderSummary.Carrier = OrderVM.OrderSummary.Carrier;
-            orderSummary.OrderStatus = OrderVM.OrderSummary.OrderStatus;
+            orderSummary.OrderStatus = SD.StatusShipped;
             orderSummary.ShippingDate = DateTime.Now;
 
             if(orderSummary.PaymentStatus == SD.PaymentStatusDelayedPayment)
             {
-                orderSummary.PaymentDueDate =DateTime.Now.AddDays(30);
+                orderSummary.PaymentDueDate =DateTime.Now.AddDays(14);
             }
+            
 
 
-
-            _unitOfWork.OrderSummary.Update(orderSummary);
+            _unitOfWork.OrderSummary.UpdateStatus(OrderVM.OrderSummary.Id,SD.StatusShipped);
             _unitOfWork.Save();
-            TempData["Success"] = "Order Details Shipped Successfully";
+            TempData["Success"] = "Order Shipped Successfully";
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderSummary.Id });
         }
 
@@ -122,7 +126,11 @@ namespace NainaBoutique.Areas.Admin.Controllers
         {
             var orderSummary = _unitOfWork.OrderSummary.Get(u => u.Id == OrderVM.OrderSummary.Id);
 
-            if(orderSummary.PaymentStatus == SD.PaymentStatusApproved)
+
+            var orderDetail = _unitOfWork.OrderDetail.Get(u => u.Id == orderSummary.Id);
+           
+
+            if (orderSummary.PaymentStatus == SD.PaymentStatusApproved)
             {
                 var options = new RefundCreateOptions { 
                
@@ -148,8 +156,34 @@ namespace NainaBoutique.Areas.Admin.Controllers
             TempData["Success"] = "Order  Cancelled Successfully";
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderSummary.Id });
 
+
+            //if (orderSummary.OrderStatus != "Cancelled" || orderSummary.OrderStatus != "Refunded")
+            //{
+
+            //    orderDetail.Product.QuantityInStock = orderDetail.Product.QuantityInStock - orderDetail.Count;
+            //    _unitOfWork.Product.Update(orderDetail.Product);
+
+
+            //}
+
+
         }
 
+
+        [ActionName("Details")]
+        [HttpPost]
+        [Authorize(Roles = SD.Role_Admin)]
+        public IActionResult PayNow()
+        {
+            var orderSummary = _unitOfWork.OrderSummary.Get(u => u.Id == OrderVM.OrderSummary.Id);
+
+            orderSummary.PaymentDate = DateTime.Now;
+
+            _unitOfWork.OrderSummary.UpdateStatus(orderSummary.Id, SD.StatusShipped, SD.PaymentStatusCompleted);
+            _unitOfWork.Save();
+            TempData["Success"] = "COD Payment Completed Successfully";
+            return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderSummary.Id });
+        }
             #region API CALLS
 
 

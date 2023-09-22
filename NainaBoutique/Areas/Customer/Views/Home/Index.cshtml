@@ -1,5 +1,14 @@
 ﻿@model IEnumerable<ProductModel>
 
+<form asp-controller="Home" asp-action="Index" method="get">
+    <p>
+         <input type="text" name="searchString" placeholder="Start Typing To Search" value="@ViewData["CurrentFilter"]" />
+        <input type="submit" value="Search" />
+    </p>
+</form>
+<br />
+<br />
+
 <div id="carouselExampleCaptions" class="carousel slide">
     <div class="carousel-indicators">
         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -18,14 +27,14 @@
             <img src="images/banner/cover-2.jpeg" class="d-block w-100" alt="...">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Second slide label</h5>
-               
+
             </div>
         </div>
         <div class="carousel-item">
             <img src="images/banner/cover-3.webp" class="d-block w-100" alt="...">
             <div class="carousel-caption d-none d-md-block">
                 <h5>Third slide label</h5>
-                
+
             </div>
         </div>
     </div>
@@ -38,42 +47,45 @@
         <span class="visually-hidden">Next</span>
     </button>
 </div>
+
+
+
 <div class="row pb-3">
-    @foreach(var product in Model)
+    @foreach (var product in Model)
     {
-           <div class="col-lg-3 col-sm-6">
-               <div class="row p-2">
-                   <div class="col-12 p-1">
-                       <div class="card border-0 p-3 shadow border-top border-5 rounded ">
-                           @if (product.ProductImage != null && product.ProductImage.Count() > 0)
-                           {
-                               <img src="@product.ProductImage.FirstOrDefault().ImageUrl" class="card-img-top rounded" width=" 200px" height="300px" />
+        <div class="col-lg-3 col-sm-6">
+            <div class="row p-2">
+                <div class="col-12 p-1">
+                    <div class="card border-0 p-3 shadow border-top border-5 rounded ">
+                        @if (product.ProductImage != null && product.ProductImage.Count() > 0)
+                        {
+                            <img src="@product.ProductImage.FirstOrDefault().ImageUrl" class="card-img-top rounded" width=" 200px" height="300px" />
 
-                           }
-                           else
-                           {
-                               <img-src ="https://placehold.co/500x600/png" class="card-img-top rounded" width=" 200px" height="300px"></img-src>
-                           }
+                        }
+                        else
+                        {
+                            <img-src ="https://placehold.co/500x600/png" class="card-img-top rounded" width=" 200px" height="300px"></img-src>
+                        }
 
-                           <div class="pl-1">
-                               <p class="card-title h5 text-dark opacity-75 text-uppercase text-centre">@product.ProductName</p>
+                        <div class="pl-1">
+                            <p class="card-title h5 text-dark opacity-75 text-uppercase text-centre">@product.ProductName</p>
 
-                           </div>
-                           <div class="pl-1">
-                               <p class="text-dark text-opacity-75 text-center mb-0">Size:<span >@product.Size </span></p>
-                           </div>
-                           <div class="pl-1">
-                               <p class="text-dark text-opacity-75 text-center mb-0">Price:<span class="text-decoration-line-through">@product.Price.ToString() AED</span></p>
-                           </div>
-                           <div class="pl-1">
-                               <p class="text-dark text-opacity-75 text-center ">Now:<span>@product.Sale_Price.ToString() AED</span></p>
-                           </div>
-                       </div>
-               </div>
-                   <a asp-action="Details"
-                      asp-route-productId="@product.Id"
-                      class="btn btn-secondary bg-gradient border-0 form-control">Details</a>
-           </div>
-          </div>
+                        </div>
+                        <div class="pl-1">
+                            <p class="text-dark text-opacity-75 text-center mb-0">Size:<span>@product.Size </span></p>
+                        </div>
+                        <div class="pl-1">
+                            <p class="text-dark text-opacity-75 text-center mb-0">Price:<span class="text-decoration-line-through">@product.Price.ToString() AED</span></p>
+                        </div>
+                        <div class="pl-1">
+                            <p class="text-dark text-opacity-75 text-center ">Now:<span>@product.Sale_Price.ToString() AED</span></p>
+                        </div>
+                    </div>
+                </div>
+                <a asp-action="Details"
+                   asp-route-productId="@product.Id"
+                   class="btn btn-secondary bg-gradient border-0 form-control">Details</a>
+            </div>
+        </div>
     }
 </div>

@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NainaBoutique.DataAccess.Data;
 using NainaBoutique.DataAccess.Repository.IRepository;
@@ -18,24 +19,31 @@ namespace NainaBoutique.Areas.Admin.Controllers
     [Authorize(Roles = SD.Role_Admin)]
     public class UserController : Controller
     {
-       // private readonly ApplicationDbContext _db;
+        // private readonly ApplicationDbContext _db;
+
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+
         private readonly IUnitOfWork _unitOfWork;
-        public UserController(IUnitOfWork unitOfWork)
+        public UserController(IUnitOfWork unitOfWork, UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
+            _roleManager = roleManager;
            // _db = db;
 
         }
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<ApplicationUser> userList = _unitOfWork.ApplicationUser.GetAll().ToList();
-            return View(userList);
+           // List<ApplicationUser> userList = _unitOfWork.ApplicationUser.GetAll().ToList();
+            return View();
         }
         public IActionResult Create()
         {
             return View();
         }
+
         
 
        
@@ -47,13 +55,13 @@ namespace NainaBoutique.Areas.Admin.Controllers
         {
             List<ApplicationUser> objUserList = _unitOfWork.ApplicationUser.GetAll().ToList();
 
-            var userRoles = _db.UserRoles.ToList();
-            var roles = _db.Roles.ToList();
+            //var userRoles = _unitOfWork.ApplicationUser.UserRoles.ToList();
+            //var roles = _db.Roles.ToList();
 
             foreach (var user in objUserList)
             {
-                var roleId = userRoles.FirstOrDefault(u => u.UserId == user.Id).RoleId;
-                user.Role = roles.FirstOrDefault(u => u.Id == roleId).Name;
+                // var roleId = userRoles.FirstOrDefault(u => u.UserId == user.Id).RoleId;
+                user.Role = _userManager.GetRolesAsync(user).GetAwaiter().GetResult().FirstOrDefault();
             }
 
             return Json(new { data = objUserList });
@@ -77,7 +85,8 @@ namespace NainaBoutique.Areas.Admin.Controllers
             {
                 userFromDb.LockoutEnd = DateTime.Now.AddYears(1000);
             }
-            _unitOfWork.Save();
+            _unitOfWork.ApplicationUser.Update(userFromDb);
+            _unitOfWork.Save(); 
 
             return Json(new { success = true, message = "Operation Successfull" });
         }

@@ -7,6 +7,7 @@ namespace NainaBoutique.Models.ViewModels
 	{
 		public OrderSummary OrderSummary { get; set; }
 		public IEnumerable<OrderDetail> OrderDetail { get; set; }
-	}
+        public IEnumerable<ProductModel> ProductDetail { get; set; }
+    }
 }
 

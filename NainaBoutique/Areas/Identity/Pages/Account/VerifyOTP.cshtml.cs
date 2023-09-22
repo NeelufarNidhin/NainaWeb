@@ -19,32 +19,29 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
         private readonly ILogger<LoginModel> _logger;
         private readonly ApplicationDbContext db;
 
-        public VerifyOTPModel(SignInManager<IdentityUser> signInManager, OtpService otpService, ILogger<LoginModel> logger)
+        public VerifyOTPModel(SignInManager<IdentityUser> signInManager, OtpService otpService, ILogger<LoginModel> logger, ApplicationDbContext _db)
         {
             _otpService = otpService;
             _signInManager = signInManager;
             _logger = logger;
+            db = _db;
 
 
         }
 
-        [BindProperty]
-        public OtpModel otpModel { get; set; }
+        //[BindProperty]
+        //public OtpModel otpModel { get; set; }
 
 
-        public class OtpModel
-        {
-            //[Key]
-            //public int Id { get; set; }
-
-            [Required]
+      
+           [BindProperty]
             public string Email { get; set; }
 
-            [Required]
+           [BindProperty]
             public string? OTP { get; set; }
 
 
-        }
+       
 
 
 
@@ -53,17 +50,19 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string email,string OTP)
 
 
         {
 
-            var otpfromBb = db.OtpModels.FirstOrDefault(u => u.Email == otpModel.Email);
-            if (_otpService.ValidateOtp(otpModel.Email, otpModel.OTP))
+            //db.OtpModels.Add(u=>u)
+
+           // var otpfromBb = db.OtpModels.FirstOrDefault(u => u.Email == otpModel.Email);
+            if (_otpService.ValidateOtp(email,OTP))
             {
 
-                var user = new IdentityUser { UserName = otpModel. Email = otpModel. Email };
-                var result = await _signInManager.PasswordSignInAsync(user, otpModel.OTP, false, lockoutOnFailure: false);
+                var user = new IdentityUser { UserName = email };
+                var result = await _signInManager.PasswordSignInAsync(user, OTP, false, lockoutOnFailure: false);
 
                 if (result.Succeeded)
                 {

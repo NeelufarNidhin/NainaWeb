@@ -29,14 +29,14 @@ function loadDataTable() {
                        
                         return `<div class="text-center">            
                      <a onclick=LockUnlock('${data.id}') class="btn btn-danger text-white" style="cursor-pointer, width=150px">
-                     <i class="bi bi-lock-fill"></i> Block</a>
+                     <i class="bi bi-lock-fill"></i> UnLock</a>
                     </div>`
                     }
 
                     else {
                         return `<div class="text-center">            
                      <a onclick=LockUnlock('${data.id}') class="btn btn-success text-white" style="cursor-pointer, width=150px">
-                     <i class="bi bi-lock-fill"></i> UnBlock</a>
+                     <i class="bi bi-unlocklock-fill"></i> Block</a>
                     </div>`
 
                     }

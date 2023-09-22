@@ -14,9 +14,9 @@ namespace NainaBoutique.DataAccess.Repository
 
         } 
 
-        public void Update(ApplicationUser user)
+        public void Update(ApplicationUser applicationUser)
         {
-            throw new NotImplementedException();
+            _db.ApplicationUsers.Update(applicationUser);
         }
     }
 }

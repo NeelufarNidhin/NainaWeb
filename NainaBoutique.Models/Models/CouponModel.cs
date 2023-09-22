@@ -9,18 +9,15 @@ namespace NainaBoutique.Models.Models
 		public int Id { get; set; }
 		[Required]
 		public string? CouponCode { get; set; }
-        public string? Description { get; set; }
+       
         [Required]
-        public DateTime Validfrom { get; set; }
+        public DateTime ValidTill { get; set; }
         [Required]
-        public DateTime ValidTo { get; set; }
-        [Required]
-        public string? DiscountType { get; set; }
-        public float DiscountAmount { get; set; }
+        public float Discount { get; set; }
         [Required]
         public float MinCartAmount { get; set; }
         [Required]
-        public float MaxRedeemableAmount { get; set; }
+        public float MaxAmount { get; set; }
 
 
     }

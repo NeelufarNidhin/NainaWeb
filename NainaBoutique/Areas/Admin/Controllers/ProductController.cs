@@ -32,8 +32,15 @@ namespace NainaBoutique.Areas.Admin.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<ProductModel> productList = _unitOfWork.Product.GetAll(u =>u.RecStatus =='A', includeProperties: "Category").ToList();
+            List<ProductModel> productList = _unitOfWork.Product.GetAll(u =>u.RecStatus =='A' , includeProperties: "Category").ToList();
 
+            //foreach(var item in productList)
+            //{
+            //    if(item.QuantityInStock >= 0)
+            //    {
+
+            //    }
+            //}
             return View(productList);
         }
         public IActionResult Upsert(int? id)

@@ -17,7 +17,7 @@ namespace NainaBoutique.Utility
 
 		public const string PaymentStatusPending = "Pending";
 		public const string PaymentStatusApproved = "Approved";
-		//public const string PaymentStatusInProcess = "InProcess";
+		public const string PaymentStatusCompleted = "Completed";
 		public const string PaymentStatusRejected = "Rejected";
         public const string PaymentStatusDelayedPayment = "ApprovedForDelayedPayment";
 

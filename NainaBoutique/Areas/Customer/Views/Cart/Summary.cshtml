@@ -12,7 +12,7 @@
                         <a asp-action="Index" class="btn btn-outline-danger text-light btn-sm">Back to Cart</a>
                     </div>
                 </div>
-                
+
             </div>
             <div class="card-body">
                 <div class="container rounded p-2">
@@ -26,7 +26,7 @@
                             </div>
                             <div class="row my-1">
                                 <div class="col-3">
-                                    <label >Name</label>
+                                    <label>Name</label>
                                 </div>
                                 <div class="col-9">
                                     <input asp-for="OrderSummary.Name" class="form-control" />
@@ -78,7 +78,7 @@
                                 </div>
                             </div>
                         </div>
-                   
+
                         <div class="col-12 col-12 col-lg-6 pb-4">
                             <h4 class="d-flex align-items-center mb-3">
                                 <span class="text-info ">Order Summary</span>
@@ -106,18 +106,20 @@
                             </ul>
                             <div>
 
-                                <small class="text-info">Total (AED)</small>
-                                <strong class="text-info">@Model.OrderSummary.OrderTotal</strong>
+                                <h6 class="text-info">Total (AED) :@Model.OrderSummary.OrderTotal</h6>
+
 
                             </div>
 
 
                             <div>
                                 <p>Please select your Payment Method</p>
-                                <input type="radio" id="COD" name="PaymentMethod" value="COD">
-                                <label for="html">Cash On Delivery</label><br>
-                                <input type="radio" id="Card" name="PaymentMethod" value="Card">
-                                <label for="html">Card Payment</label><br>
+                                <input type="radio" id="COD" asp-for="OrderSummary.PaymentMethod" name="PaymentMethod" value="COD">
+                                <label>Cash On Delivery</label><br>
+                                <input type="radio" id="Card" name="PaymentMethod" value="Card" asp-for="OrderSummary.PaymentMethod">
+                                <label>Card Payment</label><br>
+                                <span asp-validation-for="OrderSummary.PaymentMethod" class="text-danger"></span>
+
                             </div>
                         </div>
                     </div>
@@ -139,3 +141,9 @@
         </div>
     </div>
 </form>
+
+
+@section Scripts{
+
+    <partial name="_ValidationScriptsPartial" />
+   }

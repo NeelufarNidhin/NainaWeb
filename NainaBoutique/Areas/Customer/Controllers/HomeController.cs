@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
+using Microsoft.EntityFrameworkCore;
 using NainaBoutique.DataAccess.Data;
 using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Models;
@@ -55,14 +56,48 @@ public class HomeController : Controller
 
 
 
-    public IActionResult Index()
+    //public IActionResult Index()
         
+    //{
+    //    IEnumerable<ProductModel> productList = _unitOfWork.Product.GetAll(includeProperties: "Category,ProductImage");
+
+
+
+    //    return View(productList);
+    //}
+
+    public async Task<IActionResult> Index(string searchString)
     {
-        IEnumerable<ProductModel> productList = _unitOfWork.Product.GetAll(includeProperties: "Category,ProductImage");
-        return View(productList);
+
+        ViewData["CurrentFilter"] = searchString;
+
+    
+        IEnumerable<ProductModel> productList = _unitOfWork.Product.GetAll(u=>u.QuantityInStock > 0 && u.RecStatus=='A',includeProperties: "Category,ProductImage");
+
+
+        if (!String.IsNullOrEmpty(searchString))
+        {
+           productList = productList.Where(s => s.ProductName.ToLower().Contains(searchString.ToLower())
+           || s.Category.CategoryName.ToLower().Contains(searchString.ToLower()) || s.Price.ToString().Contains(searchString)||
+           s.Sale_Price.ToString()!.Contains(searchString)|| s.Color.ToLower().Contains(searchString.ToLower())
+          );
+            return View(productList);
+        }
+
+        else
+        {
+            return View(productList);
+        }
+       
+    }
+    [HttpPost]
+    public string Index(string searchString, bool notUsed)
+    {
+        return "From [HttpPost]Index: filter on " + searchString;
     }
 
-   
+
+
     public IActionResult Details(int productId)
 
     {

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace NainaBoutique.DataAccess.Migrations
 {
     /// <inheritdoc />
-    public partial class AddCouponDetails : Migration
+    public partial class CouponTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,13 +18,10 @@ namespace NainaBoutique.DataAccess.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CouponCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Validfrom = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ValidTo = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    DiscountType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DiscountAmount = table.Column<float>(type: "real", nullable: false),
+                    ValidTill = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Discount = table.Column<float>(type: "real", nullable: false),
                     MinCartAmount = table.Column<float>(type: "real", nullable: false),
-                    MaxRedeemableAmount = table.Column<float>(type: "real", nullable: false)
+                    MaxAmount = table.Column<float>(type: "real", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -1,5 +1,5 @@
 ﻿@page
-@model NainaBoutique.Areas.Identity.Pages.Account.VerifyOTPModel.OtpModel
+@model NainaBoutique.Areas.Identity.Pages.Account.VerifyOTPModel
 @{
 }
 
@@ -7,13 +7,13 @@
     <div class="form-group row ">
 
         <div class="form-floating mb-3">
-            <input id="Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-            <label id="Email" class="form-label">Email</label>
+            <input  asp-for="Email" id="Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+            <label  asp-for="Email" id="Email" class="form-label">Email</label>
             <span asp-validation-for="Email" class="text-danger"></span>
         </div>
         <div class="form-floating mb-3">
-            <input id="OTP" class="form-control" aria-required="true" />
-            <label id="OTP" class="form-label">OTP</label>
+            <input  asp-for="OTP" id="OTP" class="form-control" aria-required="true" />
+            <label  asp-for="OTP" id="OTP" class="form-label">OTP</label>
             <span asp-validation-for="OTP" class="text-danger"></span>
         </div>
         <button type="submit" class=" btn  btn-md btn-primary">Verify Otp</button>

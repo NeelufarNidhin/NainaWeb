@@ -12,6 +12,7 @@ using NainaBoutique.Models.ViewModels;
 using NainaBoutique.Utility;
 using NainaBoutique.Models.Models;
 using Stripe.Checkout;
+using System.ComponentModel.DataAnnotations;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,6 +25,10 @@ namespace NainaBoutique.Areas.Customer.Controllers
         public readonly IUnitOfWork _unitOfWork;
         [BindProperty]
         public ShoppingCartVM ShoppingCartVM { get; set; }
+
+       
+        //[Required(ErrorMessage = "Please select the Payment Method")]
+        //public string? PaymentMethod { get; set; }
         public CartController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;  
@@ -124,6 +129,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
                // cart.Product.ProductImage = productImages.Where(u => u.ProductId == cart.ProductId).ToList();
                 cart.Price = cart.Product!.Price;
                 ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
+                
             }
 
 
@@ -159,19 +165,23 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
             }
 
-            if (Paymentmethod == "COD")
-            {
-                ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusDelayedPayment;
-                ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusApproved;
-                ShoppingCartVM.OrderSummary.PaymentMethod = "COD";
-            }
-            else if (Paymentmethod == "Card")
-            {
-                ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusPending;
-            ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusPending;
-                ShoppingCartVM.OrderSummary.PaymentMethod = "Card";
-            }
 
+           
+                if (Paymentmethod == "COD")
+                {
+                    ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusDelayedPayment;
+                    ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusApproved;
+                    ShoppingCartVM.OrderSummary.PaymentMethod = "COD";
+                }
+                else if (Paymentmethod == "Card")
+                {
+                    ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusPending;
+                    ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusPending;
+                    ShoppingCartVM.OrderSummary.PaymentMethod = "Card";
+                }
+            
+            
+            
             _unitOfWork.OrderSummary.Add(ShoppingCartVM.OrderSummary);
             _unitOfWork.Save();
             
@@ -241,6 +251,8 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 _unitOfWork.OrderSummary.UpdateStripePayment(ShoppingCartVM.OrderSummary.Id, session.Id, session.PaymentIntentId);
                 _unitOfWork.Save();
                 Response.Headers.Add("Location", session.Url);
+
+
                 return new StatusCodeResult(303);
             }
             // return View(ShoppingCartVM);
@@ -261,8 +273,10 @@ namespace NainaBoutique.Areas.Customer.Controllers
                     _unitOfWork.OrderSummary.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
                     _unitOfWork.Save();
                 }
-                HttpContext.Session.Clear();
+               // HttpContext.Session.Clear();
             }
+
+
 
             List<ShoppingCart> shoppingCarts = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == orderSummary.ApplicationUserId).ToList();
             _unitOfWork.Cart.RemoveRange(shoppingCarts);
@@ -271,41 +285,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
         }
 
-        //[HttpPost]
-        //public IActionResult OrderCheckout(int id, string Paymentmethod)
-        //{
-
-        //    var summaryFromDb = _unitOfWork.OrderSummary.Get(u => u.Id == id);
-           
-
-        //    if (Paymentmethod =="COD")
-        //    {
-        //        summaryFromDb.PaymentStatus = SD.PaymentStatusInProcess;
-        //        summaryFromDb.OrderStatus = SD.StatusApproved;
-        //        summaryFromDb.PaymentMethod = "COD";
-        //        _unitOfWork.OrderSummary.Update(summaryFromDb);
-        //        _unitOfWork.Save();
-        //        // return View();
-
-        //        return RedirectToAction(nameof(OrderConfirmation), new { id = summaryFromDb.Id });
-
-        //    }
-
-        //    else if (Paymentmethod == "Card")
-        //    {
-        //        summaryFromDb.PaymentStatus = SD.PaymentStatusPending;
-        //        summaryFromDb.OrderStatus = SD.StatusPending;
-        //        summaryFromDb.PaymentMethod = "Card";
-        //        _unitOfWork.OrderSummary.Update(summaryFromDb);
-        //        _unitOfWork.Save();
-        //        return View(id);
-        //    }
-
-        //    return View(id);
-
-
-        //    // return RedirectToAction(nameof(OrderConfirmation), new { id= summaryFromDb.Id});
-        //}
+        
 
     }
 }

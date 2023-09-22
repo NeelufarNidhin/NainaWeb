@@ -11,41 +11,28 @@
             <input asp-for="CouponCode" class="form-control" />
             <span asp-validation-for="CouponCode" class="text-danger"></span>
         </div>
+       
+       
         <div class="mb-3 row p-1">
-            <label asp-for="Description" class="p-0"></label>
-            <input asp-for="Description" class="form-control" />
-            @*<span asp-validation-for="Description" class="text-danger"></span>*@
-
-        </div>
+            <label asp-for="ValidTill" class="p-0"></label>
+            <input asp-for="ValidTill" type="datetime-local" class="form-control" />-->
+            <span asp-validation-for="ValidTill" class="text-danger"></span>
+     </div>
         <div class="mb-3 row p-1">
-            <label asp-for="Validfrom" class="p-0"></label>
-            <input asp-for="Validfrom" type="datetime-local" class="form-control" />
-            @*<span asp-validation-for="Validfrom" class="text-danger"></span>*@
+            <label asp-for="Discount" class="p-0"></label>
+            <input asp-for="Discount" class="form-control" />
+            <span asp-validation-for="Discount" class="text-danger"></span>
         </div>
-        <div class="mb-3 row p-1">
-            <label asp-for="ValidTo" class="p-0"></label>
-            <input asp-for="ValidTo" type="datetime-local" class="form-control" />
-            @*<span asp-validation-for="ValidTo" class="text-danger"></span>*@
-        </div>
-        <div class="mb-3 row p-1">
-            <label asp-for="DiscountType" class="p-0"></label>
-            <input asp-for="DiscountType" class="form-control" />
-            <span asp-validation-for="DiscountType" class="text-danger"></span>
-        </div>
-        <div class="mb-3 row p-1">
-            <label asp-for="DiscountAmount" class="p-0"></label>
-            <input asp-for="DiscountAmount" class="form-control" />
-            <span asp-validation-for="DiscountAmount" class="text-danger"></span>
-        </div>
+        
         <div class="mb-3 row p-1">
             <label asp-for="MinCartAmount" class="p-0"></label>
             <input asp-for="MinCartAmount" class="form-control" />
             <span asp-validation-for="MinCartAmount" class="text-danger"></span>
         </div>
         <div class="mb-3 row p-1">
-            <label asp-for="MaxRedeemableAmount" class="p-0"></label>
-            <input asp-for="MaxRedeemableAmount" class="form-control" />
-            <span asp-validation-for="MaxRedeemableAmount" class="text-danger"></span>
+            <label asp-for="MaxAmount" class="p-0"></label>
+            <input asp-for="MaxAmount" class="form-control" />
+            <span asp-validation-for="MaxAmount" class="text-danger"></span>
         </div>
         <div class="row">
 
@@ -62,4 +49,4 @@
     @{
         <partial name="_ValidationScriptsPartial.cshtml" />
     }
-}
+}-->

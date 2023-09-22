@@ -12,49 +12,55 @@
                 <div class="col-md-10 offset-md-1">
                     @foreach (var item in Model.shoppingCartList)
                     {<div class="row border-bottom pb-3">
-                    <div class="d-none d-lg-block col-lg-1 text-center py-2">
-                        @if (item.Product.ProductImage != null && item.Product.ProductImage.Count() > 0)
-                        {
-                            <img src="@item.Product.ProductImage.FirstOrDefault().ImageUrl" class="card-img-top rounded w-100" />
+                            <div class="d-none d-lg-block col-lg-1 text-center py-2">
+                                @if (item.Product.ProductImage != null && item.Product.ProductImage.Count() > 0)
+                                {
+                                    <img src="@item.Product.ProductImage.FirstOrDefault().ImageUrl" class="card-img-top rounded w-100" />
 
-                        }
-                        else
-                        {
-                            <img-src ="https://placehold.co/500x600/png" class="card-img-top rounded w-100"></img-src>
-                        }
+                                }
+                                else
+                                {
+                                    <img-src ="https://placehold.co/500x600/png" class="card-img-top rounded w-100"></img-src>
+                                }
 
-                    </div>
-                        <div class="col-12 col-lg-6 pt-md-3">
-                            <h5 class="text-uppercase text-sedondary">@item.Product!.ProductName</h5>
-                            <p><small>@Html.Raw(item.Product.Description)</small></p>
-                        </div>
-                        <div class="col-12 text-center row">
-                            <div class="col-3 text-md-right pt-2 pt-md-4">
-                                <h5 class="fw-semibold">
-                                   $@item.Price
-                                    <span class="text-muted">&nbsp;x&nbsp;</span>@item.Count
-                                </h5>
                             </div>
-                            <div class="col-6 col-sm-4 col-lg-6 pt-2">
-                                <div class="w-75 btn-group" role="group">
-                                    <a asp-action="plus" asp-route-cartId="@item.Id" class="btn btn-outline-primary bg-gradient py-2">
-                                        <i class="bi bi-plus-square"></i>
-                                    </a> &nbsp;
-                                    <a asp-action="minus" asp-route-cartId="@item.Id" class="btn btn-outline-primary bg-gradient py-2">
-                                        <i class="bi bi-dash-square"></i>
+                            <div class="col-12 col-lg-6 pt-md-3">
+                                <h5 class="text-uppercase text-sedondary">@item.Product!.ProductName</h5>
+                                <p><small>@Html.Raw(item.Product.Description)</small></p>
+                            </div>
+                            <div class="col-12 text-center row">
+                                <div class="col-3 text-md-right pt-2 pt-md-4">
+                                    <h5 class="fw-semibold">
+                                        $@item.Price
+                                        <span class="text-muted">&nbsp;x&nbsp;</span>@item.Count
+                                    </h5>
+                                </div>
+                                <div class="col-6 col-sm-4 col-lg-6 pt-2">
+                                    <div class="w-75 btn-group" role="group">
+                                        <a asp-action="plus" asp-route-cartId="@item.Id" class="btn btn-outline-primary bg-gradient py-2">
+                                            <i class="bi bi-plus-square"></i>
+                                        </a> &nbsp;
+                                        <a asp-action="minus" asp-route-cartId="@item.Id" class="btn btn-outline-primary bg-gradient py-2">
+                                            <i class="bi bi-dash-square"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="col-3 col-sm-4 col-lg-2 offset-lg-1 text-right pt-2">
+                                    <a asp-action="remove" asp-route-cartId="@item.Id" class="btn btn-danger bg-gradient py-2">
+                                        <i class="bi bi-trash-fill"></i>
                                     </a>
                                 </div>
                             </div>
-                            <div class="col-3 col-sm-4 col-lg-2 offset-lg-1 text-right pt-2">
-                                <a  asp-action="remove" asp-route-cartId="@item.Id" class="btn btn-danger bg-gradient py-2">
-                                    <i class="bi bi-trash-fill"></i>
-                                </a>
-                            </div>
                         </div>
-                    </div>
                     }
                 </div>
             </div>
+
+            @*<div class="col-3">
+                <input id="code" class="form-control" />
+                <button  id="applycoupon" class="btn btn-secondary form-control">Apply Coupon</button>
+
+            </div>*@
             <div class="card-footer bg-white border-0">
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
@@ -72,7 +78,7 @@
 
                     </div>
                 </div>
-                </div>
+            </div>
 
-                </div>
+        </div>
 </form>

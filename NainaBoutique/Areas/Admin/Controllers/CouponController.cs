@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NainaBoutique.DataAccess.Data;
+using NainaBoutique.DataAccess.Repository;
 using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Models;
-using Microsoft.EntityFrameworkCore;
-using NainaBoutique.Utility;
 using NainaBoutique.Models.Models;
+using NainaBoutique.Utility;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -22,32 +20,34 @@ namespace NainaBoutique.Areas.Admin.Controllers
     {
 
         private readonly IUnitOfWork _unitOfWork;
+        // GET: /<controller>/
 
         public CouponController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
-
-        // GET: /<controller>/
         public IActionResult Index()
         {
-            // List<CategoryModel> categoryList = _unitOfWork.Category.GetAll().ToList();
-            List<CouponModel> couponModels = _unitOfWork.Coupon.GetAll().ToList();
+            List<CouponModel> couponModel = _unitOfWork.Coupon.GetAll().ToList();
+            return View(couponModel);
+        }
+
+        public IActionResult Create()
+        {
             return View();
         }
 
-       
         [HttpPost]
         public IActionResult Create(CouponModel coupon)
         {
             if (ModelState.IsValid)
             {
 
-                //checking whether coupon exists
-                CouponModel couponName = _unitOfWork.Coupon.Get(u => u.CouponCode == coupon.CouponCode);
+                // checking whether giftcard exists
+                CouponModel couponCode = _unitOfWork.Coupon.Get(u => u.CouponCode == coupon.CouponCode);
 
 
-                if (couponName != null)
+                if (couponCode != null)
                 {
 
                     TempData["error"] = "Coupon Already Exists";
@@ -65,6 +65,8 @@ namespace NainaBoutique.Areas.Admin.Controllers
             return View();
 
         }
+
+
 
         public IActionResult Edit(int? id)
         {
@@ -95,6 +97,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
 
         #region API CALLS
 
+
         [HttpGet]
         public IActionResult GetAll()
         {
@@ -116,8 +119,9 @@ namespace NainaBoutique.Areas.Admin.Controllers
 
             return Json(new { success = true, message = "Delete Successfull" });
         }
+
+
         #endregion
-
     }
-}
 
+}

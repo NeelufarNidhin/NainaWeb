@@ -1,23 +1,18 @@
-﻿var dataTable
-
-$(document).ready(function () {
+﻿$(document).ready(function () {
     loadCouponTable();
 });
 
 function loadCouponTable() {
-    dataTable = $('#couponTblData').DataTable({
+    dataTable = $('#couponTable').DataTable({
         "ajax": {
             url: '/admin/coupon/getall'
         },
         "columns": [
             { data: 'couponCode', "autowidth": true },
-            { data: 'description', "autowidth": true },
-            { data: 'validfrom', "autowidth": true },
-            { data: 'validTo', "autowidth": true },
-            { data: 'discountType', "autowidth": true },
-            { data: 'discountAmount', "autowidth": true },
+            { data: 'validTill', "autowidth": true },
+            { data: 'discount', "autowidth": true },
             { data: 'minCartAmount', "autowidth": true },
-            { data: 'maxRedeemableAmount', "autowidth": true },
+            { data: 'maxAmount', "autowidth": true },
             {
                 data: 'id',
                 "render": function (data) {

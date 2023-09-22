@@ -45,7 +45,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
 
-               // checking whether category exists
+               // checking whether giftcard exists
                 GiftcardModel cardName = _unitOfWork.Giftcard.Get(u => u.CardNumber == giftcard.CardNumber);
 
 

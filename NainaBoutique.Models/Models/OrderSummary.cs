@@ -18,6 +18,7 @@ namespace NainaBoutique.Models.Models
 		public float OrderTotal { get; set; }
 		public string? OrderStatus { get; set; }
 		public string? PaymentStatus { get; set; }
+        [Required]
         public string? PaymentMethod { get; set; }
         public string? TrackingNumber { get; set; }
 		public string? Carrier { get; set; }

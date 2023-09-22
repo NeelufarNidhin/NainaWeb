@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using NainaBoutique.DataAccess.Data;
+using NainaBoutique.Models.Models;
 using static NainaBoutique.Areas.Identity.Pages.Account.VerifyOTPModel;
 
 namespace NainaBoutique.Areas.Identity.Pages.Account
@@ -15,13 +17,15 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
     {
         private readonly IEmailSender _emailSender;
         private readonly OtpService _otpService;
+        private readonly ApplicationDbContext db;
+     
 
-        public LoginWithOtpModel(IEmailSender emailSender, OtpService otpService)
+        public LoginWithOtpModel(IEmailSender emailSender, OtpService otpService, ApplicationDbContext _db)
         {
             _emailSender = emailSender;
             _otpService = otpService;
 
-
+            db = _db;
 
         }
 
@@ -33,22 +37,30 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
 
 
 
-
         public IActionResult
             OnGet()
         {
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string email)
         {
+
             if (ModelState.IsValid)
 
             {
+               
+
+              
                 string otp = _otpService.GenerateRandomOtp();
                 _otpService.StoreOtp(Email, otp);
 
+              //  var otpfromBb = db.OtpModels.FirstOrDefault(u => u.Email == email);
 
+
+
+                db.UpdateOTP(email, otp);
+              //  db.SaveChanges();
 
                 await SendEmailAsync(Email, "OTP", otp);
 

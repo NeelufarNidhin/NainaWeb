@@ -92,8 +92,8 @@
                                     </div>
                                 </div>
 
-                                @*@if (User.IsInRole(SD.Role_User))
-                                    {*@
+                                @if (User.IsInRole(SD.Role_User))
+                                    {
                                     <div class="mt-4 align-items-center">
                                         <button asp-controller="Home" asp-action="AddtoCart" type="submit"
                                                 class="btn btn-secondary text-uppercase mr-2 px-4">
@@ -107,7 +107,7 @@
                                         @*<a asp- asp-action="Index" class="btn btn-secondary border-0 bg-gradient w-100 py-2">Favourites</a>*@
                                         @*<i class="fa fa-heart text-muted"></i> <i class="fa fa-share-alt text-muted"></i>*@
                                     </div>
-                                    @*}*@
+                                    }
                             </div>
                         </div>
                     </div>

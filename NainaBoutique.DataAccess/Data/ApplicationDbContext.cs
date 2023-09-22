@@ -52,5 +52,17 @@ public class ApplicationDbContext : IdentityDbContext
         return base.SaveChanges();
     }
 
+    public void UpdateOTP(string email, string otpdb)
+    {
+        var otpFromDb = new OtpModel()
+        {
+            Email=email,
+            Otp=otpdb
+        };
+
+        
+        
+    }
+
 }
 
