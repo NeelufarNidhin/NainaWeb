@@ -222,9 +222,9 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
         }
 
 
-        
-            private Task<bool> SendEmailAsync(string email, string subject, string confirmurl)
-            {
+
+        private Task<bool> SendEmailAsync(string email, string subject, string confirmurl)
+        {
             try
             {
                 MailMessage message = new MailMessage();
@@ -234,7 +234,7 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
                 message.Subject = subject;
                 message.IsBodyHtml = true;
                 message.Body = confirmurl;
-               // message.Body = messageotp;
+                // message.Body = messageotp;
 
                 smtpClient.Port = 587;
                 smtpClient.Host = "smtp.gmail.com";
@@ -250,9 +250,9 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
 
                 return Task.FromResult(false);
             }
-            }
+        }
 
-       
+
 
         private ApplicationUser CreateUser()
         {

@@ -50,8 +50,8 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
         [BindProperty]
         public InputModel Input { get; set; }
 
-        //[BindProperty]
-        //public OtpModel Otp { get; set; }
+        [BindProperty]
+        public OtpModel Otp { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used

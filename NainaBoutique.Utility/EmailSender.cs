@@ -15,7 +15,7 @@ namespace NainaBoutique.Utility
             {
                 MailMessage message = new MailMessage();
                 SmtpClient smtpClient = new SmtpClient();
-                message.From = new MailAddress("albyjolly149@gmail.com");
+                message.From = new MailAddress("neelufar.nidhin@gmail.com");
                 message.To.Add(email);
                 message.Subject = subject;
                 message.IsBodyHtml = true;
@@ -26,7 +26,7 @@ namespace NainaBoutique.Utility
                 smtpClient.Host = "smtp.gmail.com";
                 smtpClient.EnableSsl = true;
                 smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential("albyjolly149@gmail.com", "ieivzgnukcrjdape");
+                smtpClient.Credentials = new NetworkCredential("neelufar.nidhin@gmail.com", "ixobimgtkbsijgyk");
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtpClient.Send(message);
                 return Task.FromResult(true);

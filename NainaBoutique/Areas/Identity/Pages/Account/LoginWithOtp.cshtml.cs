@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Net.Mail;
@@ -9,6 +10,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NainaBoutique.DataAccess.Data;
 using NainaBoutique.Models.Models;
+using NainaBoutique.Utility;
+using Stripe;
 using static NainaBoutique.Areas.Identity.Pages.Account.VerifyOTPModel;
 
 namespace NainaBoutique.Areas.Identity.Pages.Account
@@ -17,52 +20,49 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
     {
         private readonly IEmailSender _emailSender;
         private readonly OtpService _otpService;
-        private readonly ApplicationDbContext db;
+       
      
 
-        public LoginWithOtpModel(IEmailSender emailSender, OtpService otpService, ApplicationDbContext _db)
+        public LoginWithOtpModel(IEmailSender emailSender, OtpService otpService)
         {
             _emailSender = emailSender;
             _otpService = otpService;
 
-            db = _db;
+           
 
         }
+
+
 
         [BindProperty]
         public string Email { get; set; }
 
-        [BindProperty]
-        public string? OTP { get; set; }
+       
 
+        //}
 
+        public IActionResult OnGet()
 
-        public IActionResult
-            OnGet()
         {
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string email)
+        public async Task<IActionResult> OnPostAsync()
         {
 
             if (ModelState.IsValid)
 
             {
-               
-
-              
                 string otp = _otpService.GenerateRandomOtp();
+            
+
+               
                 _otpService.StoreOtp(Email, otp);
 
-              //  var otpfromBb = db.OtpModels.FirstOrDefault(u => u.Email == email);
+            
+          
 
-
-
-                db.UpdateOTP(email, otp);
-              //  db.SaveChanges();
-
-                await SendEmailAsync(Email, "OTP", otp);
+            await _emailSender.SendEmailAsync(Email, "OTP", otp);
 
                 return RedirectToPage("./VerifyOtp");
 
@@ -78,7 +78,7 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
             {
                 MailMessage message = new MailMessage();
                 SmtpClient smtpClient = new SmtpClient();
-                message.From = new MailAddress("albyjolly149@gmail.com");
+                message.From = new MailAddress("neelufar.nidhin@gmail.com");
                 message.To.Add(email);
                 message.Subject = subject;
                 message.IsBodyHtml = true;
@@ -89,7 +89,7 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
                 smtpClient.Host = "smtp.gmail.com";
                 smtpClient.EnableSsl = true;
                 smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential("albyjolly149@gmail.com", "ieivzgnukcrjdape");
+                smtpClient.Credentials = new NetworkCredential("neelufar.nidhin@gmail.com", "ixobimgtkbsijgyk");
                 smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
                 smtpClient.Send(message);
                 return Task.FromResult(true);
@@ -120,8 +120,10 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
 
         public bool ValidateOtp(string email, string otp)
         {
-            if (otpStorage.TryGetValue(email, out string storedOtp) && otp == storedOtp)
+            if (otpStorage.TryGetValue(email, out string storedOtp) && otp.Equals(storedOtp))
             {
+               
+             
                 otpStorage.Remove(email);
                 return true;
             }

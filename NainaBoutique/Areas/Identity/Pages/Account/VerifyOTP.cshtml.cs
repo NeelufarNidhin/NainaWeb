@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using NainaBoutique.DataAccess.Data;
+using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Models.Models;
+using NainaBoutique.Utility;
 
 namespace NainaBoutique.Areas.Identity.Pages.Account
 {
@@ -17,31 +19,39 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly OtpService _otpService;
         private readonly ILogger<LoginModel> _logger;
-        private readonly ApplicationDbContext db;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public VerifyOTPModel(SignInManager<IdentityUser> signInManager, OtpService otpService, ILogger<LoginModel> logger, ApplicationDbContext _db)
+       
+
+        public VerifyOTPModel(SignInManager<IdentityUser> signInManager, OtpService otpService,
+            ILogger<LoginModel> logger, IUnitOfWork unitOfWork)
         {
             _otpService = otpService;
             _signInManager = signInManager;
             _logger = logger;
-            db = _db;
-
+            _unitOfWork = unitOfWork;
+           
 
         }
 
-        //[BindProperty]
-        //public OtpModel otpModel { get; set; }
+        [BindProperty]
+        public OtpModels Input { get; set; }
 
 
-      
-           [BindProperty]
+        public class OtpModels
+        {
+            
+
+            [Required]
             public string Email { get; set; }
 
-           [BindProperty]
+            [Required]
             public string? OTP { get; set; }
 
 
-       
+            [Display(Name = "Remember me?")]
+            public bool RememberMe { get; set; }
+        }
 
 
 
@@ -50,37 +60,29 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string email,string OTP)
+        public async Task<IActionResult> OnPostAsync()
 
 
         {
 
-            //db.OtpModels.Add(u=>u)
-
-           // var otpfromBb = db.OtpModels.FirstOrDefault(u => u.Email == otpModel.Email);
-            if (_otpService.ValidateOtp(email,OTP))
+          
+            var user = _unitOfWork.ApplicationUser.Get(u => u.Email == Input.Email);
+            if (_otpService.ValidateOtp(Input.Email, Input.OTP))
             {
 
-                var user = new IdentityUser { UserName = email };
-                var result = await _signInManager.PasswordSignInAsync(user, OTP, false, lockoutOnFailure: false);
+               // var user = new IdentityUser { UserName = Input. Email = Input. Email };
+                 await _signInManager.SignInAsync(user, isPersistent:false);
 
-                if (result.Succeeded)
-                {
+                
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect("~/");
 
-                    // return RedirectToPage("~/");
-                }
-
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid OTP or Login Failed");
-                }
+                
             }
 
             else
             {
-                ModelState.AddModelError(string.Empty, "Invalid OTP");
+                ModelState.AddModelError(string.Empty, "Invalid OTP or Login Failed");
             }
             return Page();
         }

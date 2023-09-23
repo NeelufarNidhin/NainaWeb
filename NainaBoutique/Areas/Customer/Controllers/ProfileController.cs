@@ -46,12 +46,30 @@ namespace NainaBoutique.Areas.Customer.Controllers
         }
 
         [HttpPost]
+        public IActionResult Edit()
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
 
-        public IActionResult UpdateProfile(int userId)
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+
+            ProfileVM = new()
+            {
+
+                ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId)
+            };
+
+            return View(ProfileVM);
+        }
+
+            [HttpPost]
+
+        public IActionResult UpdateProfile(string userId)
         {
 
             var user = _unitOfWork.ApplicationUser.Get(u => u.Id == ProfileVM.ApplicationUser.Id);
-            user.UserName = ProfileVM.ApplicationUser.UserName;
+          
+           // user.Name = ProfileVM.ApplicationUser.Name;
             user.MobileNumber = ProfileVM.ApplicationUser.MobileNumber;
             user.Address = ProfileVM.ApplicationUser.Address;
             user.City = ProfileVM.ApplicationUser.City;
