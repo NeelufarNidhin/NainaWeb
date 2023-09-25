@@ -2,9 +2,44 @@
 
 <form asp-controller="Home" asp-action="Index" method="get">
     <p>
-         <input type="text" name="searchString" placeholder="Start Typing To Search" value="@ViewData["CurrentFilter"]" />
+        <input type="text" name="searchString" placeholder="Start Typing To Search" value="@ViewData["CurrentFilter"]" />
         <input type="submit" value="Search" />
     </p>
+    <div>
+        <h5>Color</h5>
+        <button type="submit" name="color" value="green" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: green"></button>
+        <button type="submit" name="color" value="black" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%;  background-color: black"></button>
+        <button type="submit" name="color" value="pink" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%;  background-color: pink"></button>
+        <button type="submit" name="color" value="white" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: white"></button>
+        <button type="submit" name="color" value="beige" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: beige"></button>
+        <button type="submit" name="color" value="blue" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: blue"></button>
+        <button type="submit" name="color" value="red" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: red"></button>
+    </div>
+
+    <div>
+        <h5>Size</h5>
+        <input type="submit" name="size" value="0-6m" style="width:100px ; height:40px" />
+        <input type="submit" name="size" value="6-12m" style="width:100px ; height:40px" />
+        <input type="submit" name="size" value="0-1yr" style="width:100px ; height:40px" />
+        <input type="submit" name="size" value="1-2yr" style="width:100px ; height:40px" />
+        <input type="submit" name="size" value="2-3yr" style="width:100px ; height:40px" />
+        <input type="submit" name="size" value="3-4yr" style="width:100px ; height:40px" />
+        <input type="submit" name="size" value="4-5yr" style="width:100px ; height:40px" />
+        <input type="submit" name="size" value="free-size" style="width:100px ; height:40px" />
+
+    </div>
+    <div>
+        <h5>Price</h5>
+        <input type="submit" name="price" value="0-50" style="width:100px ; height:40px" />
+        <input type="submit" name="price" value="50-100" style="width:100px ; height:40px" />
+        <input type="submit" name="price" value="100-200" style="width:100px ; height:40px" />
+        <input type="submit" name="price" value="200-300" style="width:100px ; height:40px" />
+        <input type="submit" name="price" value="300-400" style="width:100px ; height:40px" />
+        <input type="submit" name="price" value="400-500" style="width:100px ; height:40px" />
+        <input type="submit" name="price" value="500-600" style="width:100px ; height:40px" />
+        <input type="submit" name="price" value="500-100" style="width:100px ; height:40px" />
+
+    </div>
 </form>
 <br />
 <br />

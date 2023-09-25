@@ -8,6 +8,7 @@ namespace NainaBoutique.Models.ViewModels
 	{
 		public IEnumerable<ShoppingCart>? shoppingCartList { get; set; }
 		public OrderSummary OrderSummary { get; set; }
+		public CouponModel Coupon { get; set; }
 	}
 }
 

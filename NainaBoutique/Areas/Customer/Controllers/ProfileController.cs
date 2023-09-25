@@ -31,11 +31,16 @@ namespace NainaBoutique.Areas.Customer.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
+
+           
             var claimsIdentity = (ClaimsIdentity)User.Identity;
 
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-
+            if(claimsIdentity == null)
+            {
+                return BadRequest("Please Login to continue");
+            }
             ProfileVM = new()
             {
 
@@ -68,8 +73,8 @@ namespace NainaBoutique.Areas.Customer.Controllers
         {
 
             var user = _unitOfWork.ApplicationUser.Get(u => u.Id == ProfileVM.ApplicationUser.Id);
-          
-           // user.Name = ProfileVM.ApplicationUser.Name;
+
+            user.Name = ProfileVM.ApplicationUser.Name;
             user.MobileNumber = ProfileVM.ApplicationUser.MobileNumber;
             user.Address = ProfileVM.ApplicationUser.Address;
             user.City = ProfileVM.ApplicationUser.City;

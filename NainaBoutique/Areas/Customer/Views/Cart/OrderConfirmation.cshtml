@@ -1,14 +1,15 @@
-﻿@model int
+﻿@model OrderSummary
 
 <div class="container row pt-4" >
     <div class="col-12 text-center">
 
         <h1 class="text-primary text-center">Order Placed Successfully! </h1>
 
-        Your Order Number is : @Model <br/>
+        <p>Your Order Number is : @Model.Id  </p> <br />
+                                                  <p>TransactionId : @if(@Model.PaymentIntendId  is null )  @DateTime.Now.ToString("ddMMyyyymmss") else @Model.PaymentIntendId  at @DateTime.Now</p> <br />
         <br />
 
-        <img src="~/images/thankyou.webp" width="65%"/>
+        <img src="~/images/thankyou.webp" width="65%" />
     </div>
 
     <div class="col-12 text-center" >

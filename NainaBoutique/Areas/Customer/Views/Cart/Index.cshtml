@@ -56,11 +56,13 @@
                 </div>
             </div>
 
-            @*<div class="col-3">
-                <input id="code" class="form-control" />
-                <button  id="applycoupon" class="btn btn-secondary form-control">Apply Coupon</button>
+            <div class="col-3">
 
-            </div>*@
+                
+                <input name="coupon" type="text"   class="form-control" />
+                <button type="submit" name="coupon"  class="btn btn-secondary form-control"  asp-area="Customer" asp-controller="cart" asp-action="Index">Apply Coupon</button>
+                  
+            </div>
             <div class="card-footer bg-white border-0">
                 <div class="row">
                     <div class="col-md-4 offset-md-4">

@@ -13,6 +13,8 @@ using NainaBoutique.Utility;
 using NainaBoutique.Models.Models;
 using Stripe.Checkout;
 using System.ComponentModel.DataAnnotations;
+using System.Runtime.ConstrainedExecution;
+using Stripe;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -42,27 +44,89 @@ namespace NainaBoutique.Areas.Customer.Controllers
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 
-
+            
 
             ShoppingCartVM = new() {
 
                 shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
-                includeProperties: "Product"),
+                includeProperties: "Product"
+                ),
                 OrderSummary = new()
 
                 
                 };
-
+            
 
             IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
-            foreach (var cart in ShoppingCartVM.shoppingCartList)
+
+           
+
+          
+
+                foreach (var cart in ShoppingCartVM.shoppingCartList)
             {
                 cart.Product.ProductImage = productImages.Where(u =>u.ProductId==cart.ProductId).ToList();
                 cart.Price = cart.Product!.Price;
                 ShoppingCartVM.OrderSummary. OrderTotal += (cart.Price * cart.Count);
+
+                
             }
             return View(ShoppingCartVM);
         }
+
+
+        [HttpPost]
+        public IActionResult Index( string coupon)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+
+
+
+            ShoppingCartVM = new()
+            {
+
+                shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
+                includeProperties: "Product"
+                ),
+                OrderSummary = new()
+
+
+            };
+
+
+            IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
+
+           
+
+
+
+            foreach (var cart in ShoppingCartVM.shoppingCartList)
+            {
+                cart.Product.ProductImage = productImages.Where(u => u.ProductId == cart.ProductId).ToList();
+                cart.Price = cart.Product!.Price;
+
+                if (coupon != null)
+                {
+                    CouponModel couponModel = _unitOfWork.Coupon.Get(u => u.CouponCode == coupon);
+                    var discount = couponModel.Discount;
+                    ShoppingCartVM.OrderSummary.OrderTotal = (ShoppingCartVM.OrderSummary.OrderTotal + (cart.Price * cart.Count)) -
+                        ((ShoppingCartVM.OrderSummary.OrderTotal + (cart.Price * cart.Count)) * discount / 100);
+                        
+                }
+                else
+                {
+                    ShoppingCartVM.OrderSummary.OrderTotal = (ShoppingCartVM.OrderSummary.OrderTotal + (cart.Price * cart.Count));
+                }
+
+
+
+            }
+            return View(ShoppingCartVM);
+        }
+
+
 
         public IActionResult Plus(int cartId)
         {
@@ -95,7 +159,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Summary()
+        public IActionResult Summary(string coupon)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -109,12 +173,12 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
                 includeProperties: "Product"),
                 OrderSummary = new()
-                
+
             };
 
 
             //  IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
-            ShoppingCartVM.OrderSummary.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+            ShoppingCartVM.OrderSummary.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id ==userId);
 
 
             ShoppingCartVM.OrderSummary.Name = ShoppingCartVM.OrderSummary.ApplicationUser.Name;
@@ -126,10 +190,25 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
             foreach (var cart in ShoppingCartVM.shoppingCartList)
             {
-               // cart.Product.ProductImage = productImages.Where(u => u.ProductId == cart.ProductId).ToList();
+                // cart.Product.ProductImage = productImages.Where(u => u.ProductId == cart.ProductId).ToList();
                 cart.Price = cart.Product!.Price;
-                ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
-                
+
+
+                if (coupon != null)
+                {
+                    CouponModel couponModel = _unitOfWork.Coupon.Get(u => u.CouponCode == coupon);
+                    var discount = couponModel.Discount;
+                    ShoppingCartVM.OrderSummary.OrderTotal = (ShoppingCartVM.OrderSummary.OrderTotal + (cart.Price * cart.Count)) -
+                        ((ShoppingCartVM.OrderSummary.OrderTotal + (cart.Price * cart.Count)) * discount / 100);
+
+                }
+                else
+                {
+                    ShoppingCartVM.OrderSummary.OrderTotal = (ShoppingCartVM.OrderSummary.OrderTotal + (cart.Price * cart.Count));
+                }
+
+                // ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
+
             }
 
 
@@ -162,7 +241,9 @@ namespace NainaBoutique.Areas.Customer.Controllers
             {
                 // cart.Product.ProductImage = productImages.Where(u => u.ProductId == cart.ProductId).ToList();
                 cart.Price = cart.Product!.Price;
-                ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
+
+
+                 ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
             }
 
 
@@ -258,9 +339,9 @@ namespace NainaBoutique.Areas.Customer.Controllers
             // return View(ShoppingCartVM);
         }
 
-        public IActionResult OrderConfirmation(int id)
+        public IActionResult OrderConfirmation(OrderSummary order)
         {
-            OrderSummary orderSummary = _unitOfWork.OrderSummary.Get(u => u.Id == id, includeProperties: "ApplicationUser");
+           var orderSummary = _unitOfWork.OrderSummary.Get(u => u.Id == order.Id, includeProperties: "ApplicationUser");
 
             if(orderSummary.PaymentMethod == "Card")
             {
@@ -269,8 +350,8 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
                 if (session.PaymentStatus.ToLower() == "paid")
                 {
-                    _unitOfWork.OrderSummary.UpdateStripePayment(id, session.Id, session.PaymentIntentId);
-                    _unitOfWork.OrderSummary.UpdateStatus(id, SD.StatusApproved, SD.PaymentStatusApproved);
+                    _unitOfWork.OrderSummary.UpdateStripePayment(order.Id, session.Id, session.PaymentIntentId);
+                    _unitOfWork.OrderSummary.UpdateStatus(order.Id, SD.StatusApproved, SD.PaymentStatusApproved);
                     _unitOfWork.Save();
                 }
                // HttpContext.Session.Clear();
@@ -281,7 +362,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
             List<ShoppingCart> shoppingCarts = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == orderSummary.ApplicationUserId).ToList();
             _unitOfWork.Cart.RemoveRange(shoppingCarts);
             _unitOfWork.Save();
-            return View(id);
+            return View(order);
 
         }
 

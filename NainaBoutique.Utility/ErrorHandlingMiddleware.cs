@@ -16,6 +16,12 @@ namespace NainaBoutique.Utility
             {
                 var msg = ex.Message.ToString();
                 _logger.LogInformation(msg);
+
+
+                // _logger.LogError(ex, ex.Message);
+                //context.Response.StatusCode = 500;
+                //await context.Response.WriteAsync(ex.Message);
+
             }
         }
 

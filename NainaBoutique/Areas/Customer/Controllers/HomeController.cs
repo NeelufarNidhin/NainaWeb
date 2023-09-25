@@ -66,7 +66,7 @@ public class HomeController : Controller
     //    return View(productList);
     //}
 
-    public async Task<IActionResult> Index(string searchString)
+    public async Task<IActionResult> Index(string searchString, string color, string size,string price)
     {
 
         ViewData["CurrentFilter"] = searchString;
@@ -84,18 +84,40 @@ public class HomeController : Controller
             return View(productList);
         }
 
+
+        if(color != null)
+        {
+            productList = productList.Where(s => s.Color.ToLower() == color);
+            return View(productList);
+        }
+        if (size != null)
+        {
+            productList = productList.Where(s => s.Size == size);
+            return View(productList);
+        }
+        if (price != null)
+        {
+            var sprice = price.Split('-');
+           
+
+            productList = productList.Where(s => s.Price >= float.Parse(sprice[0]) && s.Price <= float.Parse(sprice[1]));
+            return View(productList);
+        }
         else
         {
             return View(productList);
         }
-       
-    }
+           }
+
+
+
     [HttpPost]
     public string Index(string searchString, bool notUsed)
     {
         return "From [HttpPost]Index: filter on " + searchString;
     }
 
+    
 
 
     public IActionResult Details(int productId)

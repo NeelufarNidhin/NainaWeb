@@ -9,6 +9,8 @@ using NainaBoutique.Utility;
 using static NainaBoutique.Areas.Customer.Controllers.HomeController;
 using NainaBoutique.Areas.Identity.Pages.Account;
 using Stripe;
+using System.Net;
+using Microsoft.AspNetCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,7 +21,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
     throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
+
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
 builder.Services.AddSingleton<OtpService>();
 builder.Services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
 
@@ -45,12 +49,29 @@ app.UseMiddleware<ErrorHandlingMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
+
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
+    // app.UseExceptionHandler("/Home/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-   // app.UseHsts();
+    // app.UseHsts();
+    app.UseExceptionHandler(
+        options =>
+        {
+            options.Run(
+                async (context) =>
+                {
+                    context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+                    var ex = context.Features.Get<IExceptionHandlerFeature>();
+                    if (ex != null)
+                    {
+                        await context.Response.WriteAsync(ex.Error.Message);
+                    }
+                });
+        });
+
+
 }
 
 
