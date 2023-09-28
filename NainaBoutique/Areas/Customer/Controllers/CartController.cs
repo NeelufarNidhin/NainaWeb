@@ -15,6 +15,7 @@ using Stripe.Checkout;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.ConstrainedExecution;
 using Stripe;
+using NainaBoutique.DataAccess.Data;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,15 +26,18 @@ namespace NainaBoutique.Areas.Customer.Controllers
     public class CartController : Controller
     {
         public readonly IUnitOfWork _unitOfWork;
+        public readonly ApplicationDbContext _db;
+        
         [BindProperty]
-        public ShoppingCartVM ShoppingCartVM { get; set; }
+        public ShoppingCartVM? ShoppingCartVM { get; set; }
 
-       
-        //[Required(ErrorMessage = "Please select the Payment Method")]
-        //public string? PaymentMethod { get; set; }
-        public CartController(IUnitOfWork unitOfWork)
+        
+
+
+        public CartController(IUnitOfWork unitOfWork, ApplicationDbContext db)
         {
-            _unitOfWork = unitOfWork;  
+            _unitOfWork = unitOfWork;
+            _db = db;
         }
 
 
@@ -44,9 +48,9 @@ namespace NainaBoutique.Areas.Customer.Controllers
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 
-            
 
-            ShoppingCartVM = new() {
+
+            ShoppingCartVM ShoppingCartVM = new() {
 
                 shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
                 includeProperties: "Product"
@@ -60,12 +64,9 @@ namespace NainaBoutique.Areas.Customer.Controllers
             IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
 
            
-
-          
-
                 foreach (var cart in ShoppingCartVM.shoppingCartList)
             {
-                cart.Product.ProductImage = productImages.Where(u =>u.ProductId==cart.ProductId).ToList();
+                cart.Product!.ProductImage = productImages.Where(u =>u.ProductId==cart.ProductId).ToList();
                 cart.Price = cart.Product!.Price;
                 ShoppingCartVM.OrderSummary. OrderTotal += (cart.Price * cart.Count);
 
@@ -75,59 +76,15 @@ namespace NainaBoutique.Areas.Customer.Controllers
         }
 
 
-        [HttpPost]
-        public IActionResult Index( string coupon)
-        {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+      
+
+        
+        
 
 
 
 
-            ShoppingCartVM = new()
-            {
-
-                shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
-                includeProperties: "Product"
-                ),
-                OrderSummary = new()
-
-
-            };
-
-
-            IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
-
-           
-
-
-
-            foreach (var cart in ShoppingCartVM.shoppingCartList)
-            {
-                cart.Product.ProductImage = productImages.Where(u => u.ProductId == cart.ProductId).ToList();
-                cart.Price = cart.Product!.Price;
-
-                if (coupon != null)
-                {
-                    CouponModel couponModel = _unitOfWork.Coupon.Get(u => u.CouponCode == coupon);
-                    var discount = couponModel.Discount;
-                    ShoppingCartVM.OrderSummary.OrderTotal = (ShoppingCartVM.OrderSummary.OrderTotal + (cart.Price * cart.Count)) -
-                        ((ShoppingCartVM.OrderSummary.OrderTotal + (cart.Price * cart.Count)) * discount / 100);
-                        
-                }
-                else
-                {
-                    ShoppingCartVM.OrderSummary.OrderTotal = (ShoppingCartVM.OrderSummary.OrderTotal + (cart.Price * cart.Count));
-                }
-
-
-
-            }
-            return View(ShoppingCartVM);
-        }
-
-
-
+        //increment the counter to increase the count of product
         public IActionResult Plus(int cartId)
         {
             var cartFromDb = _unitOfWork.Cart.Get(u => u.Id == cartId);
@@ -136,6 +93,8 @@ namespace NainaBoutique.Areas.Customer.Controllers
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
+
+        //decrement the counter to decrease the count of product
         public IActionResult Minus(int cartId)
         {
             var cartFromDb = _unitOfWork.Cart.Get(u => u.Id == cartId);
@@ -159,12 +118,17 @@ namespace NainaBoutique.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+
         public IActionResult Summary(string coupon)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 
+         //   var appliedcoupon = TempData["AppliedCoupon"];
+
+            //string appliedcoupon = HttpContext.Session.GetString("TextboxData");
 
 
             ShoppingCartVM = new()
@@ -178,7 +142,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
 
             //  IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
-            ShoppingCartVM.OrderSummary.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id ==userId);
+            ShoppingCartVM.OrderSummary.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
 
 
             ShoppingCartVM.OrderSummary.Name = ShoppingCartVM.OrderSummary.ApplicationUser.Name;
@@ -192,63 +156,173 @@ namespace NainaBoutique.Areas.Customer.Controllers
             {
                 // cart.Product.ProductImage = productImages.Where(u => u.ProductId == cart.ProductId).ToList();
                 cart.Price = cart.Product!.Price;
-
-
-                if (coupon != null)
-                {
-                    CouponModel couponModel = _unitOfWork.Coupon.Get(u => u.CouponCode == coupon);
-                    var discount = couponModel.Discount;
-                    ShoppingCartVM.OrderSummary.OrderTotal = (ShoppingCartVM.OrderSummary.OrderTotal + (cart.Price * cart.Count)) -
-                        ((ShoppingCartVM.OrderSummary.OrderTotal + (cart.Price * cart.Count)) * discount / 100);
-
-                }
-                else
-                {
-                    ShoppingCartVM.OrderSummary.OrderTotal = (ShoppingCartVM.OrderSummary.OrderTotal + (cart.Price * cart.Count));
-                }
-
-                // ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
+                ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
 
             }
 
+       
+           return View(ShoppingCartVM);
 
-            return View(ShoppingCartVM);
+
         }
 
         [HttpPost]
-        [ActionName("Summary")]
-        public IActionResult SummaryPost(string Paymentmethod)
+        public IActionResult ApplyCoupon(string coupon)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 
+            TempData["AppliedCoupon"] = coupon;
 
 
-            ShoppingCartVM.shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
+            ShoppingCartVM!.shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
                  includeProperties: "Product");
 
             ShoppingCartVM.OrderSummary.OrderDate = DateTime.Now;
             ShoppingCartVM.OrderSummary.ApplicationUserId = userId;
-            //ShoppingCartVM.OrderSummary.PaymentIntendId = "COD";
-           
-            //  IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
-          //  ShoppingCartVM.OrderSummary.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
 
-
-            
             foreach (var cart in ShoppingCartVM.shoppingCartList)
             {
                 // cart.Product.ProductImage = productImages.Where(u => u.ProductId == cart.ProductId).ToList();
                 cart.Price = cart.Product!.Price;
 
 
-                 ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
+                ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
+
             }
 
 
-           
-                if (Paymentmethod == "COD")
+
+            //  IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
+
+
+            if (coupon != null)
+            {
+                //checking coupon is there in Applied Coupon Table
+                var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.ApplicationUser.Id == userId && u.Coupon.CouponCode == coupon);
+
+
+                //checking status of the coupon
+                CouponModel couponModel = _unitOfWork.Coupon.Get(u => u.CouponCode == coupon);
+
+
+
+
+
+                if (couponFromDb != null)
+                {
+                    ViewBag.Message = $"Coupon '{coupon}' used/invalid";
+                }
+
+                else if (couponFromDb == null)
+                {
+                    AppliedCoupon appliedCoupon = new AppliedCoupon()
+                    {
+                        UserId = userId,
+                        AppliedStatus = true,
+                        CouponId = couponModel.Id
+
+                    };
+                    //Discount calculation
+
+                    if (ShoppingCartVM.OrderSummary.OrderTotal >= 250)
+                    {
+                        var discount = couponModel.Discount;
+                        //chk discount less than max discount
+                        var maxdiscount = (ShoppingCartVM.OrderSummary.OrderTotal) * (discount / 100);
+                        if (maxdiscount <= couponModel.MaxAmount)
+                        {
+                            ShoppingCartVM.OrderSummary.OrderTotal -= ((ShoppingCartVM.OrderSummary.OrderTotal) * (discount / 100));
+                        _db.AppliedCoupons.Add(appliedCoupon);
+
+                        _db.SaveChanges();
+
+                    }
+                        else
+                        {
+                            ShoppingCartVM.OrderSummary.OrderTotal -= 1000;
+                        }
+
+                    }
+
+                }
+            }
+            return View("Summary",ShoppingCartVM);
+
+        }
+
+
+
+        [HttpPost]
+        [ActionName("Summary")]
+        public IActionResult SummaryPost(string Paymentmethod )
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var coupon = TempData["AppliedCoupon"];
+
+
+            ShoppingCartVM!.shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
+                 includeProperties: "Product");
+
+            ShoppingCartVM.OrderSummary.OrderDate = DateTime.Now;
+            ShoppingCartVM.OrderSummary.ApplicationUserId = userId;
+
+            foreach (var cart in ShoppingCartVM.shoppingCartList)
+            {
+                // cart.Product.ProductImage = productImages.Where(u => u.ProductId == cart.ProductId).ToList();
+                cart.Price = cart.Product!.Price;
+
+
+                ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
+
+            }
+                if (coupon != null)
+                {
+                //checking coupon is there in Applied Coupon Table
+                var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.ApplicationUser.Id == userId && u.Coupon.CouponCode == coupon);
+
+
+                //checking status of the coupon
+                CouponModel couponModel = _unitOfWork.Coupon.Get(u => u.CouponCode == coupon);
+
+
+                if(couponFromDb != null) { 
+
+                    //Discount calculation
+
+                    if (ShoppingCartVM.OrderSummary.OrderTotal >= 250)
+                        {
+                            var discount = couponModel.Discount;
+                            //chk discount less than max discount
+                            var maxdiscount = (ShoppingCartVM.OrderSummary.OrderTotal) * (discount / 100);
+                            if (maxdiscount <= couponModel.MaxAmount)
+                            {
+                                ShoppingCartVM.OrderSummary.OrderTotal -= ((ShoppingCartVM.OrderSummary.OrderTotal) * (discount / 100));
+                               
+                            }
+                            else
+                            {
+                                ShoppingCartVM.OrderSummary.OrderTotal -= 1000;
+                            }
+
+                        }
+
+                    //    _db.AppliedCoupons.Add(appliedCoupon);
+
+                    //    _db.SaveChanges();
+                }
+
+            }
+
+            if(Paymentmethod == null ){
+                TempData["error"] = "Please select Payment Method";
+                return RedirectToAction(nameof(Summary));
+            }
+
+            if (Paymentmethod == "COD")
                 {
                     ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusDelayedPayment;
                     ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusApproved;
@@ -283,60 +357,93 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 _unitOfWork.Save();
             }
 
-            //  return View(ShoppingCartVM);
+                //  return View(ShoppingCartVM);
 
-            if (Paymentmethod == "COD")
-            {
-
-                return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderSummary.Id });
-            }
-           // return RedirectToAction(nameof(OrderCheckout));
-
-
-            else  
-            {
-                var domain = "https://localhost:7275/";
-                var options = new SessionCreateOptions
+                if (Paymentmethod == "COD")
                 {
-                    SuccessUrl = domain + $"Customer/Cart/OrderConfirmation?id={ShoppingCartVM.OrderSummary.Id}",
-                    CancelUrl = domain + "Customer/Cart/Index",
-                    LineItems = new List<SessionLineItemOptions>(),
-                  
-                    Mode = "payment",
-                };
+
+                    return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderSummary.Id });
+                }
+                // return RedirectToAction(nameof(OrderCheckout));
 
 
-                foreach (var item in ShoppingCartVM.shoppingCartList)
+                else
                 {
-                    var sessionLineItem = new SessionLineItemOptions { 
-                    
+                    var domain = "https://localhost:7275/";
+                    var options = new SessionCreateOptions
+                    {
+                        SuccessUrl = domain + $"Customer/Cart/OrderConfirmation?id={ShoppingCartVM.OrderSummary.Id}",
+                        CancelUrl = domain + "Customer/Cart/Index",
+                        LineItems = new List<SessionLineItemOptions>(),
+
+                        Mode = "payment",
+                        AllowPromotionCodes=true,
+                    };
 
 
-                        PriceData = new SessionLineItemPriceDataOptions { 
-                        
+                    foreach (var item in ShoppingCartVM.shoppingCartList)
+                    {
+                    var sessionLineItem = new SessionLineItemOptions
+                    {
 
-                            UnitAmount = (long)(item.Price * 100) ,
+
+
+                        PriceData = new SessionLineItemPriceDataOptions
+                        {
+
+
+                            UnitAmount = (long)(item.Price * 100),
                             Currency = "aed",
-                            ProductData = new SessionLineItemPriceDataProductDataOptions { 
-                            
+                            ProductData = new SessionLineItemPriceDataProductDataOptions
+                            {
 
-                                Name = item.Product.ProductName
+
+                                Name = item.Product!.ProductName
                             }
                         },
-                        Quantity = item.Count
+                        Quantity = item.Count,
+
                     };
-                    options.LineItems.Add(sessionLineItem);
+                     
+                        options.LineItems.Add(sessionLineItem);
+                    
+                    }
+                    var service = new SessionService();
+                    Session session = service.Create(options);
+                    _unitOfWork.OrderSummary.UpdateStripePayment(ShoppingCartVM.OrderSummary.Id, session.Id, session.PaymentIntentId);
+                    _unitOfWork.Save();
+                    Response.Headers.Add("Location", session.Url);
+
                 }
-                var service = new SessionService();
-               Session session= service.Create(options);
-                _unitOfWork.OrderSummary.UpdateStripePayment(ShoppingCartVM.OrderSummary.Id, session.Id, session.PaymentIntentId);
-                _unitOfWork.Save();
-                Response.Headers.Add("Location", session.Url);
-
-
                 return new StatusCodeResult(303);
-            }
+            
             // return View(ShoppingCartVM);
+        }
+
+        
+       
+        
+                
+
+
+
+        [HttpPost]
+        public IActionResult RemoveCoupon()
+        {
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var coupon = TempData["AppliedCoupon"];
+            if (coupon!= null)
+            {
+                //checking coupon is there in Applied Coupon Table
+                var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.ApplicationUser.Id == userId && u.Coupon.CouponCode == coupon);
+
+                _db.AppliedCoupons.Remove(couponFromDb);
+                _unitOfWork.Save();
+            }
+            return RedirectToAction(nameof(Summary));
         }
 
         public IActionResult OrderConfirmation(OrderSummary order)
@@ -357,7 +464,43 @@ namespace NainaBoutique.Areas.Customer.Controllers
                // HttpContext.Session.Clear();
             }
 
+            if(orderSummary.PaymentMethod == "Wallet")
+            {
+                var walletDb = _db.WalletModels.FirstOrDefault(u => u.ApplicationUser.Id == orderSummary.ApplicationUserId);
 
+
+                var balance = walletDb.WalletBalance;
+
+                var amount = orderSummary.OrderTotal;
+
+
+                var amountToPay = balance - amount;
+
+                if (amountToPay >= 0)
+                {
+                    walletDb.WalletBalance = amountToPay;
+                    _unitOfWork.Wallet.Update(walletDb);
+
+                    _unitOfWork.OrderSummary.UpdateStatus(order.Id, SD.StatusApproved, SD.PaymentStatusApproved);
+                  
+                   
+                    _unitOfWork.Save();
+                }
+
+                else
+                {
+                    amountToPay = Math.Abs(amountToPay);
+                    var service = new SessionService();
+                    Session session = service.Get(orderSummary.SessionId);
+
+                    if (session.PaymentStatus.ToLower() == "paid")
+                    {
+                        _unitOfWork.OrderSummary.UpdateStripePayment(order.Id, session.Id, session.PaymentIntentId);
+                        _unitOfWork.OrderSummary.UpdateStatus(order.Id, SD.StatusApproved, SD.PaymentStatusApproved);
+                        _unitOfWork.Save();
+                    }
+                }
+            }
 
             List<ShoppingCart> shoppingCarts = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == orderSummary.ApplicationUserId).ToList();
             _unitOfWork.Cart.RemoveRange(shoppingCarts);

@@ -99,15 +99,16 @@
                                 <button type="submit" class="btn btn-success form-control my-1">Pay Now</button>
                             }
                             @if (User.IsInRole(SD.Role_Admin))
-                            {
+                                {
 
                                 @if (Model.OrderSummary.OrderStatus == SD.StatusApproved)
-                                {
+                                    {
                                     <button type="submit" asp-action="StartProcessing" class="btn btn-secondary form-control my-1">Start Processing</button>
-                                }
+                                    }
                                 @if (Model.OrderSummary.OrderStatus == SD.StatusInProcess)
-                                {
+                                    {
                                     <button type="submit" asp-action="ShipOrder" onclick="return validateInput()" class="btn btn-secondary form-control my-1">Ship Order</button>
+                                    }
                                 }
                                 @if (Model.OrderSummary.OrderStatus != SD.StatusShipped &&
                            Model.OrderSummary.OrderStatus != SD.StatusCancelled &&
@@ -115,7 +116,7 @@
                                 {
                                     <button type="submit" asp-action="CancelOrder" class="btn btn-primary form-control my-1">Cancel Order</button>
                                 }
-                            }
+                            
                         </div>
 
                         <div class=" col-12 offset-md-2 text-right">

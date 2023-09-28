@@ -29,13 +29,13 @@
                             <a class="nav-link text-light" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
-                                <li class="nav-item">
-                    <a class="nav-link text-light" asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Orders</a>
-                </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Orders</a>
+                        </li>
 
 
                         @if (User.IsInRole(SD.Role_Admin))
-                            {
+                        {
 
 
                             <li class="nav-item dropdown">
@@ -58,18 +58,21 @@
 
                                 </ul>
                             </li>
-                            }
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="Customer" asp-controller="Wallet" asp-action="Index">Wallet</a>
+                        </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="Customer" asp-controller="Profile" asp-action="Index">Profile</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="Customer" asp-controller="Cart" asp-action="Index"><i class="bi bi-cart"></i>&nbsp;(0)</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="Customer" asp-controller="Favourites" asp-action="Index"><i class="bi bi-heart"></i></a>
-                            </li>
-                       
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="Customer" asp-controller="Profile" asp-action="Index">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="Customer" asp-controller="Cart" asp-action="Index"><i class="bi bi-cart"></i>&nbsp;(0)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="Customer" asp-controller="Favourites" asp-action="Index"><i class="bi bi-heart"></i></a>
+                        </li>
+
                     </ul>
                     <partial name="_LoginPartial" />
 

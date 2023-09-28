@@ -82,11 +82,25 @@ namespace NainaBoutique.Areas.Admin.Controllers
         public IActionResult Edit(CategoryModel category)
         {
             if (ModelState.IsValid)
+
             {
-                _unitOfWork.Category.Update(category);
-                _unitOfWork.Save();
-                TempData["success"] = "Category Updated Successfully";
-                return RedirectToAction("Index");
+
+                CategoryModel categoryName = _unitOfWork.Category.Get(u => u.CategoryName == category.CategoryName);
+
+
+                if (categoryName != null)
+                {
+
+                    TempData["error"] = "Category Already Exists";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    _unitOfWork.Category.Update(category);
+                    _unitOfWork.Save();
+                    TempData["success"] = "Category Updated Successfully";
+                    return RedirectToAction("Index");
+                }
             }
             return View();
 

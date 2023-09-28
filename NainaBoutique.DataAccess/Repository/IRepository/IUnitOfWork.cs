@@ -13,6 +13,8 @@ namespace NainaBoutique.DataAccess.Repository.IRepository
 		IProductImageRepository ProductImage { get; }
 		IOrderSummaryRepository OrderSummary { get; }
 		IOrderDetailRepository OrderDetail { get; }
+		IWalletRepository Wallet { get; }
+
         void Save();
 
 		

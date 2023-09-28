@@ -100,7 +100,7 @@ public class HomeController : Controller
             var sprice = price.Split('-');
            
 
-            productList = productList.Where(s => s.Price >= float.Parse(sprice[0]) && s.Price <= float.Parse(sprice[1]));
+            productList = productList.Where(s => s.Price >= decimal.Parse(sprice[0]) && s.Price <= decimal.Parse(sprice[1]));
             return View(productList);
         }
         else
@@ -205,14 +205,7 @@ public class HomeController : Controller
         return View();
     }
 
-    //public async Task<IActionResult> Privacy()
-    //{
-    //    var email = "nehanmohammed@gmail.com";
-    //    var subject = "otp";
-    //    var message = "34567";
-    //    await emailSender.SendEmailAsync(email, subject, message);
-    //    return View();
-    //}
+    
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

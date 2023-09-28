@@ -15,7 +15,7 @@ namespace NainaBoutique.Models.Models
 		public ApplicationUser? ApplicationUser { get; set; }
 		public DateTime OrderDate { get; set; }
 		public DateTime  ShippingDate { get; set; }
-		public float OrderTotal { get; set; }
+		public decimal OrderTotal { get; set; }
 		public string? OrderStatus { get; set; }
 		public string? PaymentStatus { get; set; }
         [Required]

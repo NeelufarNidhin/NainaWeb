@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NainaBoutique.DataAccess.Data;
 
@@ -11,9 +12,11 @@ using NainaBoutique.DataAccess.Data;
 namespace NainaBoutique.DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230927074953_AddWalletTable")]
+    partial class AddWalletTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -299,14 +302,14 @@ namespace NainaBoutique.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Discount")
+                        .HasColumnType("real");
 
-                    b.Property<decimal>("MaxAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("MaxAmount")
+                        .HasColumnType("real");
 
-                    b.Property<decimal>("MinCartAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("MinCartAmount")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("ValidTill")
                         .HasColumnType("datetime2");
@@ -351,8 +354,8 @@ namespace NainaBoutique.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Amount")
+                        .HasColumnType("real");
 
                     b.Property<string>("CardNumber")
                         .IsRequired()
@@ -395,8 +398,8 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Property<int>("OrderSummaryId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -448,8 +451,8 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Property<string>("OrderStatus")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("OrderTotal")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("OrderTotal")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
@@ -545,8 +548,8 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -590,8 +593,8 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("WalletBalance")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("WalletBalance")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -624,8 +627,8 @@ namespace NainaBoutique.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -638,8 +641,8 @@ namespace NainaBoutique.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
-                    b.Property<decimal>("Sale_Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Sale_Price")
+                        .HasColumnType("real");
 
                     b.Property<string>("Size")
                         .IsRequired()

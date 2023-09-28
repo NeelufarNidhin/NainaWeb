@@ -56,12 +56,20 @@
                 </div>
             </div>
 
-            <div class="col-3">
+            <div class="row">
 
-                
-                <input name="coupon" type="text"   class="form-control" />
-                <button type="submit" name="coupon"  class="btn btn-secondary form-control"  asp-area="Customer" asp-controller="cart" asp-action="Index">Apply Coupon</button>
-                  
+                @*<div class="col-3">
+                    <div class="form-group">
+                        <label for="coupon">Coupon Code</label>
+                    <input name="coupon" type="text" class="form-control"  />
+                        
+                        </div>
+                    <button type="submit" name="coupon" class="btn btn-secondary form-control" asp-area="Customer" asp-controller="cart" asp-action="Index">Apply Coupon</button>
+
+                    <button type="submit" name="coupon" class="btn btn-secondary form-control" asp-area="Customer" asp-controller="cart" asp-action="RemoveCoupon">Remove Coupon</button>
+                    <p>@ViewBag.Message</p>
+                </div>*@
+            </div>  
             </div>
             <div class="card-footer bg-white border-0">
                 <div class="row">
@@ -76,11 +84,11 @@
                 </div>
                 <div class="row">
                     <div class="col-md-4 offset-md-4">
-                        <a asp-action="summary" class="btn btn-secondary border-0 bg-gradient w-100 py-2">Summary</a>
+                        <a asp-action="summary"  name="coupon" class="btn btn-secondary border-0 bg-gradient w-100 py-2">Summary</a>
 
                     </div>
                 </div>
             </div>
 
-        </div>
+       
 </form>

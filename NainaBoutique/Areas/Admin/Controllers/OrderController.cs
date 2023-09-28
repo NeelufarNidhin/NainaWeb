@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using NainaBoutique.DataAccess.Data;
 using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Models;
 using NainaBoutique.Models.Models;
@@ -24,19 +25,25 @@ namespace NainaBoutique.Areas.Admin.Controllers
     {
 
         public readonly IUnitOfWork _unitOfWork;
+        public readonly ApplicationDbContext _db;
 
-        [BindProperty]
+
+       [BindProperty]
         public OrderVM OrderVM { get; set; }
 
-        public OrderController(IUnitOfWork unitOfWork)
+        public OrderController(IUnitOfWork unitOfWork, ApplicationDbContext db)
         {
             _unitOfWork = unitOfWork;
+            _db = db;
         }
         // GET: /<controller>/
         public IActionResult Index()
         {
             return View();
         }
+
+
+
 
         public IActionResult Details(int orderId)
         {
@@ -81,7 +88,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
         }
 
 
-
+        
         [HttpPost]
         [Authorize(Roles = SD.Role_Admin)]
         public IActionResult StartProcessing()
@@ -121,7 +128,8 @@ namespace NainaBoutique.Areas.Admin.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = SD.Role_Admin)]
+        
+        [Authorize(Roles = SD.Role_User)]
         public IActionResult CancelOrder()
         {
             var orderSummary = _unitOfWork.OrderSummary.Get(u => u.Id == OrderVM.OrderSummary.Id);
@@ -130,16 +138,29 @@ namespace NainaBoutique.Areas.Admin.Controllers
             var orderDetail = _unitOfWork.OrderDetail.Get(u => u.Id == orderSummary.Id);
            
 
-            if (orderSummary.PaymentStatus == SD.PaymentStatusApproved)
+            if (orderSummary.PaymentStatus == SD.PaymentStatusApproved || orderSummary.PaymentStatus == SD.PaymentStatusDelayedPayment)
             {
-                var options = new RefundCreateOptions { 
-               
-                    Reason = RefundReasons.RequestedByCustomer,
-                    PaymentIntent = orderSummary.PaymentIntendId
+                //var options = new RefundCreateOptions { 
+
+                //    Reason = RefundReasons.RequestedByCustomer,
+                //    PaymentIntent = orderSummary.PaymentIntendId
+                //};
+
+                //var service = new RefundService();
+                //Refund refund = service.Create(options);
+
+                WalletModel walletModel = new WalletModel()
+                {
+                    UserId = orderSummary.ApplicationUserId,
+                    WalletBalance = orderSummary.OrderTotal,
+                    OrderId = orderSummary.Id
+
                 };
 
-                var service = new RefundService();
-                Refund refund = service.Create(options);
+                
+                _db.WalletModels.Add(walletModel);
+                _db.SaveChanges();
+
 
                 _unitOfWork.OrderSummary.UpdateStatus(orderSummary.Id, SD.StatusCancelled, SD.StatusRefunded);
 
@@ -172,7 +193,8 @@ namespace NainaBoutique.Areas.Admin.Controllers
 
         [ActionName("Details")]
         [HttpPost]
-        [Authorize(Roles = SD.Role_Admin)]
+        [Authorize(Roles = SD.Role_Admin )]
+       
         public IActionResult PayNow()
         {
             var orderSummary = _unitOfWork.OrderSummary.Get(u => u.Id == OrderVM.OrderSummary.Id);

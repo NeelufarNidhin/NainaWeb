@@ -76,8 +76,10 @@ namespace NainaBoutique.Areas.Admin.Controllers
             if (ModelState.IsValid)
             {
 
-                if (productVM.Product.Id == 0)
+                if (productVM.Product!.Id == 0)
                 {
+
+                   
                     _unitOfWork.Product.Add(productVM.Product);
 
                 }

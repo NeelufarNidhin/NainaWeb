@@ -10,7 +10,7 @@ namespace NainaBoutique.Models.Models
 		[Key]
 		public int Id { get; set; }
 		[Required]
-		public float Amount { get; set; }
+		public decimal Amount { get; set; }
         public string? EmailReceipient { get; set; }
 		public string? Message { get; set; }
         [Required]
