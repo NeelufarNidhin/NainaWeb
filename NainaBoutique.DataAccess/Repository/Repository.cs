@@ -79,6 +79,8 @@ namespace NainaBoutique.DataAccess.Repository
         {
             dbSet.RemoveRange(entity);
         }
+
+       
     }
 }
 

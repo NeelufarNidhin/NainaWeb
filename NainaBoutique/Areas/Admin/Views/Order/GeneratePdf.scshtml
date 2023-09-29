@@ -2,7 +2,7 @@
 
 @model OrderVM
 
-<form method="post">
+<form method="get">
     <input asp-for="OrderSummary.Id" hidden />
     <div class="container-fluid my-5  d-flex  justify-content-center">
         <div class="card card-1">
@@ -52,14 +52,14 @@
                     <div class="row mt-4">
 
                         <div class="col">
-                            @*@foreach (var detail in Model.OrderDetail)
-                            {*@
+                            @foreach (var detail in Model.OrderDetail)
+                            {
                                 <div class="row justify-content-between">
                                     <div class="col-auto"><p class="mb-1 text-dark"><b>Order Details</b></p></div>
                                     <div class="flex-sm-col text-right col"> <p class="mb-1"><b>Total</b></p> </div>
-                                    <div class="flex-sm-col col-auto"> <p class="mb-1">@Model.OrderSummary.OrderTotal</p> </div>
+                                    <div class="flex-sm-col col-auto"> <p class="mb-1">@(detail.Count * detail.Price) AED</p> </div>
                                 </div>
-                            @*}*@
+                            }
                             <div class="row justify-content-between">
                                 <div class="flex-sm-col text-right col"><p class="mb-1"> <b>Payment Method</b></p> </div>
                                 <div class="flex-sm-col col-auto"><p class="mb-1">@Model.OrderSummary.PaymentMethod</p></div>
@@ -84,13 +84,13 @@
                 <div class="card-footer">
                     <div class="jumbotron-fluid">
                         <div class="row justify-content-between ">
-                            @*@foreach (var detail in Model.OrderDetail)
-                            {*@
+                            @foreach (var detail in Model.OrderDetail)
+                            {
 
                                 <div class="col-auto my-auto "><h2 class="mb-0 font-weight-bold">TOTAL PAID</h2></div>
                                 <div class="col-auto my-auto ml-auto"><h1 class="display-3 "></h1>@Model.OrderSummary.OrderTotal AED</div>
 
-                            @*}*@
+                            }
                         </div>
                         <div class="row mb-3 mt-3 mt-md-0">
                             @if (Model.OrderSummary.PaymentStatus == SD.PaymentStatusDelayedPayment &&
@@ -111,8 +111,8 @@ Model.OrderSummary.OrderStatus == SD.StatusShipped)
                                 }
                             }
                             @if (Model.OrderSummary.OrderStatus != SD.StatusShipped &&
-                    Model.OrderSummary.OrderStatus != SD.StatusCancelled &&
-                    Model.OrderSummary.OrderStatus != SD.StatusRefunded)
+                   Model.OrderSummary.OrderStatus != SD.StatusCancelled &&
+                   Model.OrderSummary.OrderStatus != SD.StatusRefunded)
                             {
                                 <button type="submit" asp-action="CancelOrder" class="btn btn-primary form-control my-1">Cancel Order</button>
                             }
@@ -385,8 +385,8 @@ Model.OrderSummary.OrderStatus == SD.StatusShipped)
         @*<input type="submit"  value="Generate PDF"  asp-route-orderId ="@Model.OrderSummary.Id" asp-action="GeneratePdf" asp-controller="Order" />*@
 
     </div>
-</form>
-<form method="get">
+@*</form>
+<form method="get">*@
 
     <input asp-for="OrderSummary.Id" hidden />
     <a href="@Url.Action("GeneratePdf", "Order", new { orderId = @Model.OrderSummary.Id })">Generate PDF</a>

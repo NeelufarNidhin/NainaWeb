@@ -13,7 +13,10 @@ using NainaBoutique.Models;
 using NainaBoutique.Models.Models;
 using NainaBoutique.Models.ViewModels;
 using NainaBoutique.Utility;
+using PdfSharpCore;
+using PdfSharpCore.Pdf;
 using Stripe;
+using TheArtOfDev.HtmlRenderer.PdfSharp;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -191,6 +194,11 @@ namespace NainaBoutique.Areas.Admin.Controllers
         }
 
 
+
+
+
+
+
         [ActionName("Details")]
         [HttpPost]
         [Authorize(Roles = SD.Role_Admin )]
@@ -206,10 +214,106 @@ namespace NainaBoutique.Areas.Admin.Controllers
             TempData["Success"] = "COD Payment Completed Successfully";
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderSummary.Id });
         }
-            #region API CALLS
 
 
-            [HttpGet]
+        [HttpGet]
+
+        [Authorize(Roles = SD.Role_User)]
+        public ActionResult GeneratePdf(int orderId)
+        {
+
+
+            OrderVM = new()
+            {
+                OrderSummary = _unitOfWork.OrderSummary.Get(u => u.Id == orderId, includeProperties: "ApplicationUser"),
+                OrderDetail = _unitOfWork.OrderDetail.GetAll(u => u.OrderSummaryId == orderId, includeProperties: "Product")
+
+            };
+
+            var document = new PdfDocument();
+             
+               string htmlcontent = "<div style ='width:100%;text-align:center'>";
+            htmlcontent += "<h2> NainaBoutique </h2>";
+            
+
+            if(OrderVM != null)
+            {
+                htmlcontent += "<h2> Invoice No: INV" + OrderVM.OrderSummary.Id  + "& Invoice Date:" + DateTime.Now + "</h2>";
+                htmlcontent += "<h3> Customer: " + OrderVM.OrderSummary.Name + " " + "</h3>";
+                htmlcontent += "<p>" + OrderVM.OrderSummary.Address + "," + OrderVM.OrderSummary.City + "</p>";
+                htmlcontent += "<p>" + OrderVM.OrderSummary.State + "," + OrderVM.OrderSummary.PostalCode + "</p>";
+                htmlcontent += "<h3> Contact :" + OrderVM.OrderSummary.MobileNumber +"</h3>";
+                htmlcontent += "</div>";
+            }
+
+
+            htmlcontent += "<table style = 'width:100% ;border:1px solid #000'>";
+            htmlcontent +=  "<thead style='font-weight :bold'>";
+            htmlcontent += "<tr>";
+            htmlcontent += "<td style = 'border:1px solid #000'> Product Code </td>";
+            htmlcontent += "<td style = 'border:1px solid #000'> Product Name </td>";
+            htmlcontent += "<td style = 'border:1px solid #000'> Quantity</td>";
+            htmlcontent += "<td style = 'border:1px solid #000'> Price </td>";
+            htmlcontent += "<td style = 'border:1px solid #000'> Total Amount </td>";
+            htmlcontent += "</tr>";
+            htmlcontent += "</thead >";
+
+            htmlcontent += "<tbody>";
+            if(OrderVM != null)
+            {
+                foreach(var product in OrderVM.OrderDetail)
+                {
+                    htmlcontent += "<tr>";
+                    htmlcontent += "<td>" + product.ProductId + "</td>";
+                    htmlcontent += "<td>" + product.Product.ProductName+ "</td>";
+                    htmlcontent += "<td>" + product.Count + "</td>";
+                    htmlcontent += "<td>" + product.Price.ToString() +"AED "+ "</td>";
+                    htmlcontent += "<td>" + ( product.Count * product.Price).ToString()+ "AED " + "</td>";
+                    htmlcontent += "</tr>";
+                };
+            }
+
+            htmlcontent += "</tbody>";
+            htmlcontent += "</div>";
+            htmlcontent += "<br/>";
+            htmlcontent += "<br/>";
+            htmlcontent += "<div style='text-align:left>";
+            htmlcontent += "<table style = 'width:100% ;border:1px solid #000;float:right'>";
+            htmlcontent += "<tr>";
+            htmlcontent += "<td style = 'border:1px solid #000'> Total Amount </td>";
+            htmlcontent += "</tr>";
+
+
+            if(OrderVM != null)
+            {
+                htmlcontent += "<tr>";
+                htmlcontent += "<td style='border:1px solid #000'>" + OrderVM.OrderSummary.OrderTotal.ToString() + "AED" + "</td>";
+                htmlcontent += "</tr>";
+            }
+            htmlcontent += "</table >";
+            htmlcontent += "</div>";
+            htmlcontent += "</div>";
+
+            PdfGenerator.AddPdfPages(document, htmlcontent, PageSize.A4);
+            byte[]? response = null;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                document.Save(ms);
+                response = ms.ToArray();
+            }
+
+            string Filename = "Invoice_" + orderId + ".pdf";
+            return File(response, "application/pdf", Filename);
+        }
+
+        
+
+
+
+        #region API CALLS
+
+
+        [HttpGet]
         public IActionResult GetAll(string status )
         {
             IEnumerable<OrderSummary> objOrderSummaryList = _unitOfWork.OrderSummary.GetAll(includeProperties: "ApplicationUser").ToList();
@@ -251,8 +355,8 @@ namespace NainaBoutique.Areas.Admin.Controllers
             return Json(new { data = objOrderSummaryList });
         }
 
-        
 
+        
 
 
 

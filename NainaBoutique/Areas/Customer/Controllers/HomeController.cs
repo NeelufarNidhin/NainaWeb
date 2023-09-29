@@ -41,11 +41,11 @@ public class HomeController : Controller
             {
                 EnableSsl = true,
                 UseDefaultCredentials = false,
-                Credentials = new NetworkCredential("albyjolly149@gmail.com", "ieivzgnukcrjdape", "smtp.gmail.com")
+                Credentials = new NetworkCredential("neelufar.nidhin@gmail.com", "ixobimgtkbsijgyk", "smtp.gmail.com")
             };
 
             return client.SendMailAsync(
-                new MailMessage(from: "albyjolly149@gmail.com",
+                new MailMessage(from: "neelufar.nidhin@gmail.com",
                                 to: email,
                                 subject,
                                 message
@@ -66,13 +66,61 @@ public class HomeController : Controller
     //    return View(productList);
     //}
 
-    public async Task<IActionResult> Index(string searchString, string color, string size,string price)
+    public async Task<IActionResult> Index(string searchString, string color,List< string> size, List<string> price, string sortOrder)
     {
 
         ViewData["CurrentFilter"] = searchString;
 
     
         IEnumerable<ProductModel> productList = _unitOfWork.Product.GetAll(u=>u.QuantityInStock > 0 && u.RecStatus=='A',includeProperties: "Category,ProductImage");
+
+
+        //switch (sortOrder)
+        //{
+        //    case: "priceLowToHigh":
+        //            query = _unitOfWork.Product.Get(u=> u.ProductName order)
+        //}
+
+
+
+        var priceRanges = new List<string>();
+
+        foreach (var p in price)
+        {
+            if (p == "0-50")
+            {
+                var sprice = p.Split('-');
+                priceRanges.Add(sprice[0]+ ".00");
+                priceRanges.Add(sprice[1]+ ".00");
+
+            }
+            if (p == "50-100")
+            {
+                var sprice = p.Split('-');
+                priceRanges.Add(sprice[0] + ".00");
+                priceRanges.Add(sprice[1]+".00"); ;
+            }
+            if (p == "100-250")
+            {
+                var sprice = p.Split('-');
+                priceRanges.Add(sprice[0] + ".00");
+                priceRanges.Add(sprice[1]+".00"); ;
+            }
+            if (p == "250-500")
+            {
+                var sprice = p.Split('-');
+                priceRanges.Add(sprice[0] + ".00");
+                priceRanges.Add(sprice[1]+".00"); ;
+            }
+            if (p == "500-1000")
+            {
+                var sprice = p.Split('-');
+                priceRanges.Add(sprice[0] + ".00");
+                priceRanges.Add(sprice[1]+".00"); ;
+            }
+        }
+
+
 
 
         if (!String.IsNullOrEmpty(searchString))
@@ -90,17 +138,30 @@ public class HomeController : Controller
             productList = productList.Where(s => s.Color.ToLower() == color);
             return View(productList);
         }
-        if (size != null)
+        //if (size != null)
+        //{
+        //    productList = productList.Where(s => s.Size == size);
+        //    return View(productList);
+        //}
+
+        if(size!=null && size.Any())
         {
-            productList = productList.Where(s => s.Size == size);
+            productList = productList.Where(u => size.Contains(u.Size));
             return View(productList);
         }
-        if (price != null)
-        {
-            var sprice = price.Split('-');
-           
+        //if (price != null)
+        //{
+        //    var sprice = price.Split('-');
 
-            productList = productList.Where(s => s.Price >= decimal.Parse(sprice[0]) && s.Price <= decimal.Parse(sprice[1]));
+
+        //    productList = productList.Where(s => s.Price >= decimal.Parse(sprice[0]) && s.Price <= decimal.Parse(sprice[1]));
+        //    return View(productList);
+        //}
+
+        if (priceRanges!= null && priceRanges.Any())
+        {
+            
+            productList = productList.Where(s => s.Price >= decimal.Parse(priceRanges[0]) && s.Price <= decimal.Parse(priceRanges[1]));
             return View(productList);
         }
         else

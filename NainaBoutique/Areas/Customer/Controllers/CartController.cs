@@ -212,8 +212,9 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
                 if (couponFromDb != null)
                 {
-                    ViewBag.Message = $"Coupon '{coupon}' used/invalid";
-                }
+                    TempData["error"] = "Coupon alreay used";
+                    return RedirectToAction(nameof(Summary));
+;                }
 
                 else if (couponFromDb == null)
                 {
@@ -279,44 +280,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
 
             }
-                if (coupon != null)
-                {
-                //checking coupon is there in Applied Coupon Table
-                var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.ApplicationUser.Id == userId && u.Coupon.CouponCode == coupon);
-
-
-                //checking status of the coupon
-                CouponModel couponModel = _unitOfWork.Coupon.Get(u => u.CouponCode == coupon);
-
-
-                if(couponFromDb != null) { 
-
-                    //Discount calculation
-
-                    if (ShoppingCartVM.OrderSummary.OrderTotal >= 250)
-                        {
-                            var discount = couponModel.Discount;
-                            //chk discount less than max discount
-                            var maxdiscount = (ShoppingCartVM.OrderSummary.OrderTotal) * (discount / 100);
-                            if (maxdiscount <= couponModel.MaxAmount)
-                            {
-                                ShoppingCartVM.OrderSummary.OrderTotal -= ((ShoppingCartVM.OrderSummary.OrderTotal) * (discount / 100));
-                               
-                            }
-                            else
-                            {
-                                ShoppingCartVM.OrderSummary.OrderTotal -= 1000;
-                            }
-
-                        }
-
-                    //    _db.AppliedCoupons.Add(appliedCoupon);
-
-                    //    _db.SaveChanges();
-                }
-
-            }
-
+               
             if(Paymentmethod == null ){
                 TempData["error"] = "Please select Payment Method";
                 return RedirectToAction(nameof(Summary));
@@ -334,9 +298,43 @@ namespace NainaBoutique.Areas.Customer.Controllers
                     ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusPending;
                     ShoppingCartVM.OrderSummary.PaymentMethod = "Card";
                 }
-            
-            
-            
+
+
+            if (coupon != null)
+            {
+                //checking coupon is there in Applied Coupon Table
+                var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.ApplicationUser.Id == userId && u.Coupon.CouponCode == coupon);
+
+
+                //checking status of the coupon
+                CouponModel couponModel = _unitOfWork.Coupon.Get(u => u.CouponCode == coupon);
+
+
+                if (couponFromDb != null)
+                {
+
+                    //Discount calculation
+
+                    if (ShoppingCartVM.OrderSummary.OrderTotal >= 250)
+                    {
+                        var discount = couponModel.Discount;
+                        //chk discount less than max discount
+                        var maxdiscount = (ShoppingCartVM.OrderSummary.OrderTotal) * (discount / 100);
+                        if (maxdiscount <= couponModel.MaxAmount)
+                        {
+                            ShoppingCartVM.OrderSummary.OrderTotal -= ((ShoppingCartVM.OrderSummary.OrderTotal) * (discount / 100));
+
+                        }
+                        else
+                        {
+                            ShoppingCartVM.OrderSummary.OrderTotal -= 1000;
+                        }
+
+                    }
+                }
+
+            }
+
             _unitOfWork.OrderSummary.Add(ShoppingCartVM.OrderSummary);
             _unitOfWork.Save();
             
@@ -353,6 +351,9 @@ namespace NainaBoutique.Areas.Customer.Controllers
                     Count = cart.Count
 
                 };
+
+
+
                 _unitOfWork.OrderDetail.Add(orderDetail);
                 _unitOfWork.Save();
             }
@@ -464,43 +465,43 @@ namespace NainaBoutique.Areas.Customer.Controllers
                // HttpContext.Session.Clear();
             }
 
-            if(orderSummary.PaymentMethod == "Wallet")
-            {
-                var walletDb = _db.WalletModels.FirstOrDefault(u => u.ApplicationUser.Id == orderSummary.ApplicationUserId);
+            //if(orderSummary.PaymentMethod == "Wallet")
+            //{
+            //    var walletDb = _unitOfWork.Wallet. Get(u => u.ApplicationUser.Id == orderSummary.ApplicationUserId);
 
 
-                var balance = walletDb.WalletBalance;
+            //    var balance = walletDb.WalletBalance;
 
-                var amount = orderSummary.OrderTotal;
+            //    var amount = orderSummary.OrderTotal;
 
 
-                var amountToPay = balance - amount;
+            //    var amountToPay = balance - amount;
 
-                if (amountToPay >= 0)
-                {
-                    walletDb.WalletBalance = amountToPay;
-                    _unitOfWork.Wallet.Update(walletDb);
+            //    if (amountToPay >= 0)
+            //    {
+            //        walletDb.WalletBalance = amountToPay;
+            //        _unitOfWork.Wallet.Update(walletDb);
 
-                    _unitOfWork.OrderSummary.UpdateStatus(order.Id, SD.StatusApproved, SD.PaymentStatusApproved);
+            //        _unitOfWork.OrderSummary.UpdateStatus(order.Id, SD.StatusApproved, SD.PaymentStatusApproved);
                   
                    
-                    _unitOfWork.Save();
-                }
+            //        _unitOfWork.Save();
+            //    }
 
-                else
-                {
-                    amountToPay = Math.Abs(amountToPay);
-                    var service = new SessionService();
-                    Session session = service.Get(orderSummary.SessionId);
+            //    else
+            //    {
+            //        amountToPay = Math.Abs(amountToPay);
+            //        var service = new SessionService();
+            //        Session session = service.Get(orderSummary.SessionId);
 
-                    if (session.PaymentStatus.ToLower() == "paid")
-                    {
-                        _unitOfWork.OrderSummary.UpdateStripePayment(order.Id, session.Id, session.PaymentIntentId);
-                        _unitOfWork.OrderSummary.UpdateStatus(order.Id, SD.StatusApproved, SD.PaymentStatusApproved);
-                        _unitOfWork.Save();
-                    }
-                }
-            }
+            //        if (session.PaymentStatus.ToLower() == "paid")
+            //        {
+            //            _unitOfWork.OrderSummary.UpdateStripePayment(order.Id, session.Id, session.PaymentIntentId);
+            //            _unitOfWork.OrderSummary.UpdateStatus(order.Id, SD.StatusApproved, SD.PaymentStatusApproved);
+            //            _unitOfWork.Save();
+            //        }
+            //    }
+            //}
 
             List<ShoppingCart> shoppingCarts = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == orderSummary.ApplicationUserId).ToList();
             _unitOfWork.Cart.RemoveRange(shoppingCarts);
@@ -509,7 +510,9 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
         }
 
-        
+
+
+       
 
     }
 }
