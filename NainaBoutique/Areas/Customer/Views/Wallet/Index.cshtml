@@ -1,4 +1,4 @@
-﻿@model WalletVM
+﻿
 
 <form method="post">
 
@@ -8,21 +8,21 @@
         </div>
         <div class="card-body">
             @*<div class="row mb-3 pb-3">
-                <a  asp-controller="Wallet" asp-action="Index" class="btn btn-secondary text-uppercase mb-5 btn-sm">Continue shopping</a>
-            </div>*@
+                    <a  asp-controller="Wallet" asp-action="Index" class="btn btn-secondary text-uppercase mb-5 btn-sm">Continue shopping</a>
+                </div>*@
 
             <div class="col-md-10 offset-md-1">
-               
+
                 <div class="row border-bottom pb-3">
 
                     <div class="col-12 col-lg-6 pt-md-3">
                         @*<h5 class="text-uppercase text-sedondary"> @Model.ApplicationUser </h5>*@
-               <input type ="hidden"          />
+                        <input type="hidden" />
 
-                        @foreach (var wallet in @Model.WalletList)
-                        {
-                            <h5 class="text-uppercase text-sedondary text-center">Your Balance is  @wallet.WalletBalance</h5>
-                        }
+                        @*@foreach (var wallet in @Model.WalletList)
+                            {*@
+                        <h5 class="text-uppercase text-sedondary text-center">Your Balance is  @ViewBag.Message</h5>
+                        @*}*@
 
 
                     </div>
@@ -32,11 +32,11 @@
                             <div class="col-md-4 offset-md-4">
                                 <button type="submit" asp-controller="wallet"
                                         class="btn btn-secondary text-uppercase mr-2 px-4">
-                                    Add Payment
+                                    Wallet History
                                 </button>
-                                
-                                   
-                               
+
+
+
                             </div>
 
 
@@ -45,11 +45,38 @@
 
                     </div>
                 </div>
-               
+
             </div>
         </div>
+        <table id="walTbl" class="table table-bordered table-striped" width="100%">
+            <thead>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        Wallet Balance
+                    </th>
 
 
+                    <th>
+                        Order ID
+                    </th>
+
+                    <th></th>
+
+
+                </tr>
+            </thead>
+
+        </table>
     </div>
 
+   
+
 </form>
+
+@section Scripts{
+
+    <script src="~/js/wallet.js"></script>
+}

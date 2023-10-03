@@ -37,12 +37,12 @@ function loadDataTable(status) {
         "columns": [
             { data: 'id', "autowidth": true },
             { data: 'name', "autowidth": true },
-            { data: 'mobileNumber', "autowidth": true },
+            { data: 'orderDate', "autowidth": true },
             //{ data: 'size', "autowidth": true },
-            { data: 'applicationUser.email', "autowidth": true },
+            { data: 'paymentMethod', "autowidth": true },
             { data: 'orderStatus', "autowidth": true },
             { data: 'orderTotal', "autowidth": true },
-            //{ data: 'color', "autowidth": true },
+            { data: 'paymentStatus', "autowidth": true },
             {
                 data: 'id',
                 "render": function (data) {

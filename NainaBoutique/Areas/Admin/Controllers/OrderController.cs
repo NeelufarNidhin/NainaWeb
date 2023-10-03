@@ -64,6 +64,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
         [Authorize(Roles=SD.Role_Admin)]
         public IActionResult UpdateOrderDetail(int orderId)
         {
+           
             var orderSummaryFromDb = _unitOfWork.OrderSummary.Get(u => u.Id == OrderVM.OrderSummary.Id);
 
             orderSummaryFromDb.Name = OrderVM.OrderSummary.Name;
@@ -161,8 +162,8 @@ namespace NainaBoutique.Areas.Admin.Controllers
                 };
 
                 
-                _db.WalletModels.Add(walletModel);
-                _db.SaveChanges();
+                _unitOfWork.Wallet.Add(walletModel);
+                _unitOfWork.Save();
 
 
                 _unitOfWork.OrderSummary.UpdateStatus(orderSummary.Id, SD.StatusCancelled, SD.StatusRefunded);

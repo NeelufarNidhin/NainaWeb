@@ -29,6 +29,7 @@
     <None Remove="Areas\Admin\Views\Order\" />
     <None Remove="Areas\Customer\Views\Profile\" />
     <None Remove="Areas\Customer\Views\Wallet\" />
+    <None Remove="Areas\Admin\Views\SalesReport\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Areas\Identity\Pages\Account\Testchk.cshtml">
@@ -83,6 +84,7 @@
     <Folder Include="Areas\Admin\Views\Order\" />
     <Folder Include="Areas\Customer\Views\Profile\" />
     <Folder Include="Areas\Customer\Views\Wallet\" />
+    <Folder Include="Areas\Admin\Views\SalesReport\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NainaBoutique.DataAccess\NainaBoutique.DataAccess.csproj">

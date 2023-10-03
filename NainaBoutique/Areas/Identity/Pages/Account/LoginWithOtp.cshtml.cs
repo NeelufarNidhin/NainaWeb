@@ -72,34 +72,34 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
         }
 
 
-        public Task<bool> SendEmailAsync(string email, string subject, string otp)
-        {
-            try
-            {
-                MailMessage message = new MailMessage();
-                SmtpClient smtpClient = new SmtpClient();
-                message.From = new MailAddress("neelufar.nidhin@gmail.com");
-                message.To.Add(email);
-                message.Subject = subject;
-                message.IsBodyHtml = true;
-                // message.Body = confirmurl;
-                message.Body = otp;
+        //public Task<bool> SendEmailAsync(string email, string subject, string otp)
+        //{
+        //    try
+        //    {
+        //        MailMessage message = new MailMessage();
+        //        SmtpClient smtpClient = new SmtpClient();
+        //        message.From = new MailAddress("neelufar.nidhin@gmail.com");
+        //        message.To.Add(email);
+        //        message.Subject = subject;
+        //        message.IsBodyHtml = true;
+        //        // message.Body = confirmurl;
+        //        message.Body = otp;
 
-                smtpClient.Port = 587;
-                smtpClient.Host = "smtp.gmail.com";
-                smtpClient.EnableSsl = true;
-                smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential("neelufar.nidhin@gmail.com", "ixobimgtkbsijgyk");
-                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtpClient.Send(message);
-                return Task.FromResult(true);
-            }
-            catch (Exception ex)
-            {
+        //        smtpClient.Port = 587;
+        //        smtpClient.Host = "smtp.gmail.com";
+        //        smtpClient.EnableSsl = true;
+        //        smtpClient.UseDefaultCredentials = false;
+        //        smtpClient.Credentials = new NetworkCredential("neelufar.nidhin@gmail.com", "ixobimgtkbsijgyk");
+        //        smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+        //        smtpClient.Send(message);
+        //        return Task.FromResult(true);
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                return Task.FromResult(false);
-            }
-        }
+        //        return Task.FromResult(false);
+        //    }
+        //}
     }
 
     public class OtpService

@@ -33,7 +33,7 @@
                             <button type="submit" name="color" value="beige" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: beige"></button>
                             <button type="submit" name="color" value="blue" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: blue"></button>
                             <button type="submit" name="color" value="red" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: red"></button>
-                           
+
                         </div>
                     </div>
                     <!-- Size Filter -->
@@ -67,9 +67,9 @@
                             <input type="checkbox" class="form-check-input" id="size7" name="size" value="free-size">
                             <label class="form-check-label" for="size7">Free-size</label>
                         </div>
-                                      
-                                       
-                                    </div>
+
+
+                    </div>
                     <!-- Price Filter -->
                     <div>
                         <h5>Price</h5>
@@ -90,34 +90,35 @@
                             <label class="form-check-label" for="price4">250-500 AED</label>
                         </div>
                         @*<div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="price5" name="price" value="500-570">
-                            <label class="form-check-label" for="price5">500-750 AED</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="checkbox" class="form-check-input" id="price6" name="price" value="750-1000">
-                            <label class="form-check-label" for="price6">750-1000 AED</label>
-                        </div>*@
+                        <input type="checkbox" class="form-check-input" id="price5" name="price" value="500-570">
+                        <label class="form-check-label" for="price5">500-750 AED</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="price6" name="price" value="750-1000">
+                        <label class="form-check-label" for="price6">750-1000 AED</label>
+                    </div>*@
 
-                    </div>                  
-                                       
+                    </div>
+
                 </form>
             </aside>
-
-            <!-- Right Content with Product Listing -->
+           
+                <!-- Right Content with Product Listing -->
             <main class="col-lg-9 col-md-8 col-sm-12 p-3">
-                <h1 class="mb-4">Product Listing</h1>
-                <!-- Sorting Dropdown -->
-                <div class="mb-3">
-                    <label for="sort">Sort by:</label>
-                    <select id="sort" class="form-select">
-                        <option value="featured">Featured</option>
-                        <option value="priceLowToHigh">Price: Low to High</option>
-                        <option value="priceHighToLow">Price: High to Low</option>
-                        <option value="nameAZ">Name: A to Z</option>
-                        <option value="nameZA">Name: Z to A</option>
-                    </select>
-                </div>
-
+                <form asp-controller="Home" asp-action="Index" method="get" id="filterform">
+                    <h1 class="mb-4">Product Listing</h1>
+                    <!-- Sorting Dropdown -->
+                    <div class="mb-3">
+                        <label for="sort" name="sortOrder">Sort by:</label>
+                        <select id="sort" name="sortOrder" class="form-select">
+                            <option value="featured">Featured</option>
+                            <option value="priceLowToHigh">Price: Low to High</option>
+                            <option value="priceHighToLow">Price: High to Low</option>
+                            <option value="nameAZ">Name: A to Z</option>
+                            <option value="nameZA">Name: Z to A</option>
+                        </select>
+                        <input type="submit" value="sort" class="btn-btn secondary" />
+                    </div></form>
                 <!---carousel-->
                 <div id="carouselExampleCaptions" class="carousel slide">
                     <div class="carousel-indicators">
@@ -163,28 +164,28 @@
                 <div class="row">
                     @foreach (var product in Model)
                     {
-                    <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
-                        <div class="card">
-                            @if (product.ProductImage != null && product.ProductImage.Count() > 0)
+                        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+                            <div class="card">
+                                @if (product.ProductImage != null && product.ProductImage.Count() > 0)
                                 {
-                            <img src="@product.ProductImage.FirstOrDefault().ImageUrl" class="card-img-top" alt="Product Image">
+                                    <img src="@product.ProductImage.FirstOrDefault().ImageUrl" class="card-img-top" alt="Product Image">
                                 }
                                 else
                                 {
-                            <img src="https://placehold.co/500x600.png" class="card-img-top" alt="Placeholder Image">
+                                    <img src="https://placehold.co/500x600.png" class="card-img-top" alt="Placeholder Image">
                                 }
-                            <div class="card-body">
-                                <h5 class="card-title">@product.ProductName</h5>
-                                <p class="card-text">Size: @product.Size</p>
-                                <p class="card-text">
-                                    <span class="text-decoration-line-through">Price: @product.Price.ToString("C")</span>
-                                    <br />
-                                    Now: @product.Sale_Price.ToString("C")
-                                </p>
-                                <a asp-action="Details" asp-route-productId="@product.Id" class="btn btn-primary">Details</a>
+                                <div class="card-body">
+                                    <h5 class="card-title">@product.ProductName</h5>
+                                    <p class="card-text">Size: @product.Size</p>
+                                    <p class="card-text">
+                                        <span class="text-decoration-line-through">Price: @product.Price.ToString("C")</span>
+                                        <br />
+                                        Now: @product.Sale_Price.ToString("C")
+                                    </p>
+                                    <a asp-action="Details" asp-route-productId="@product.Id" class="btn btn-primary">Details</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     }
                 </div>
             </main>

@@ -16,6 +16,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Runtime.ConstrainedExecution;
 using Stripe;
 using NainaBoutique.DataAccess.Data;
+using static TheArtOfDev.HtmlRenderer.Adapters.RGraphicsPath;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -298,6 +299,16 @@ namespace NainaBoutique.Areas.Customer.Controllers
                     ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusPending;
                     ShoppingCartVM.OrderSummary.PaymentMethod = "Card";
                 }
+            else if (Paymentmethod == "Wallet")
+            {
+                ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusPending;
+                ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusPending;
+                ShoppingCartVM.OrderSummary.PaymentMethod = "Wallet";
+            }
+
+
+
+
 
 
             if (coupon != null)
@@ -358,32 +369,102 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 _unitOfWork.Save();
             }
 
-                //  return View(ShoppingCartVM);
+            //  return View(ShoppingCartVM);
 
-                if (Paymentmethod == "COD")
+            if (Paymentmethod == "COD")
+            {
+
+                return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderSummary.Id });
+            }
+            // return RedirectToAction(nameof(OrderCheckout));
+
+            else if (Paymentmethod == "Wallet")
+            {
+                IEnumerable<WalletModel> walletList = _unitOfWork.Wallet.GetAll(u => u.UserId == ShoppingCartVM.OrderSummary.ApplicationUserId);
+
+
+                var applicationUserDb = _unitOfWork.ApplicationUser.Get(u => u.Id == ShoppingCartVM.OrderSummary.ApplicationUserId);
+
+                var walletbalance = applicationUserDb.WalletBalance;
+
+                var orderSumaryFromDb = _unitOfWork.OrderSummary.Get(u => u.Id == ShoppingCartVM.OrderSummary.Id);
+                var amount = ShoppingCartVM.OrderSummary.OrderTotal;
+
+
+                var amountToPay = walletbalance - amount;
+
+                if (amountToPay >= 0 && amountToPay >= amount)
                 {
+                    applicationUserDb.WalletBalance = amountToPay;
 
-                    return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderSummary.Id });
+
+
+                    WalletModel wallet = new()
+                    {
+                        UserId = ShoppingCartVM.OrderSummary.ApplicationUserId,
+                        WalletBalance = -amount,
+                        OrderId = ShoppingCartVM.OrderSummary.Id
+                    };
+                    _unitOfWork.ApplicationUser.Update(applicationUserDb);
+                    _unitOfWork.Wallet.Update(wallet);
+
+
+
+                    _unitOfWork.OrderSummary.UpdateStatus(ShoppingCartVM.OrderSummary.Id, SD.StatusApproved, SD.PaymentStatusApproved);
+                    _unitOfWork.Save();
                 }
-                // return RedirectToAction(nameof(OrderCheckout));
-
-
                 else
                 {
-                    var domain = "https://localhost:7275/";
-                    var options = new SessionCreateOptions
-                    {
-                        SuccessUrl = domain + $"Customer/Cart/OrderConfirmation?id={ShoppingCartVM.OrderSummary.Id}",
-                        CancelUrl = domain + "Customer/Cart/Index",
-                        LineItems = new List<SessionLineItemOptions>(),
-
-                        Mode = "payment",
-                        AllowPromotionCodes=true,
-                    };
+                    TempData["error"] = "Not enough Credit in Wallet , Please choose another Payment Method";
+                    return View("Summary", ShoppingCartVM);
+                }
 
 
-                    foreach (var item in ShoppingCartVM.shoppingCartList)
-                    {
+            }
+            //else if(amountToPay < 0 && amountToPay < amount)
+            //{
+            //    applicationUserDb.WalletBalance = 0 ;
+
+
+
+            //    WalletModel wallet = new()
+            //    {
+            //        UserId = ShoppingCartVM.OrderSummary.ApplicationUserId,
+            //        WalletBalance = 0 ,
+            //        OrderId = ShoppingCartVM.OrderSummary.Id
+            //    };
+
+            //    var balanceToPay = Math.Abs(amountToPay);
+
+            //    _unitOfWork.ApplicationUser.Update(applicationUserDb);
+            //    _unitOfWork.Wallet.Update(wallet);
+            //    ShoppingCartVM.OrderSummary.PaymentMethod = "COD";
+
+            //    _unitOfWork.OrderSummary.Update(orderSumaryFromDb);
+            //    _unitOfWork.OrderSummary.UpdateStatus(ShoppingCartVM.OrderSummary.Id, SD.StatusApproved, SD.PaymentStatusDelayedPayment);
+            //    _unitOfWork.Save();
+            //}
+            //}
+
+            //_unitOfWork.Save();
+
+
+            else
+            {
+                var domain = "https://localhost:7275/";
+                var options = new SessionCreateOptions
+                {
+                    SuccessUrl = domain + $"Customer/Cart/OrderConfirmation?id={ShoppingCartVM.OrderSummary.Id}",
+                    CancelUrl = domain + "Customer/Cart/Index",
+                    LineItems = new List<SessionLineItemOptions>(),
+
+                    Mode = "payment",
+                    AllowPromotionCodes = true,
+                };
+
+
+                foreach (var item in ShoppingCartVM.shoppingCartList)
+                {
                     var sessionLineItem = new SessionLineItemOptions
                     {
 
@@ -405,20 +486,20 @@ namespace NainaBoutique.Areas.Customer.Controllers
                         Quantity = item.Count,
 
                     };
-                     
-                        options.LineItems.Add(sessionLineItem);
-                    
-                    }
-                    var service = new SessionService();
-                    Session session = service.Create(options);
-                    _unitOfWork.OrderSummary.UpdateStripePayment(ShoppingCartVM.OrderSummary.Id, session.Id, session.PaymentIntentId);
-                    _unitOfWork.Save();
-                    Response.Headers.Add("Location", session.Url);
+
+                    options.LineItems.Add(sessionLineItem);
 
                 }
+                var service = new SessionService();
+                Session session = service.Create(options);
+                _unitOfWork.OrderSummary.UpdateStripePayment(ShoppingCartVM.OrderSummary.Id, session.Id, session.PaymentIntentId);
+                _unitOfWork.Save();
+                Response.Headers.Add("Location", session.Url);
                 return new StatusCodeResult(303);
-            
-            // return View(ShoppingCartVM);
+            }
+               
+
+            return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderSummary.Id });
         }
 
         
@@ -465,43 +546,15 @@ namespace NainaBoutique.Areas.Customer.Controllers
                // HttpContext.Session.Clear();
             }
 
-            //if(orderSummary.PaymentMethod == "Wallet")
-            //{
-            //    var walletDb = _unitOfWork.Wallet. Get(u => u.ApplicationUser.Id == orderSummary.ApplicationUserId);
-
-
-            //    var balance = walletDb.WalletBalance;
-
-            //    var amount = orderSummary.OrderTotal;
-
-
-            //    var amountToPay = balance - amount;
-
-            //    if (amountToPay >= 0)
-            //    {
-            //        walletDb.WalletBalance = amountToPay;
-            //        _unitOfWork.Wallet.Update(walletDb);
-
-            //        _unitOfWork.OrderSummary.UpdateStatus(order.Id, SD.StatusApproved, SD.PaymentStatusApproved);
-                  
-                   
-            //        _unitOfWork.Save();
-            //    }
-
+            
+           
             //    else
             //    {
             //        amountToPay = Math.Abs(amountToPay);
             //        var service = new SessionService();
             //        Session session = service.Get(orderSummary.SessionId);
 
-            //        if (session.PaymentStatus.ToLower() == "paid")
-            //        {
-            //            _unitOfWork.OrderSummary.UpdateStripePayment(order.Id, session.Id, session.PaymentIntentId);
-            //            _unitOfWork.OrderSummary.UpdateStatus(order.Id, SD.StatusApproved, SD.PaymentStatusApproved);
-            //            _unitOfWork.Save();
-            //        }
-            //    }
-            //}
+            
 
             List<ShoppingCart> shoppingCarts = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == orderSummary.ApplicationUserId).ToList();
             _unitOfWork.Cart.RemoveRange(shoppingCarts);

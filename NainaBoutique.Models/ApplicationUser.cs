@@ -19,8 +19,9 @@ public class ApplicationUser : IdentityUser
         public int MobileNumber { get; set; }
         [NotMapped]
         public string? Role { get; set; }
+        public decimal WalletBalance { get; set; }
 
-        
+
     }
 
 }

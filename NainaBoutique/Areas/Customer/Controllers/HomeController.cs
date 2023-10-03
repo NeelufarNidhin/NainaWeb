@@ -75,12 +75,42 @@ public class HomeController : Controller
         IEnumerable<ProductModel> productList = _unitOfWork.Product.GetAll(u=>u.QuantityInStock > 0 && u.RecStatus=='A',includeProperties: "Category,ProductImage");
 
 
-        //switch (sortOrder)
-        //{
-        //    case: "priceLowToHigh":
-        //            query = _unitOfWork.Product.Get(u=> u.ProductName order)
-        //}
 
+        if (sortOrder != null)
+        {
+            
+           
+
+
+            switch (sortOrder)
+            {
+                case "priceLowToHigh":
+                    productList = productList.OrderBy(u => u.Price);
+                   
+                    break;
+                case "priceHighToLow":
+                    productList = productList.OrderByDescending(u => u.Price);
+                   
+                    break;
+                case "nameAZ":
+                    productList = productList.OrderBy(u => u.ProductName);
+                   
+                    break;
+                case "nameZA":
+                    productList = productList.OrderByDescending(u => u.ProductName);
+                   
+                    break;
+                case "featured":
+                    productList = productList.OrderBy(u => u.CreatedAt);
+
+                    break;
+                default:
+                    productList = productList.OrderBy(u => u.CreatedAt);
+
+                    break;
+            }
+            return View(productList);
+        }
 
 
         var priceRanges = new List<string>();
@@ -138,25 +168,14 @@ public class HomeController : Controller
             productList = productList.Where(s => s.Color.ToLower() == color);
             return View(productList);
         }
-        //if (size != null)
-        //{
-        //    productList = productList.Where(s => s.Size == size);
-        //    return View(productList);
-        //}
+        
 
         if(size!=null && size.Any())
         {
             productList = productList.Where(u => size.Contains(u.Size));
             return View(productList);
         }
-        //if (price != null)
-        //{
-        //    var sprice = price.Split('-');
-
-
-        //    productList = productList.Where(s => s.Price >= decimal.Parse(sprice[0]) && s.Price <= decimal.Parse(sprice[1]));
-        //    return View(productList);
-        //}
+        
 
         if (priceRanges!= null && priceRanges.Any())
         {
