@@ -37,6 +37,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<OtpModel> OtpModels { get; set; }
     public DbSet<AppliedCoupon> AppliedCoupons { get; set; }
     public DbSet<WalletModel> WalletModels { get; set; }
+    public DbSet<AddressModel> Address { get; set; }
 
 
     public override int SaveChanges()

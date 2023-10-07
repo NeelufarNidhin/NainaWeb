@@ -33,54 +33,56 @@
                             <a class="nav-link text-light" asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Orders</a>
                         </li>
                         @if (User.IsInRole(SD.Role_Admin))
-                            {
+                        {
+
+                        }
+                        @if (User.IsInRole(SD.Role_Admin))
+                        {
                             <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="Admin" asp-controller="SalesReport" asp-action="Index">Sales Report</a>
-                            </li>
-                            }
-                            @if (User.IsInRole(SD.Role_Admin))
-                            {
-
-
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        Content Management
-                                    </a>
-                                    <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item " asp-area="Admin" asp-controller="Category" asp-action="Index">Category </a></li>
-                                        <li><hr class="dropdown-divider" /></li>
-                                        <li><a class="dropdown-item " asp-area="Admin" asp-controller="Product" asp-action="Index">Products </a></li>
-                                        <li><hr class="dropdown-divider" /></li>
-                                        <li><a class="dropdown-item " asp-area="Admin" asp-controller="User" asp-action="Index">User </a></li>
-                                        <li><hr class="dropdown-divider" /></li>
-                                        <li><a class="dropdown-item " asp-area="Customer" asp-controller="Cart" asp-action="Index">Cart </a></li>
-                                        <li><hr class="dropdown-divider" /></li>
-                                        <li><a class="dropdown-item " asp-area="Admin" asp-controller="Coupon" asp-action="Index">Coupon </a></li>
-                                        <li><hr class="dropdown-divider" /></li>
-                                        <li><a class="dropdown-item " asp-area="Admin" asp-controller="Giftcard" asp-action="Index">Giftcards </a></li>
-                                        <li><hr class="dropdown-divider" /></li>
-
-                                    </ul>
-                                </li>
-                            }
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="Customer" asp-controller="Wallet" asp-action="Index">Wallet</a>
+                                <a class="nav-link text-light" asp-area="Admin" asp-controller="DashBoard" asp-action="Index">Control Panel</a>
                             </li>
 
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="Customer" asp-controller="Profile" asp-action="Index">Profile</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="Customer" asp-controller="Cart" asp-action="Index"><i class="bi bi-cart"></i>&nbsp;(0)</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-light" asp-area="Customer" asp-controller="Favourites" asp-action="Index"><i class="bi bi-heart"></i></a>
-                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Content Management
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item " asp-area="Admin" asp-controller="Category" asp-action="Index">Category </a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item " asp-area="Admin" asp-controller="Product" asp-action="Index">Products </a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item " asp-area="Admin" asp-controller="User" asp-action="Index">User </a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item " asp-area="Customer" asp-controller="Cart" asp-action="Index">Cart </a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item " asp-area="Admin" asp-controller="Coupon" asp-action="Index">Coupon </a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item " asp-area="Admin" asp-controller="Giftcard" asp-action="Index">Giftcards </a></li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li><a class="dropdown-item " asp-area="Admin" asp-controller="SalesReport" asp-action="Index">Charts </a></li>
+                                    <li><hr class="dropdown-divider" /></li>
 
-                        </ul>
+                                </ul>
+                            </li>
+                        }
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="Customer" asp-controller="Wallet" asp-action="Index">Wallet</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="Customer" asp-controller="Profile" asp-action="Index">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="Customer" asp-controller="Cart" asp-action="Index"><i class="bi bi-cart"></i>&nbsp;(0)</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-light" asp-area="Customer" asp-controller="Favourites" asp-action="Index"><i class="bi bi-heart"></i></a>
+                        </li>
+
+                    </ul>
                     <partial name="_LoginPartial" />
 
-                    
+
                 </div>
             </div>
         </nav>
@@ -93,6 +95,8 @@
             @RenderBody()
         </main>
     </div>
+
+   
 
     <footer class="border-top footer text-muted">
         <div class="text-center">
@@ -107,6 +111,8 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="//cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js" asp-append-version="true"></script>
     <script src="https://cdn.tiny.cloud/1/f9jwcthnw23aszl4qrx0slg5zwkgnkwe1lurlx00cqulakca/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

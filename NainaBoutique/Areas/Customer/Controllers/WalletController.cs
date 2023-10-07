@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -58,6 +59,10 @@ namespace NainaBoutique.Areas.Customer.Controllers
             //}
             return View();
         }
+
+
+
+        
 
 
         #region API CALLS

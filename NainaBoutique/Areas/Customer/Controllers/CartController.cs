@@ -17,6 +17,7 @@ using System.Runtime.ConstrainedExecution;
 using Stripe;
 using NainaBoutique.DataAccess.Data;
 using static TheArtOfDev.HtmlRenderer.Adapters.RGraphicsPath;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -284,7 +285,8 @@ namespace NainaBoutique.Areas.Customer.Controllers
                
             if(Paymentmethod == null ){
                 TempData["error"] = "Please select Payment Method";
-                return RedirectToAction(nameof(Summary));
+                // return RedirectToAction(nameof(Summary));
+                return View("Summary", ShoppingCartVM);
             }
 
             if (Paymentmethod == "COD")
@@ -548,24 +550,48 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
             
            
-            //    else
-            //    {
-            //        amountToPay = Math.Abs(amountToPay);
-            //        var service = new SessionService();
-            //        Session session = service.Get(orderSummary.SessionId);
-
+           
             
 
             List<ShoppingCart> shoppingCarts = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == orderSummary.ApplicationUserId).ToList();
             _unitOfWork.Cart.RemoveRange(shoppingCarts);
             _unitOfWork.Save();
             return View(order);
+        }
 
+        [HttpPost]
+        public IActionResult AddAddress(AddressModel addressModel )
+        {
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+
+            AddressModel AddressModel = new()
+            {
+                UserId = userId,
+                Address = addressModel.Address,
+                City = addressModel.City,
+                State = addressModel.State,
+                PostalCode = addressModel.PostalCode,
+                MobileNumber = addressModel.MobileNumber
+
+
+            };
+
+            _db.Address.Add(AddressModel);
+            _db.SaveChanges();
+            TempData["success"] = "Address Added Successfully";
+            // return RedirectToAction("Summary");
+            return RedirectToAction(nameof(Index));
+          //  return View();
         }
 
 
-
-       
+        public IActionResult AddAddress()
+        {
+            return View();
+        }
 
     }
 }

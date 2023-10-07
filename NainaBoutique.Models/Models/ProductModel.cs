@@ -10,20 +10,26 @@ namespace NainaBoutique.Models
 	{
 		[Key]
 		public int Id { get; set; }
-		[Required]
+
+
+        [MaxLength(30)]
+        [Required]
 		public string? ProductName { get; set; }
-		[Required]
+
+        [Required]
         public string? Description { get; set; }
 		[Required]
 		[Range(1,1000)]
         public decimal Price { get; set; }
         [Range(1, 1000)]
         public decimal  Sale_Price { get; set; }
-       
+        [Range(0, 1000)]
         public int QuantityInStock { get; set; }
         [Required]
+        [MaxLength(20)]
         public string? Color { get; set; }
-		[Required]
+        [MaxLength(10)]
+        [Required]
 		public string? Size { get; set; }
 		
 		public int? CategoryId { get; set; }

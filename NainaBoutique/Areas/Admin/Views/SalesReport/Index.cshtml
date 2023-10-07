@@ -1,91 +1,69 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+﻿@*@{
+        Layout = "~/Views/Shared/_Layout.cshtml";
+    }*@
 
-<p>
-    <div class="row">
-        <div class="col-1">
-            <label><b>Chart-Type</b></label>
-        </div>
+<h2>Sales Chart</h2>
 
-            <div class="col-2">
-                <select id="ChartType" class="form-control" style="width:150px" ;>
-                    <option selected>-Select Chart Type-</option>
-                    <option>bar</option>
-                    <option>line</option>
-                    <option>pie</option>
-                    <option>doughnut</option>
-                </select>
-            </div>
-            <div class="col-4">
-                <input id="ID" value="Show Graph" type="button" />
-            </div>
-        </div>
-</p>
+<form asp-controller="SalesReport" asp-action="SalesChart" asp-area="Admin" method="get">
+    <div class="form-group">
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="startDate" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="endDate" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary">Generate Report</button>
+</form>
 
 
-<div id="ChartView">
-    <canvas id="myChart" ></canvas>
-</div>
+<canvas id="salesChart" width="400" height="200"></canvas>
+@section Scripts{
+<script>
+    var startDate = new Date('@Model.StartDate.ToString("yyyy-MM-dd")');
+    var endDate = new Date('@Model.EndDate.ToString("yyyy-MM-dd")');
+    var salesData = @Html.Raw(Json.Serialize(Model.SalesData));
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-
-
-
-<script type="text/javascript">
-    $(function () {
-        $("#ID").click(function () {
-
-            var chartType = $("#ChartType").val();
-            var chartView = document.getElementById('ChartView');
-
-            chartView.innerHTML = '&nbsp;';
-
-            $('#ChartView').append('<canvas id="myChart" style="max-width:750px; max-height:400px;"><canvas> ');
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("GetSalesData","SalesReport")',
-                data : "",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: OnSuccessResult,
-                error: OnError
-            });
-
-            function OnSuccessResult(data) {
-
-                var _data = data;
-                var _chartLabels = _data[0];
-                var _chartData = _data[1];
-
-                var barColor = [
-                    'rgba(255,99,132,0.2)',
-                    'rgba(54,162,235,0.2)',
-                    'rgba(255,206,86,0.2)',
-                    'rgba(75,192,192,0.2)',
-                    'rgba(153,102,255,0.2)',
-                    'rgba(255,159,64,0.2)'
-                ];
-
-                new Chart("myChart",
-                    {
-                        type: chartType,
-                        data: {
-                            labels: _chartLabels,
-                            datasets: [{
-                                backgroundColor: barColor,
-                                data: _chartData
-                            }]
+    var ctx = document.getElementById('salesChart').getContext('2d');
+    var salesChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: salesData.map(data => data.Date),
+            datasets: [{
+                label: 'Sales Report',
+                data: salesData.map(data => data.Total),
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'day',
+                        displayFormats: {
+                            day: 'MMM D'
                         }
-                    });
+                    },
+                    title: {
+                        display: true,
+                        text: 'Date'
+                    },
+                    min: startDate,
+                    max: endDate
+                },
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Total Sales'
+                    }
+                }
             }
-            function OnError(err) {
-
-            }
-        });
+        }
     });
+</script>
 
-
-    </script>
+}

@@ -25,6 +25,8 @@
                                 </h4>
 
                             </div>
+
+
                             <div class="row my-1">
                                 <div class="col-3">
                                     <label>Name</label>
@@ -80,6 +82,18 @@
                             </div>
                         </div>
 
+
+
+                        <div class="row">
+                            <div class="col-3 ">
+                                <!-- Button to trigger the popup -->
+                                <a onclick="showInPopup('@Url.Action("AddAddress","Cart")','Add Address')" class="btn btn-success">Add Address</a>
+
+                            </div>
+
+
+                        </div>
+
                         <div class="col-12 col-12 col-lg-6 pb-4">
                             <h4 class="d-flex align-items-center mb-3">
                                 <span class="text-info ">Order Summary</span>
@@ -119,30 +133,30 @@
                                     <button type="submit" name="coupon" class="btn btn-secondary form-control" asp-area="Customer" asp-controller="cart" asp-action="RemoveCoupon">Remove</button>
                                     <p>@ViewBag.Message</p>
                                 </div>
-                                </div>
-
-
-
-
-                                <h6 class="text-info">Total (AED) :@Model.OrderSummary.OrderTotal</h6>
-                                @*<h6 class="text-info">Total (AED) :@ViewData["OrderTotal"]</h6>*@
-
-
-
-
-
-                                <div>
-                                    <p>Please select your Payment Method</p>
-                                    <input type="radio" id="COD" asp-for="OrderSummary.PaymentMethod" name="PaymentMethod" value="COD">
-                                    <label>Cash On Delivery</label><br>
-                                    <input type="radio" id="Card" name="PaymentMethod" value="Card" asp-for="OrderSummary.PaymentMethod">
-                                    <label>Card Payment</label><br>
-                                    <input type="radio" id="Wallet" name="PaymentMethod" value="Wallet" asp-for="OrderSummary.PaymentMethod">
-                                    <label>Wallet Payment</label><br>
-                                    @*<span asp-validation-for="OrderSummary.PaymentMethod" class="text-danger"></span>*@
-
-                                </div>
                             </div>
+
+
+
+
+                            <h6 class="text-info">Total (AED) :@Model.OrderSummary.OrderTotal</h6>
+                            @*<h6 class="text-info">Total (AED) :@ViewData["OrderTotal"]</h6>*@
+
+
+
+
+
+                            <div>
+                                <p>Please select your Payment Method</p>
+                                <input type="radio" id="COD" asp-for="OrderSummary.PaymentMethod" name="PaymentMethod" value="COD">
+                                <label>Cash On Delivery</label><br>
+                                <input type="radio" id="Card" name="PaymentMethod" value="Card" asp-for="OrderSummary.PaymentMethod">
+                                <label>Card Payment</label><br>
+                                <input type="radio" id="Wallet" name="PaymentMethod" value="Wallet" asp-for="OrderSummary.PaymentMethod">
+                                <label>Wallet Payment</label><br>
+                                @*<span asp-validation-for="OrderSummary.PaymentMethod" class="text-danger"></span>*@
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -160,11 +174,58 @@
                 </div>
             </div>
         </div>
-    
+
 </form>
+
+
+<div class="modal" tabindex="-1" id="form-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @*<p>Modal body text goes here.</p>*@
+                <div class="form-group">
+                    <label asp-for="AddressModel.PostalCode" class="p-0"></label>
+                    <input asp-for="AddressModel.PostalCode" class="form-control" />
+                    <span asp-validation-for="AddressModel.PostalCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 
 @*@section Scripts{
 
-    <partial name="_ValidationScriptsPartial" />
-   }*@
+     <partial name="_ValidationScriptsPartial" />
+    }*@
+
+@section Scripts{
+    <script>showInPopup = (url, title) => {
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (res) {
+                    $("#form-modal .modal-body").html(res);
+                    $("#form-modal .modal-title").html(title);
+                    $("#form-modal").modal('show');
+
+                }
+            })
+        }</script>
+    @*<script>$('#showPopupButton').click(function () {
+            $('#popupForm').modal('show');
+            $('#modalTitle').text('Add Address');
+        });</script>*@
+
+
+
+}

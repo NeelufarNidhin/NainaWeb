@@ -13,10 +13,13 @@ namespace NainaBoutique.Models.Models
         [Required]
         public DateTime ValidTill { get; set; }
         [Required]
+        [Range(1, 1000)]
         public decimal Discount { get; set; }
         [Required]
+        [Range(1, 1000)]
         public decimal MinCartAmount { get; set; }
         [Required]
+        [Range(1, 1000)]
         public decimal MaxAmount { get; set; }
 
 
