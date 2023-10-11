@@ -20,9 +20,9 @@ namespace NainaBoutique.Models
         public string? Description { get; set; }
 		[Required]
 		[Range(1,1000)]
-        public decimal Price { get; set; }
+        public float Price { get; set; }
         [Range(1, 1000)]
-        public decimal  Sale_Price { get; set; }
+        public float  Sale_Price { get; set; }
         [Range(0, 1000)]
         public int QuantityInStock { get; set; }
         [Required]

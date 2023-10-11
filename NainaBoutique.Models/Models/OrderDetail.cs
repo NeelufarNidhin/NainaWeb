@@ -21,7 +21,7 @@ namespace NainaBoutique.Models.Models
 		public ProductModel? Product { get; set; }
 		public int Count { get; set; }
 		public string? Size { get; set; }
-        public decimal Price { get; set; }
+        public float Price { get; set; }
 
     }
 }

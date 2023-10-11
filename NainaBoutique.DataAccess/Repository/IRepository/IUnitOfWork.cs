@@ -14,7 +14,8 @@ namespace NainaBoutique.DataAccess.Repository.IRepository
 		IOrderSummaryRepository OrderSummary { get; }
 		IOrderDetailRepository OrderDetail { get; }
 		IWalletRepository Wallet { get; }
-
+		IAddressRepository Address { get; }
+        IWalletTopUpRepository WalletTopUp { get; }
         void Save();
 
 		

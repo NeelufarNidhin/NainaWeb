@@ -122,13 +122,13 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
 
 
-        public IActionResult Summary(string coupon)
+        public IActionResult Summary(string coupon, AddressModel addressModel)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 
-         //   var appliedcoupon = TempData["AppliedCoupon"];
+            //   var appliedcoupon = TempData["AppliedCoupon"];
 
             //string appliedcoupon = HttpContext.Session.GetString("TextboxData");
 
@@ -139,8 +139,24 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
                 includeProperties: "Product"),
                 OrderSummary = new()
+               
+               //AddressModel = new()
 
             };
+
+
+            //var AddressM = _db.Address.FirstOrDefault(u => u.UserId == userId);
+            ////foreach (var item in ShoppingCartVM.AddressModelList)
+            ////{
+            //ShoppingCartVM.AddressModel.Address = AddressM.Address;
+            //    ShoppingCartVM.AddressModel.City = AddressM.City;
+            //    ShoppingCartVM.AddressModel.State = AddressM.State;
+            //    ShoppingCartVM.AddressModel.PostalCode = AddressM.PostalCode;
+            //    ShoppingCartVM.AddressModel.MobileNumber = AddressM.MobileNumber;
+
+            //}
+
+
 
 
             //  IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
@@ -303,8 +319,8 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 }
             else if (Paymentmethod == "Wallet")
             {
-                ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusPending;
-                ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusPending;
+                //ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusPending;
+                //ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusPending;
                 ShoppingCartVM.OrderSummary.PaymentMethod = "Wallet";
             }
 
@@ -374,8 +390,12 @@ namespace NainaBoutique.Areas.Customer.Controllers
             //  return View(ShoppingCartVM);
 
             if (Paymentmethod == "COD")
-            {
 
+            {
+                //ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusDelayedPayment;
+                //ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusApproved;
+                //ShoppingCartVM.OrderSummary.PaymentMethod = "COD";
+                //_unitOfWork.Save();
                 return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderSummary.Id });
             }
             // return RedirectToAction(nameof(OrderCheckout));
@@ -393,11 +413,17 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 var amount = ShoppingCartVM.OrderSummary.OrderTotal;
 
 
-                var amountToPay = walletbalance - amount;
-
-                if (amountToPay >= 0 && amountToPay >= amount)
+                var newBalance = walletbalance - amount;
+                 
+                if(newBalance < 0 )
                 {
-                    applicationUserDb.WalletBalance = amountToPay;
+                    TempData["error"] = "Not enough Credit , Please topup wallet";
+                    return View("Summary", ShoppingCartVM);
+                }
+
+                if (newBalance >= 0 && walletbalance >= amount)
+                {
+                    applicationUserDb.WalletBalance = newBalance;
 
 
 
@@ -415,26 +441,11 @@ namespace NainaBoutique.Areas.Customer.Controllers
                     _unitOfWork.OrderSummary.UpdateStatus(ShoppingCartVM.OrderSummary.Id, SD.StatusApproved, SD.PaymentStatusApproved);
                     _unitOfWork.Save();
                 }
-                else
-                {
-                    TempData["error"] = "Not enough Credit in Wallet , Please choose another Payment Method";
-                    return View("Summary", ShoppingCartVM);
-                }
+                
 
 
             }
-            //else if(amountToPay < 0 && amountToPay < amount)
-            //{
-            //    applicationUserDb.WalletBalance = 0 ;
-
-
-
-            //    WalletModel wallet = new()
-            //    {
-            //        UserId = ShoppingCartVM.OrderSummary.ApplicationUserId,
-            //        WalletBalance = 0 ,
-            //        OrderId = ShoppingCartVM.OrderSummary.Id
-            //    };
+            
 
             //    var balanceToPay = Math.Abs(amountToPay);
 
@@ -494,6 +505,8 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 }
                 var service = new SessionService();
                 Session session = service.Create(options);
+
+
                 _unitOfWork.OrderSummary.UpdateStripePayment(ShoppingCartVM.OrderSummary.Id, session.Id, session.PaymentIntentId);
                 _unitOfWork.Save();
                 Response.Headers.Add("Location", session.Url);
@@ -582,15 +595,28 @@ namespace NainaBoutique.Areas.Customer.Controllers
             _db.Address.Add(AddressModel);
             _db.SaveChanges();
             TempData["success"] = "Address Added Successfully";
-            // return RedirectToAction("Summary");
-            return RedirectToAction(nameof(Index));
-          //  return View();
+             return RedirectToAction("Summary");
+            //return RedirectToAction(nameof(Index));
+           // return View("Summary");
         }
 
 
-        public IActionResult AddAddress()
+        public  IActionResult AddAddress()
         {
-            return View();
+            return View(new AddressModel());
+        }
+
+        public IActionResult ViewAddress()
+
+
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var AddressList = _unitOfWork.Address.GetAll(u => u.UserId == userId).ToList();
+
+            //var  AddressList = _unitOfWork.Address.GetAll().ToList();
+
+            return View(AddressList);
         }
 
     }

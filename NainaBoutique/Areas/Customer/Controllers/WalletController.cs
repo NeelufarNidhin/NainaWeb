@@ -10,6 +10,7 @@ using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Models;
 using NainaBoutique.Models.Models;
 using NainaBoutique.Models.ViewModels;
+using Stripe.Checkout;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -45,11 +46,12 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
                 var applicationUserDb = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
                 IEnumerable<WalletModel> walletList = _unitOfWork.Wallet.GetAll(u => u.UserId == userId);
+                IEnumerable<WalletTopUp> walletTopUpList = _unitOfWork.WalletTopUp.GetAll(u => u.Userid == userId);
 
 
-                var WalletTotal = walletList.Sum(u => u.WalletBalance);
+            var WalletTotal = walletList.Sum(u => u.WalletBalance) + walletTopUpList.Sum(u => u.WalletBalance);
 
-                applicationUserDb.WalletBalance = WalletTotal;
+            applicationUserDb.WalletBalance = WalletTotal;
 
                 _unitOfWork.ApplicationUser.Update(applicationUserDb);
                 _unitOfWork.Save();
@@ -60,15 +62,79 @@ namespace NainaBoutique.Areas.Customer.Controllers
             return View();
         }
 
+        public IActionResult TopUpWallet(string amount)
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            
+            if (amount != null)
+            {
+                var domain = "https://localhost:7275/";
+                var options = new SessionCreateOptions
+                {
+                    LineItems = new List<SessionLineItemOptions>(),
+
+                    Mode = "payment",
+                    SuccessUrl = domain + "Customer/Wallet/Success",
+                    CancelUrl = domain + "Customer/Wallet/Index",
+                };
+
+                var sessionLineItem = new SessionLineItemOptions
+                {
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        UnitAmount = (long)(float.Parse(amount) * 100),
+                        Currency = "aed",
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = "Recharge Wallet"
+                        }
+                    },
+                    Quantity = 1
+                };
+
+                options.LineItems.Add(sessionLineItem);
+
+                var service = new SessionService();
+                ///  service.Create(options);
+                Session session = service.Create(options);
 
 
+                WalletTopUp wallettopup = new()
+                {
+                    Userid = userId,
+                    WalletBalance = float.Parse(amount),
+                    PurchaseDate = DateTime.Now
+                };
+
+
+               
+
+                Response.Headers.Add("Location", session.Url);
+                _unitOfWork.WalletTopUp.Add(wallettopup);
+
+                _unitOfWork.Save();
+                return new StatusCodeResult(303);
+               
+                //return View();
+            }
+           
+            return RedirectToAction("Success");
+
+        }
+
+        public IActionResult Success()
+        {
+            return View();
+        }
         
 
 
-        #region API CALLS
+            #region API CALLS
 
 
-        [HttpGet]
+            [HttpGet]
         public IActionResult GetAll()
         {
 

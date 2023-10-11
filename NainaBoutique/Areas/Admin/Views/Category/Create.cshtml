@@ -1,4 +1,10 @@
-﻿@model CategoryModel
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+
+@model CategoryModel
 
 <form method="post">
     <div class="border p-3 mt-4">
@@ -35,6 +41,6 @@
 </form>
 @section Scripts{
     @{
-        <partial name="_ValidationScriptsPartial.cshtml"/>
+        <partial name="_ValidationScriptsPartial.cshtml" />
     }
 }

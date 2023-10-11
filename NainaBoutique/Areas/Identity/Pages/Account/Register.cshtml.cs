@@ -154,7 +154,7 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                user.Name = Input.City;
+                user.Name = Input.Name;
                 user.Address = Input.Address;
                 user.City = Input.City;
                 user.State = Input.State;
@@ -188,7 +188,7 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await SendEmailAsync(Input.Email, "Confirm your email",
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                      //   otp);
                     $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
 
@@ -223,34 +223,34 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
 
 
 
-        private Task<bool> SendEmailAsync(string email, string subject, string confirmurl)
-        {
-            try
-            {
-                MailMessage message = new MailMessage();
-                SmtpClient smtpClient = new SmtpClient();
-                message.From = new MailAddress("albyjolly149@gmail.com");
-                message.To.Add(email);
-                message.Subject = subject;
-                message.IsBodyHtml = true;
-                message.Body = confirmurl;
-                // message.Body = messageotp;
+        //private Task<bool> SendEmailAsync(string email, string subject, string confirmurl)
+        //{
+        //    try
+        //    {
+        //        MailMessage message = new MailMessage();
+        //        SmtpClient smtpClient = new SmtpClient();
+        //        message.From = new MailAddress("albyjolly149@gmail.com");
+        //        message.To.Add(email);
+        //        message.Subject = subject;
+        //        message.IsBodyHtml = true;
+        //        message.Body = confirmurl;
+        //        // message.Body = messageotp;
 
-                smtpClient.Port = 587;
-                smtpClient.Host = "smtp.gmail.com";
-                smtpClient.EnableSsl = true;
-                smtpClient.UseDefaultCredentials = false;
-                smtpClient.Credentials = new NetworkCredential("albyjolly149@gmail.com", "ieivzgnukcrjdape");
-                smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
-                smtpClient.Send(message);
-                return Task.FromResult(true);
-            }
-            catch (Exception ex)
-            {
+        //        smtpClient.Port = 587;
+        //        smtpClient.Host = "smtp.gmail.com";
+        //        smtpClient.EnableSsl = true;
+        //        smtpClient.UseDefaultCredentials = false;
+        //        smtpClient.Credentials = new NetworkCredential("neelufar.nidhin@gmail.com", "ixobimgtkbsijgyk");
+        //        smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
+        //        smtpClient.Send(message);
+        //        return Task.FromResult(true);
+        //    }
+        //    catch (Exception ex)
+        //    {
 
-                return Task.FromResult(false);
-            }
-        }
+        //        return Task.FromResult(false);
+        //    }
+        //}
 
 
 

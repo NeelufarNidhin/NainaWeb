@@ -24,3 +24,21 @@ function loadWalletTable() {
     });
 
 }
+
+
+
+$(document).ready(function () {
+            $('#openModalButton').click(function () {
+                $('#myModal').modal('show');
+
+            });
+
+        });
+
+
+ $(document).ready(function () {
+            // Add a click event handler to the close button inside the modal
+            $('#myModal').on('click', '.close-modal-btn', function () {
+                $('#myModal').modal('hide'); // Hide the modal
+            });
+        });

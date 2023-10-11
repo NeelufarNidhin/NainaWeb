@@ -1,20 +1,26 @@
-﻿@model OrderSummary
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
-<div class="container row pt-4" >
+}
+
+
+@model OrderSummary
+
+<div class="container row pt-4">
     <div class="col-12 text-center">
 
         <h1 class="text-primary text-center">Order Placed Successfully! </h1>
 
         <p>Your Order Number is : @Model.Id  </p> <br />
-                                                  <p>TransactionId : @if(@Model.PaymentIntendId  is null )  @DateTime.Now.ToString("ddMMyyyymmss") else @Model.PaymentIntendId  at @DateTime.Now</p> <br />
+        <p>TransactionId : @if (@Model.PaymentIntendId is null)@DateTime.Now.ToString("ddMMyyyymmss") else @Model.PaymentIntendId  at @DateTime.Now</p> <br />
         <br />
 
         <img src="~/images/thankyou.webp" width="65%" />
     </div>
 
-    <div class="col-12 text-center" >
-        <br/>
-        Your Order has been placed successfully! <br/>
+    <div class="col-12 text-center">
+        <br />
+        Your Order has been placed successfully! <br />
     </div>
 </div>
 

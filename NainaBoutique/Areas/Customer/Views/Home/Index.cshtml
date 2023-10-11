@@ -178,9 +178,9 @@
                                     <h5 class="card-title">@product.ProductName</h5>
                                     <p class="card-text">Size: @product.Size</p>
                                     <p class="card-text">
-                                        <span class="text-decoration-line-through">Price: @product.Price.ToString("C")</span>
+                                        <span class="text-decoration-line-through">Price: @product.Price AED</span>
                                         <br />
-                                        Now: @product.Sale_Price.ToString("C")
+                                        Now: @product.Sale_Price AED
                                     </p>
                                     <a asp-action="Details" asp-route-productId="@product.Id" class="btn btn-primary">Details</a>
                                 </div>

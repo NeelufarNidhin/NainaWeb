@@ -1,82 +1,104 @@
 ﻿
 
+@model WalletModel
+
 <form method="post">
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
 
-    <div class="card">
-        <div class="card-header bg bg-secondary text-center">
+
             <h3>Wallets</h3>
-        </div>
-        <div class="card-body">
-            @*<div class="row mb-3 pb-3">
-                    <a  asp-controller="Wallet" asp-action="Index" class="btn btn-secondary text-uppercase mb-5 btn-sm">Continue shopping</a>
-                </div>*@
 
-            <div class="col-md-10 offset-md-1">
+            <input type="hidden" />
+            <div>
 
-                <div class="row border-bottom pb-3">
-
-                    <div class="col-12 col-lg-6 pt-md-3">
-                        @*<h5 class="text-uppercase text-sedondary"> @Model.ApplicationUser </h5>*@
-                        <input type="hidden" />
-
-                        @*@foreach (var wallet in @Model.WalletList)
-                            {*@
-                        <h5 class="text-uppercase text-sedondary text-center">Your Balance is  @ViewBag.Message</h5>
-                        @*}*@
-
-
-                    </div>
-
-                    <div class="col-12  row">
-                        <div class="row">
-                            <div class="col-md-4 offset-md-4">
-                                <button type="submit" asp-controller="wallet"
-                                        class="btn btn-secondary text-uppercase mr-2 px-4">
-                                    Wallet History
-                                </button>
-
-
-
-                            </div>
-
-
-                        </div>
-
-
-                    </div>
-                </div>
+                <h5 class="text-uppercase text-sedondary text-center">Your Balance is  @ViewBag.Message</h5>
 
             </div>
+
+
+
+
         </div>
-        <table id="walTbl" class="table table-bordered table-striped" width="100%">
-            <thead>
-                <tr>
-                    <th>
-                        ID
-                    </th>
-                    <th>
-                        Wallet Balance
-                    </th>
 
 
-                    <th>
-                        Order ID
-                    </th>
-
-                    <th></th>
-
-
-                </tr>
-            </thead>
-
-        </table>
     </div>
 
-   
+
+
+
+
+
+
+
+    <h3>Wallet History</h3>
+
+    <table id="walTbl" class="table table-bordered table-striped" width="100%">
+        <thead>
+            <tr>
+                <th>
+                    ID
+                </th>
+                <th>
+                    Wallet Balance
+                </th>
+
+
+                <th>
+                    Order ID
+                </th>
+
+                <th></th>
+
+
+            </tr>
+        </thead>
+
+    </table>
+
+
+
+    <div>
+        <button type="submit" class="btn btn-secondary " asp-action="TopUpWallet" asp-controller="Wallet">TopUp Wallet</button>
+    </div>
+    <div class="col-6">
+        <label class="form-label" asp-for="WalletBalance"> Amount  </label>
+        <input type="number" name="amount" class="form-control" asp-for="WalletBalance" />
+        <span asp-validation-for="WalletBalance" class="text-danger"></span>
+    </div>
 
 </form>
 
+<!--<a class="btn btn-primary" id="openModalButton">Recharge Wallet</a>-->
+<!-- First Modal -->
+<!--<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <div class="modal-body">-->
+<!-- Add address form or content here -->
+<!--<div>
+                    <label class="form-label"> Amount </label>
+                    <input type="number" name="amount" class="form-control" asp-for="WalletBalance" />
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-secondary " asp-action="TopUpWallet" asp-controller="Wallet">Go To Payment</button>
+                <button type="button" class="btn btn-secondary close-modal-btn">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>-->
+
 @section Scripts{
 
+    <partial name="_ValidationScriptsPartial" />
+
     <script src="~/js/wallet.js"></script>
+
+
 }
+
+

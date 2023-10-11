@@ -1,4 +1,10 @@
-﻿@using NainaBoutique.Utility
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+@using NainaBoutique.Utility
 
 @model OrderVM
 
@@ -31,7 +37,7 @@
                                             @if (detail.Product.ProductImage != null && detail.Product.ProductImage.Count() > 0)
                                             {
                                                 @foreach (var img in detail.Product.ProductImage)
-                                                      
+
                                                 {
                                                     <div class="sq align-self-center "> <img src="@img.ImageUrl" width="135" height="135" style="border-radius:5px; border:1px solid #bbb969" /> </div>
                                                 }
@@ -59,12 +65,12 @@
 
                         <div class="col">
                             @*@foreach (var detail in Model.OrderDetail)
-                            {*@
-                                <div class="row justify-content-between">
-                                    <div class="col-auto"><p class="mb-1 text-dark"><b>Order Details</b></p></div>
-                                    <div class="flex-sm-col text-right col"> <p class="mb-1"><b>Total</b></p> </div>
-                                    <div class="flex-sm-col col-auto"> <p class="mb-1">@Model.OrderSummary.OrderTotal</p> </div>
-                                </div>
+                                {*@
+                            <div class="row justify-content-between">
+                                <div class="col-auto"><p class="mb-1 text-dark"><b>Order Details</b></p></div>
+                                <div class="flex-sm-col text-right col"> <p class="mb-1"><b>Total</b></p> </div>
+                                <div class="flex-sm-col col-auto"> <p class="mb-1">@Model.OrderSummary.OrderTotal</p> </div>
+                            </div>
                             @*}*@
                             <div class="row justify-content-between">
                                 <div class="flex-sm-col text-right col"><p class="mb-1"> <b>Payment Method</b></p> </div>
@@ -91,10 +97,10 @@
                     <div class="jumbotron-fluid">
                         <div class="row justify-content-between ">
                             @*@foreach (var detail in Model.OrderDetail)
-                            {*@
+                                {*@
 
-                                <div class="col-auto my-auto "><h2 class="mb-0 font-weight-bold">TOTAL PAID</h2></div>
-                                <div class="col-auto my-auto ml-auto"><h1 class="display-3 "></h1>@Model.OrderSummary.OrderTotal AED</div>
+                            <div class="col-auto my-auto "><h2 class="mb-0 font-weight-bold">TOTAL PAID</h2></div>
+                            <div class="col-auto my-auto ml-auto"><h1 class="display-3 "></h1>@Model.OrderSummary.OrderTotal AED</div>
 
                             @*}*@
                         </div>
@@ -117,8 +123,8 @@ Model.OrderSummary.OrderStatus == SD.StatusShipped)
                                 }
                             }
                             @if (Model.OrderSummary.OrderStatus != SD.StatusShipped &&
-                    Model.OrderSummary.OrderStatus != SD.StatusCancelled &&
-                    Model.OrderSummary.OrderStatus != SD.StatusRefunded)
+                   Model.OrderSummary.OrderStatus != SD.StatusCancelled &&
+                   Model.OrderSummary.OrderStatus != SD.StatusRefunded)
                             {
                                 <button type="submit" asp-action="CancelOrder" class="btn btn-primary form-control my-1">Cancel Order</button>
                             }

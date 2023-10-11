@@ -180,7 +180,7 @@ public class HomeController : Controller
         if (priceRanges!= null && priceRanges.Any())
         {
             
-            productList = productList.Where(s => s.Price >= decimal.Parse(priceRanges[0]) && s.Price <= decimal.Parse(priceRanges[1]));
+            productList = productList.Where(s => s.Price >= float.Parse(priceRanges[0]) && s.Price <= float.Parse(priceRanges[1]));
             return View(productList);
         }
         else

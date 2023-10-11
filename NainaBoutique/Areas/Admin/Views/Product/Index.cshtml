@@ -1,20 +1,26 @@
-﻿@model List<ProductModel>
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+
+@model List<ProductModel>
 
 <div class="container">
     <div class="row pt-4 pb-3">
         <div class="col-6">
             <h2 class="text-secondary">
-                Category
+               Product
             </h2>
         </div>
         <div class="col-6 text-end">
-            <a asp-controller="Product" asp-action="Upsert" class="btn btn-secondary" >
+            <a asp-controller="Product" asp-action="Upsert" class="btn btn-secondary">
                 <i class="bi bi-plus-circle"></i> Create New
             </a>
         </div>
     </div>
     <h1> Product List</h1>
-    <table  id="tblData" class="table table-bordered table-striped" width="100%">
+    <table id="tblData" class="table table-bordered table-striped" width="100%">
         <thead>
             <tr>
                 <th>
@@ -38,11 +44,11 @@
                     Color
                 </th>
                 <th></th>
-               
-               
+
+
             </tr>
         </thead>
-        
+
     </table>
 
 </div>

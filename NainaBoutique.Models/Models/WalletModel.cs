@@ -15,12 +15,14 @@ namespace NainaBoutique.Models.Models
         [ValidateNever]
         public ApplicationUser? ApplicationUser { get; set; }
 
-        public decimal WalletBalance { get; set; }
-
+       
+        
         public int OrderId { get; set; }
         [ForeignKey("OrderId")]
         [ValidateNever]
         public OrderSummary OrderSummary { get; set; }
+
+        public float WalletBalance { get; set; }
     }
 }
 

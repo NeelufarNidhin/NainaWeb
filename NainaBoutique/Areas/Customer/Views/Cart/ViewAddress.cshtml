@@ -1,0 +1,39 @@
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    ViewData["Title"] = "AddAddress";
+}
+
+
+@model IEnumerable<AddressModel>
+
+
+
+
+@foreach (var item in Model)
+{
+    <a class="btn" asp-action="Summary" asp-area="Customer" asp-controller="Cart">
+
+        <h5> Address  </h5>
+        <br />
+
+        <h5>@item.Address </h5>
+        <br />
+        <h5> @item.City </h5>
+        <br />
+        <h5> @item.State </h5>
+        <br />
+        <h5>@item.PostalCode</h5>
+        <br />
+        <h5> @item.MobileNumber </h5>
+
+
+    </a>
+}
+
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial.cshtml" />
+    }
+}
+

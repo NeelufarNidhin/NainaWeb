@@ -8,15 +8,15 @@
 
   <ItemGroup>
     <None Remove="Data\" />
-    <None Remove="Migrations\" />
     <None Remove="Repository\" />
     <None Remove="Repository\IRepository\" />
+    <None Remove="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Migrations\" />
     <Folder Include="Repository\" />
     <Folder Include="Repository\IRepository\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.10">

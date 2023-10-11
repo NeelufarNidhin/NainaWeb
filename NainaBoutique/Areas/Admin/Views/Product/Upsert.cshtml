@@ -1,4 +1,9 @@
-﻿@model ProductViewModel
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+@model ProductViewModel
 
 
 <div class="card shadow border-0cmt-4 ">
@@ -12,7 +17,7 @@
     <div class="card-body p-4">
         <form method="post" class="row" enctype="multipart/form-data">
             <input asp-for="@Model.Product.Id" hidden />
-           
+
             <div class="row">
                 <div class="col-10">
                     <div class="border p-3 ">
@@ -97,21 +102,23 @@
                     </div>
                 </div>
                 <div class="col-2">
-                    @if (Model.Product.ProductImage != null) { 
-                        
-                            
-                                foreach (var image in Model.Product.ProductImage) { 
-                                
-                                <div class="border p-1 m-2 text-center">
-                                    <img src="@image.ImageUrl" width="100%"
-                                         style="border-radius:5px; border:1px solid #bbb969"/>
-                                    <a asp-action ="DeleteImage" class="btn btn-danger" asp-route-imageId="@image.Id">
-                                        <i class ="bi bi-trash-fill "></i> Delete
-                                    </a>
-                                </div>
-                                }
-                           
+                    @if (Model.Product.ProductImage != null)
+                    {
+
+
+                        foreach (var image in Model.Product.ProductImage)
+                        {
+
+                            <div class="border p-1 m-2 text-center">
+                                <img src="@image.ImageUrl" width="100%"
+                                     style="border-radius:5px; border:1px solid #bbb969" />
+                                <a asp-action="DeleteImage" class="btn btn-danger" asp-route-imageId="@image.Id">
+                                    <i class="bi bi-trash-fill "></i> Delete
+                                </a>
+                            </div>
                         }
+
+                    }
                 </div>
             </div>
 

@@ -29,6 +29,9 @@ namespace NainaBoutique.DataAccess.Repository
         public IOrderDetailRepository OrderDetail { get; private set; }
 
         public IWalletRepository Wallet { get; private set; }
+        public IWalletTopUpRepository WalletTopUp { get; private set; }
+        public IAddressRepository Address { get; private set; }
+
 
         public UnitOfWork(ApplicationDbContext db) 
         {
@@ -44,6 +47,8 @@ namespace NainaBoutique.DataAccess.Repository
             OrderSummary = new OrderSummaryRepository(_db);
             OrderDetail = new OrderDetailRepository(_db);
             Wallet = new WalletRepository(_db);
+            WalletTopUp = new WalletTopUpRepository(_db);
+            Address = new AddressRepository(_db);
         }
         
         public void Save()

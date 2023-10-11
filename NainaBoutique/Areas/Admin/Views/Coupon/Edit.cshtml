@@ -1,4 +1,10 @@
-﻿@model CouponModel
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+
+@model CouponModel
 
 <form method="post">
     <div class="border p-3 mt-4">
@@ -11,19 +17,19 @@
             <input asp-for="CouponCode" class="form-control" />
             <span asp-validation-for="CouponCode" class="text-danger"></span>
         </div>
-       
-       
+
+
         <div class="mb-3 row p-1">
             <label asp-for="ValidTill" class="p-0"></label>
             <input asp-for="ValidTill" type="datetime-local" class="form-control" />-->
             <span asp-validation-for="ValidTill" class="text-danger"></span>
-     </div>
+        </div>
         <div class="mb-3 row p-1">
             <label asp-for="Discount" class="p-0"></label>
             <input asp-for="Discount" class="form-control" />
             <span asp-validation-for="Discount" class="text-danger"></span>
         </div>
-        
+
         <div class="mb-3 row p-1">
             <label asp-for="MinCartAmount" class="p-0"></label>
             <input asp-for="MinCartAmount" class="form-control" />

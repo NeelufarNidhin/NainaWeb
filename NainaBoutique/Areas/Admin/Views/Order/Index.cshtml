@@ -1,4 +1,10 @@
-﻿@model OrderVM
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+
+
+@model OrderVM
 
 @{
     var status = Context.Request.Query["status"];
@@ -8,7 +14,8 @@
     var approved = "text-secondary";
     var all = "text-secondary";
 
-    switch (status) {
+    switch (status)
+    {
 
         case "pending":
             pending = "active text-white bg-secondary";
@@ -26,7 +33,7 @@
             all = "active text-white bg-secondary";
             break;
     }
-    }
+}
 
 
 
@@ -46,33 +53,35 @@
             </span>
 
             <ul class="list-group list-group-horizontal-sm">
-               
+
                 @*<li class="list-group-item @inprocess">
-                    
-                    <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="Inprocess">In Process </a>
-                </li>*@
-               
-               
+
+                        <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="Inprocess">In Process </a>
+                    </li>*@
+
+
                 <li class="list-group-item @pending">
-                    
+
                     <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="pending"> Payment Pending</a>
                 </li>
-               
-               
+
+
                 <li class="list-group-item @completed">
                     <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="completed">
                         Completed
-                    </a></li>
-              
-               
+                    </a>
+                </li>
+
+
                 <li class="list-group-item @approved">
                     <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="approved">Approved </a>
                 </li>
-               
-                
+
+
                 <li class="list-group-item @all">
-                    <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="all">All</a></li>
-                
+                    <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="all">All</a>
+                </li>
+
 
             </ul>
         </div>
@@ -88,10 +97,10 @@
                     <th>Order Date </th>
                     @*<th>Size</th>*@
                     <th>
-                       Payment Method
+                        Payment Method
                     </th>
                     <th>
-                       Order Status
+                        Order Status
                     </th>
                     <th>
                         Total
@@ -107,7 +116,7 @@
 
         </table>
     </div>
-  
+
 </div>
 
 @section Scripts{

@@ -332,14 +332,14 @@ namespace NainaBoutique.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Discount")
+                        .HasColumnType("real");
 
-                    b.Property<decimal>("MaxAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("MaxAmount")
+                        .HasColumnType("real");
 
-                    b.Property<decimal>("MinCartAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("MinCartAmount")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("ValidTill")
                         .HasColumnType("datetime2");
@@ -384,8 +384,8 @@ namespace NainaBoutique.DataAccess.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Amount")
+                        .HasColumnType("real");
 
                     b.Property<string>("CardNumber")
                         .IsRequired()
@@ -428,8 +428,8 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Property<int>("OrderSummaryId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -481,8 +481,8 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Property<string>("OrderStatus")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("OrderTotal")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("OrderTotal")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime2");
@@ -523,25 +523,6 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.ToTable("OrderSummaries");
                 });
 
-            modelBuilder.Entity("NainaBoutique.Models.Models.OtpModel", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Otp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OtpModels");
-                });
-
             modelBuilder.Entity("NainaBoutique.Models.Models.ProductImage", b =>
                 {
                     b.Property<int>("Id")
@@ -578,8 +559,8 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -591,22 +572,6 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("Carts");
-                });
-
-            modelBuilder.Entity("NainaBoutique.Models.Models.SizeModel", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("Size")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.ToTable("Sizes");
                 });
 
             modelBuilder.Entity("NainaBoutique.Models.Models.WalletModel", b =>
@@ -623,8 +588,8 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<decimal>("WalletBalance")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("WalletBalance")
+                        .HasColumnType("real");
 
                     b.HasKey("Id");
 
@@ -633,6 +598,30 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("WalletModels");
+                });
+
+            modelBuilder.Entity("NainaBoutique.Models.Models.WalletTopUp", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Userid")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<float>("WalletBalance")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Userid");
+
+                    b.ToTable("WalletTopUps");
                 });
 
             modelBuilder.Entity("NainaBoutique.Models.ProductModel", b =>
@@ -648,7 +637,8 @@ namespace NainaBoutique.DataAccess.Migrations
 
                     b.Property<string>("Color")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -657,12 +647,13 @@ namespace NainaBoutique.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Price")
+                        .HasColumnType("real");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<int>("QuantityInStock")
                         .HasColumnType("int");
@@ -671,12 +662,13 @@ namespace NainaBoutique.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(1)");
 
-                    b.Property<decimal>("Sale_Price")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("Sale_Price")
+                        .HasColumnType("real");
 
                     b.Property<string>("Size")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
 
                     b.HasKey("Id");
 
@@ -708,8 +700,8 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Property<string>("State")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("WalletBalance")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<float>("WalletBalance")
+                        .HasColumnType("real");
 
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
@@ -881,6 +873,15 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.Navigation("ApplicationUser");
 
                     b.Navigation("OrderSummary");
+                });
+
+            modelBuilder.Entity("NainaBoutique.Models.Models.WalletTopUp", b =>
+                {
+                    b.HasOne("NainaBoutique.Models.ApplicationUser", "ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("Userid");
+
+                    b.Navigation("ApplicationUser");
                 });
 
             modelBuilder.Entity("NainaBoutique.Models.ProductModel", b =>

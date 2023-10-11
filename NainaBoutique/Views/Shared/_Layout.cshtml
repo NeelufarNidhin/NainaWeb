@@ -29,20 +29,17 @@
                             <a class="nav-link text-light" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a class="nav-link text-light" asp-area="Admin" asp-controller="Order" asp-action="Index">Manage Orders</a>
-                        </li>
+                        </li>*@
+                        
                         @if (User.IsInRole(SD.Role_Admin))
-                        {
-
-                        }
-                        @if (User.IsInRole(SD.Role_Admin))
-                        {
+                            {
                             <li class="nav-item">
                                 <a class="nav-link text-light" asp-area="Admin" asp-controller="DashBoard" asp-action="Index">Control Panel</a>
                             </li>
-
-                            <li class="nav-item dropdown">
+                            }
+                            @*<li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle text-light" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Content Management
                                 </a>
@@ -64,14 +61,14 @@
 
                                 </ul>
                             </li>
-                        }
+                        }*@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="Customer" asp-controller="Wallet" asp-action="Index">Wallet</a>
                         </li>
 
-                        <li class="nav-item">
+                        @*<li class="nav-item">
                             <a class="nav-link text-light" asp-area="Customer" asp-controller="Profile" asp-action="Index">Profile</a>
-                        </li>
+                        </li>*@
                         <li class="nav-item">
                             <a class="nav-link text-light" asp-area="Customer" asp-controller="Cart" asp-action="Index"><i class="bi bi-cart"></i>&nbsp;(0)</a>
                         </li>
@@ -96,7 +93,7 @@
         </main>
     </div>
 
-   
+
 
     <footer class="border-top footer text-muted">
         <div class="text-center">

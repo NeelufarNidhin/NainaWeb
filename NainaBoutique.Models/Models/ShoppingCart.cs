@@ -15,7 +15,7 @@ namespace NainaBoutique.Models.Models
 		[ValidateNever]
 		public ProductModel? Product { get; set; }
        //[NotMapped ]
-		public decimal Price { get; set; }
+		public float Price { get; set; }
 
         [Range(1, 1000, ErrorMessage = "Enter the value between 1 and 1000")]
         public int Count { get; set; }

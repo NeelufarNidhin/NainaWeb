@@ -142,17 +142,22 @@ namespace NainaBoutique.Areas.Admin.Controllers
             var orderDetail = _unitOfWork.OrderDetail.Get(u => u.Id == orderSummary.Id);
            
 
-            if (orderSummary.PaymentStatus == SD.PaymentStatusApproved || orderSummary.PaymentStatus == SD.PaymentStatusDelayedPayment)
+            if (orderSummary.PaymentStatus == SD.PaymentStatusApproved ) 
             {
-                //var options = new RefundCreateOptions { 
+                var options = new RefundCreateOptions
+                {
 
-                //    Reason = RefundReasons.RequestedByCustomer,
-                //    PaymentIntent = orderSummary.PaymentIntendId
-                //};
+                    Reason = RefundReasons.RequestedByCustomer,
+                    PaymentIntent = orderSummary.PaymentIntendId
+                };
 
-                //var service = new RefundService();
-                //Refund refund = service.Create(options);
+                var service = new RefundService();
+                Refund refund = service.Create(options);
+                _unitOfWork.OrderSummary.UpdateStatus(orderSummary.Id, SD.StatusCancelled, SD.StatusRefunded);
+            }
 
+            if (orderSummary.PaymentStatus == SD.PaymentStatusDelayedPayment)
+            { 
                 WalletModel walletModel = new WalletModel()
                 {
                     UserId = orderSummary.ApplicationUserId,

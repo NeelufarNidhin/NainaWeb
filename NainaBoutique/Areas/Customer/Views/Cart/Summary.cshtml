@@ -1,4 +1,11 @@
-﻿@model ShoppingCartVM
+﻿@{
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
+}
+
+
+
+@model ShoppingCartVM
 
 <form method="post">
     @*<input type="hidden" id="@Model.AppliedCoupon.Id" />*@
@@ -84,15 +91,15 @@
 
 
 
-                        <div class="row">
-                            <div class="col-3 ">
-                                <!-- Button to trigger the popup -->
-                                <a onclick="showInPopup('@Url.Action("AddAddress","Cart")','Add Address')" class="btn btn-success">Add Address</a>
+                        <!--<div class="row">
+                            <div class="col-3 ">-->
+                        <!-- Button to trigger the popup -->
+                        <!--<a onclick="showInPopup('@Url.Action("AddAddress","Cart")','Add Address')" class="btn btn-success">Add Address</a>
 
                             </div>
 
 
-                        </div>
+                        </div>-->
 
                         <div class="col-12 col-12 col-lg-6 pb-4">
                             <h4 class="d-flex align-items-center mb-3">
@@ -178,28 +185,77 @@
 </form>
 
 
-<div class="modal" tabindex="-1" id="form-modal">
-    <div class="modal-dialog">
+
+
+<a class="btn btn-secondary" id="openModalButton">Add Address</a>
+
+@*<input type="button" value="Some text" onclick="window.location.href='<%= Url.Action(" ViewAddress", "Cart" ) %>';" />*@
+<a class="btn btn-secondary" asp-controller="Cart" asp-action="ViewAddress" asp-area="Customer">Select Address</a>
+
+
+<!-- First Modal -->
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
+
             <div class="modal-body">
-                @*<p>Modal body text goes here.</p>*@
-                <div class="form-group">
-                    <label asp-for="AddressModel.PostalCode" class="p-0"></label>
-                    <input asp-for="AddressModel.PostalCode" class="form-control" />
-                    <span asp-validation-for="AddressModel.PostalCode" class="text-danger"></span>
+                <!-- Add address form or content here -->
+
+
+                <div class="row">
+                    <div class="col-12">
+
+                        <div class="card">
+
+                            <div class="card-header">
+                                <h3>Add new Address </h3>
+                            </div>
+                            <div class="card-body">
+                                <form asp-action="AddAddress" asp-controller="Cart" method="post">
+
+                                    <div class="col-mb-12">
+
+
+                                        <label asp-for="AddressModel .Address" class="form-label"></label>
+                                        <input asp-for="AddressModel. Address" class="form-control" />
+                                    </div>
+                                    <div class="col-mb-12">
+
+                                        <label asp-for="AddressModel.City" class="p-0"></label>
+                                        <input asp-for="AddressModel.City" class="form-control" />
+                                    </div>
+
+                                    <div class="col-mb-12">
+                                        <label asp-for="AddressModel.State" class="p-0"></label>
+                                        <input asp-for="AddressModel.State" class="form-control" />
+                                    </div>
+                                    <div class="col-mb-12">
+
+                                    </div> <label asp-for="AddressModel.PostalCode" class="p-0"></label>
+                                    <input asp-for="AddressModel.PostalCode" class="form-control" />
+                                    <div class="col-mb-12">
+                                        <label asp-for="AddressModel.MobileNumber" class="p-0"></label>
+                                        <input asp-for="AddressModel.MobileNumber" class="form-control" />
+                                    </div>
+                                    <div class="col-6 col-mb-12">
+                                        <button type="submit" class="btn btn-secondary form-control">Add</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="card-footer">
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-secondary close-modal-btn">Close</button>
             </div>
         </div>
     </div>
 </div>
+
 
 
 
@@ -208,24 +264,19 @@
      <partial name="_ValidationScriptsPartial" />
     }*@
 
-@section Scripts{
-    <script>showInPopup = (url, title) => {
-            $.ajax({
-                type: "GET",
-                url: url,
-                success: function (res) {
-                    $("#form-modal .modal-body").html(res);
-                    $("#form-modal .modal-title").html(title);
-                    $("#form-modal").modal('show');
 
-                }
-            })
-        }</script>
-    @*<script>$('#showPopupButton').click(function () {
-            $('#popupForm').modal('show');
-            $('#modalTitle').text('Add Address');
-        });</script>*@
+<script>$(document).ready(function () {
+        $('#openModalButton').click(function () {
+            $('#myModal').modal('show');
+
+        });
+
+    });</script>
 
 
-
-}
+<script>$(document).ready(function () {
+        // Add a click event handler to the close button inside the modal
+        $('#myModal').on('click', '.close-modal-btn', function () {
+            $('#myModal').modal('hide'); // Hide the modal
+        });
+    });</script>
