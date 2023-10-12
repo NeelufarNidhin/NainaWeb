@@ -26,8 +26,11 @@ namespace NainaBoutique.Models.Models
         public DateTime PaymentDueDate { get; set; }
         public string? PaymentIntendId { get; set; }
 		public string? SessionId { get; set; }
+		public int CouponId { get; set; }
+		[ForeignKey ("CouponId")]
+        [ValidateNever]
+        public CouponModel Coupon { get; set; }
 
-	
 
         [Required]
 		public string? Name { get; set; }

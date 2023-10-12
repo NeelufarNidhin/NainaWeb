@@ -34,13 +34,6 @@ namespace NainaBoutique.Areas.Admin.Controllers
         {
             List<ProductModel> productList = _unitOfWork.Product.GetAll(u =>u.RecStatus =='A' , includeProperties: "Category").ToList();
 
-            //foreach(var item in productList)
-            //{
-            //    if(item.QuantityInStock >= 0)
-            //    {
-
-            //    }
-            //}
             return View(productList);
         }
         public IActionResult Upsert(int? id)
@@ -66,8 +59,6 @@ namespace NainaBoutique.Areas.Admin.Controllers
                 return View(productViewModel);
             }
 
-
-
         }
 
         [HttpPost]
@@ -78,10 +69,19 @@ namespace NainaBoutique.Areas.Admin.Controllers
 
                 if (productVM.Product!.Id == 0)
                 {
+                    ProductModel productName = _unitOfWork.Product.Get(u => u.ProductName == productVM.Product.ProductName);
+                    ProductModel productSize = _unitOfWork.Product.Get(u => u.Size == productVM.Product.Size);
 
+                    if(productName != null && productSize != null)
+                    {
+                        TempData["error"] = "Product Already Exists";
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        _unitOfWork.Product.Add(productVM.Product);
+                    }
                    
-                    _unitOfWork.Product.Add(productVM.Product);
-
                 }
                 else
                 {
@@ -95,7 +95,6 @@ namespace NainaBoutique.Areas.Admin.Controllers
 
             if (files != null)
             {
-
 
                 foreach (IFormFile file in files)
                 {

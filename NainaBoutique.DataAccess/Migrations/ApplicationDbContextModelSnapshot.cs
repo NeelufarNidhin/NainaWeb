@@ -468,6 +468,9 @@ namespace NainaBoutique.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CouponId")
+                        .HasColumnType("int");
+
                     b.Property<int>("MobileNumber")
                         .HasColumnType("int");
 
@@ -519,6 +522,8 @@ namespace NainaBoutique.DataAccess.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ApplicationUserId");
+
+                    b.HasIndex("CouponId");
 
                     b.ToTable("OrderSummaries");
                 });
@@ -827,7 +832,15 @@ namespace NainaBoutique.DataAccess.Migrations
                         .WithMany()
                         .HasForeignKey("ApplicationUserId");
 
+                    b.HasOne("NainaBoutique.Models.Models.CouponModel", "Coupon")
+                        .WithMany()
+                        .HasForeignKey("CouponId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("ApplicationUser");
+
+                    b.Navigation("Coupon");
                 });
 
             modelBuilder.Entity("NainaBoutique.Models.Models.ProductImage", b =>

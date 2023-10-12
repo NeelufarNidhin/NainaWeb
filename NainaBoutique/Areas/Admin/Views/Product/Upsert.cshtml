@@ -6,134 +6,127 @@
 @model ProductViewModel
 
 
-<div class="card shadow border-0cmt-4 ">
-    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h2 class="text-white">@(Model.Product.Id!=0?"Update":"Create") Product</h2>
-            </div>
+<form method="post" enctype="multipart/form-data">
+    <input asp-for="@Model.Product!.Id" hidden />
+    <div class="border p-3 mt-4">
+        <div class="row pb-2">
+            <h2 class="text-secondary">@(Model.Product.Id!=0?"Update":"Create") Product</h2>
+            <hr />
         </div>
+       
     </div>
-    <div class="card-body p-4">
-        <form method="post" class="row" enctype="multipart/form-data">
-            <input asp-for="@Model.Product.Id" hidden />
 
+
+            <div class="mb-3 row p-1">
+                <label asp-for="@Model.Product.ProductName" class="p-0"></label>
+                <input asp-for="@Model.Product.ProductName" class="form-control" />
+                <span asp-validation-for="@Model.Product.ProductName" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3 py-2 col-12">
+                <label asp-for="@Model.Product.Description" class="p-0 text-muted"></label>
+                <textarea asp-for="@Model.Product.Description" class="form-control"></textarea>
+                @*<span asp-validation-for="Product.Description" class="text-danger"></span>*@
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="@Model.Product.CategoryId" class="form-control"></label>
+                <select asp-for="@Model.Product.CategoryId" asp-items="@Model.CategoryLlist" class="form-select">
+                    <option disabled selected>-Select Category-</option>
+                </select>
+
+                <span asp-validation-for="@Model.Product.CategoryId" class="text-danger"></span>
+
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="@Model.Product.Size" class="p-0"></label>
+                <input asp-for="@Model.Product.Size" class="form-control" />
+                <span asp-validation-for="@Model.Product.Size" class="text-danger"></span>
+
+            </div>
+
+            <div class="mb-3 row p-1">
+                <label asp-for="@Model.Product.Price" class="p-0"></label>
+                <input asp-for="@Model.Product.Price" class="form-control" />
+                <span asp-validation-for="@Model.Product.Price" class="text-danger"></span>
+
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="@Model.Product.Sale_Price" class="p-0"></label>
+                <input asp-for="@Model.Product.Sale_Price" class="form-control" />
+                <span asp-validation-for="@Model.Product.Sale_Price" class="text-danger"></span>
+
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="@Model.Product.QuantityInStock" class="p-0"></label>
+                <input asp-for="@Model.Product.QuantityInStock" class="form-control" />
+                <span asp-validation-for="@Model.Product.QuantityInStock" class="text-danger"></span>
+
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="@Model.Product.Color" class="p-0"></label>
+                <input asp-for="@Model.Product.Color" class="form-control" />
+                <span asp-validation-for="@Model.Product.Color" class="text-danger"></span>
+
+            </div>
+            <div class="mb-3 row p-1">
+                <label asp-for="@Model.Product.ProductImage" class="p-0"></label>
+                <input type="file" name="files" class="form-control" multiple />
+
+
+            </div>
             <div class="row">
-                <div class="col-10">
-                    <div class="border p-3 ">
 
-                        <div class="mb-3 row p-1">
-                            <label asp-for="@Model.Product.ProductName" class="p-0"></label>
-                            <input asp-for="@Model.Product.ProductName" class="form-control" />
-                            <span asp-validation-for="@Model.Product.ProductName" class="text-danger"></span>
-                        </div>
-
-                        <div class="mb-3 py-2 col-12">
-                            <label asp-for="@Model.Product.Description" class="p-0 text-muted"></label>
-                            <textarea asp-for="@Model.Product.Description" class="form-control"></textarea>
-                            @*<span asp-validation-for="Product.Description" class="text-danger"></span>*@
-                        </div>
-                        <div class="mb-3 row p-1">
-                            <label asp-for="@Model.Product.CategoryId" class="form-control"></label>
-                            <select asp-for="@Model.Product.CategoryId" asp-items="@Model.CategoryLlist" class="form-select">
-                                <option disabled selected>-Select Category-</option>
-                            </select>
-
-                            <span asp-validation-for="@Model.Product.CategoryId" class="text-danger"></span>
-
-                        </div>
-                        <div class="mb-3 row p-1">
-                            <label asp-for="@Model.Product.Size" class="p-0"></label>
-                            <input asp-for="@Model.Product.Size" class="form-control" />
-                            <span asp-validation-for="@Model.Product.Size" class="text-danger"></span>
-
-                        </div>
-
-                        <div class="mb-3 row p-1">
-                            <label asp-for="@Model.Product.Price" class="p-0"></label>
-                            <input asp-for="@Model.Product.Price" class="form-control" />
-                            <span asp-validation-for="@Model.Product.Price" class="text-danger"></span>
-
-                        </div>
-                        <div class="mb-3 row p-1">
-                            <label asp-for="@Model.Product.Sale_Price" class="p-0"></label>
-                            <input asp-for="@Model.Product.Sale_Price" class="form-control" />
-                            <span asp-validation-for="@Model.Product.Sale_Price" class="text-danger"></span>
-
-                        </div>
-                        <div class="mb-3 row p-1">
-                            <label asp-for="@Model.Product.QuantityInStock" class="p-0"></label>
-                            <input asp-for="@Model.Product.QuantityInStock" class="form-control" />
-                            <span asp-validation-for="@Model.Product.QuantityInStock" class="text-danger"></span>
-
-                        </div>
-                        <div class="mb-3 row p-1">
-                            <label asp-for="@Model.Product.Color" class="p-0"></label>
-                            <input asp-for="@Model.Product.Color" class="form-control" />
-                            <span asp-validation-for="@Model.Product.Color" class="text-danger"></span>
-
-                        </div>
-                        <div class="mb-3 row p-1">
-                            <label asp-for="@Model.Product.ProductImage" class="p-0"></label>
-                            <input type="file" name="files" class="form-control" multiple />
-
-
-                        </div>
-                        <div class="row">
-
-                            <div class="col-6 col-md-6">
-                                @if (Model.Product.Id != 0)
-                                {
-
-                                    <button type="submit" class="btn btn-secondary form-control">Update</button>
-                                }
-
-                                else
-                                {
-                                    <button type="submit" class="btn btn-secondary form-control">Create</button>
-
-                                }
-
-                            </div>
-                            <div class="col-6 col-md-6">
-                                <a asp-controller="Product" asp-action="Index" class="btn btn-primary border form-control">Back To list</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-2">
-                    @if (Model.Product.ProductImage != null)
+                <div class="col-6 col-md-6">
+                    @if (Model.Product.Id != 0)
                     {
 
+                        <button type="submit" class="btn btn-secondary form-control">Update</button>
+                    }
 
-                        foreach (var image in Model.Product.ProductImage)
-                        {
-
-                            <div class="border p-1 m-2 text-center">
-                                <img src="@image.ImageUrl" width="100%"
-                                     style="border-radius:5px; border:1px solid #bbb969" />
-                                <a asp-action="DeleteImage" class="btn btn-danger" asp-route-imageId="@image.Id">
-                                    <i class="bi bi-trash-fill "></i> Delete
-                                </a>
-                            </div>
-                        }
+                    else
+                    {
+                        <button type="submit" class="btn btn-secondary form-control">Create</button>
 
                     }
+
+                </div>
+                <div class="col-6 col-md-6">
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-primary border form-control">Back To list</a>
                 </div>
             </div>
+        
+    <div class="col-2">
+        @if (Model.Product.ProductImage != null)
+        {
 
-        </form>
+
+            foreach (var image in Model.Product.ProductImage)
+            {
+
+                <div class="border p-1 m-2 text-center">
+                    <img src="@image.ImageUrl" width="100%"
+                         style="border-radius:5px; border:1px solid #bbb969" />
+                    <a asp-action="DeleteImage" class="btn btn-danger" asp-route-imageId="@image.Id">
+                        <i class="bi bi-trash-fill "></i> Delete
+                    </a>
+                </div>
+            }
+
+        }
     </div>
-</div>
 
-@section Scripts{
-    <script>tinymce.init({
-            selector: 'textarea',
-            plugins: 'anchor autolink charmap codesample emoticons  lists   table visualblocks wordcount',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough |  align lineheight | numlist bullist indent outdent',
-        });</script>
 
-    @{
-        <partial name="_ValidationScriptsPartial.cshtml" />
+</form>
+   
+
+    @section Scripts{
+        <script>tinymce.init({
+                selector: 'textarea',
+                plugins: 'anchor autolink charmap codesample emoticons  lists   table visualblocks wordcount',
+                toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough |  align lineheight | numlist bullist indent outdent',
+            });</script>
+
+        @{
+            <partial name="_ValidationScriptsPartial.cshtml" />
+        }
     }
-}

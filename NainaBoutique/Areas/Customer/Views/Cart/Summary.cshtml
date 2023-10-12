@@ -129,8 +129,9 @@
 
                             <div class="row">
                                 <div class="col-3 form-group">
-                                    <label for="coupon">Coupon Code</label>
-                                    <input name="coupon" type="text" class="form-control" />
+                                    @*<label for="coupon">Coupon Code</label>*@
+                                    <label asp-for="@Model.Coupon.CouponCode" >Coupon Code</label>
+                                    <input  asp-for="@Model.Coupon.CouponCode" type="text" class="form-control" />
 
                                 </div>
                                 <div class="col-3 ">

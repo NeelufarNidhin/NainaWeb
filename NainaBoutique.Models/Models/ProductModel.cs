@@ -23,6 +23,7 @@ namespace NainaBoutique.Models
         public float Price { get; set; }
         [Range(1, 1000)]
         public float  Sale_Price { get; set; }
+        [Required]
         [Range(0, 1000)]
         public int QuantityInStock { get; set; }
         [Required]

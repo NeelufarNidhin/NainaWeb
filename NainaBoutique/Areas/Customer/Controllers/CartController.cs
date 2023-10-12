@@ -11,13 +11,13 @@ using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Models.ViewModels;
 using NainaBoutique.Utility;
 using NainaBoutique.Models.Models;
-using Stripe.Checkout;
 using System.ComponentModel.DataAnnotations;
 using System.Runtime.ConstrainedExecution;
 using Stripe;
 using NainaBoutique.DataAccess.Data;
 using static TheArtOfDev.HtmlRenderer.Adapters.RGraphicsPath;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Stripe.Checkout;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -185,13 +185,17 @@ namespace NainaBoutique.Areas.Customer.Controllers
         }
 
         [HttpPost]
-        public IActionResult ApplyCoupon(string coupon)
+        public IActionResult ApplyCoupon(CouponModel couponmodel)
         {
+
+
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 
-            TempData["AppliedCoupon"] = coupon;
+            var coupon = couponmodel.CouponCode;
+
+            //TempData["AppliedCoupon"] = coupon;
 
 
             ShoppingCartVM!.shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
@@ -199,6 +203,8 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
             ShoppingCartVM.OrderSummary.OrderDate = DateTime.Now;
             ShoppingCartVM.OrderSummary.ApplicationUserId = userId;
+
+            //var coupon = ShoppingCartVM.OrderSummary.CouponId;
 
             foreach (var cart in ShoppingCartVM.shoppingCartList)
             {
@@ -217,6 +223,8 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
             if (coupon != null)
             {
+                //var couponcode = _unitOfWork.Coupon.Get(u => u.Id == coupon);
+
                 //checking coupon is there in Applied Coupon Table
                 var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.ApplicationUser.Id == userId && u.Coupon.CouponCode == coupon);
 
@@ -225,7 +233,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 CouponModel couponModel = _unitOfWork.Coupon.Get(u => u.CouponCode == coupon);
 
 
-
+                //var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.ApplicationUser.Id == userId && u.Coupon.CouponCode == couponcode);
 
 
                 if (couponFromDb != null)
@@ -275,13 +283,13 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
         [HttpPost]
         [ActionName("Summary")]
-        public IActionResult SummaryPost(string Paymentmethod )
+        public IActionResult SummaryPost(string Paymentmethod , CouponModel couponmodel )
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var coupon = TempData["AppliedCoupon"];
-
+            //var coupon = TempData["AppliedCoupon"];
+            var coupon = couponmodel.CouponCode;
 
             ShoppingCartVM!.shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
                  includeProperties: "Product");
