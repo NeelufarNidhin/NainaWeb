@@ -52,8 +52,8 @@ namespace NainaBoutique.DataAccess.DbInitializer
                     MobileNumber = 989345556
                 }, "User!1234").GetAwaiter().GetResult();
 
-                ApplicationUser? user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "nilu.nidhin@gmail.com");
-                _userManager.AddToRoleAsync(user!, SD.Role_Admin).GetAwaiter().GetResult();
+                ApplicationUser user = _db.ApplicationUsers.FirstOrDefault(u => u.Email == "nilu.nidhin@gmail.com");
+                _userManager.AddToRoleAsync(user, SD.Role_Admin).GetAwaiter().GetResult();
             }
 
 

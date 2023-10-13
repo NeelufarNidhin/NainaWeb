@@ -59,6 +59,7 @@ public class ApplicationDbContext : IdentityDbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<CategoryModel>().HasData(
 
             new CategoryModel { Id = 1, CategoryName = "Party Dresses", Description = "Get your Hands on most exquite Party Dresses Collection from our store made with Love",RecStatus ='A', CreatedAt = DateTime.Now  },
