@@ -8,6 +8,7 @@ using ClosedXML.Excel;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NainaBoutique.DataAccess.Repository.IRepository;
+using NainaBoutique.Models.Models;
 using NainaBoutique.Models.ViewModels;
 using NainaBoutique.Utility;
 using PdfSharpCore;
@@ -32,8 +33,27 @@ namespace NainaBoutique.Areas.Admin.Controllers
         }
 
         // GET: /<controller>/
-        public IActionResult Index()
+        public  async Task<IActionResult> Index()
         {
+            IEnumerable<OrderSummary> orderSummary = _unitOfWork.OrderSummary.GetAll().ToList();
+
+            int shippedCount = orderSummary.Count(u => u.OrderStatus == "Shipped");
+            int approvedCount = orderSummary.Count(u => u.OrderStatus == "Approved");
+            int cancelledCount = orderSummary.Count(u => u.OrderStatus == "Cancelled");
+            int pendingCount = orderSummary.Count(u => u.OrderStatus == "Pending");
+
+
+
+            int totalOrders = orderSummary.Count();
+
+            ViewBag.ShippedCount = shippedCount;
+            ViewBag.ApprovedCount = approvedCount;
+            ViewBag.CancelledCount = cancelledCount;
+            ViewBag.PendingCount = pendingCount;
+
+            ViewBag.TotalOrders = totalOrders;
+            
+
             return View();
         }
 

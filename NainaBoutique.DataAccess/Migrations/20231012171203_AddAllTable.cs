@@ -333,7 +333,7 @@ namespace NainaBoutique.DataAccess.Migrations
                     PaymentDueDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     PaymentIntendId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SessionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    CouponId = table.Column<int>(type: "int", nullable: false),
+                   
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MobileNumber = table.Column<int>(type: "int", nullable: false),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -349,12 +349,7 @@ namespace NainaBoutique.DataAccess.Migrations
                         column: x => x.ApplicationUserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_OrderSummaries_Coupons_CouponId",
-                        column: x => x.CouponId,
-                        principalTable: "Coupons",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                   
                 });
 
             migrationBuilder.CreateTable(
@@ -574,11 +569,6 @@ namespace NainaBoutique.DataAccess.Migrations
                 name: "IX_OrderSummaries_ApplicationUserId",
                 table: "OrderSummaries",
                 column: "ApplicationUserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_OrderSummaries_CouponId",
-                table: "OrderSummaries",
-                column: "CouponId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProductImages_ProductId",

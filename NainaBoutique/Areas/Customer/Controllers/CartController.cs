@@ -18,6 +18,7 @@ using NainaBoutique.DataAccess.Data;
 using static TheArtOfDev.HtmlRenderer.Adapters.RGraphicsPath;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Stripe.Checkout;
+using Microsoft.Win32;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -33,9 +34,6 @@ namespace NainaBoutique.Areas.Customer.Controllers
         [BindProperty]
         public ShoppingCartVM? ShoppingCartVM { get; set; }
 
-        
-
-
         public CartController(IUnitOfWork unitOfWork, ApplicationDbContext db)
         {
             _unitOfWork = unitOfWork;
@@ -44,55 +42,68 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
 
         // GET: /<controller>/
+
+        [Authorize]
         public IActionResult Index()
         {
-            var claimsIdentity = (ClaimsIdentity)User.Identity;
-            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            //To obtain the userId of the Logged in user if the info not available in model passed
+
+                var claimsIdentity = (ClaimsIdentity)User.Identity;
+                var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 
+            // To list all the details available in our shopping cart
 
+                ShoppingCartVM ShoppingCartVM = new()
+                {
 
-            ShoppingCartVM ShoppingCartVM = new() {
+                    shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
+                    includeProperties: "Product"
+                    ),
+                    OrderSummary = new()
 
-                shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
-                includeProperties: "Product"
-                ),
-                OrderSummary = new()
-
-                
                 };
-            
 
-            IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
 
-           
+                IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
+
+
                 foreach (var cart in ShoppingCartVM.shoppingCartList)
-            {
-                cart.Product!.ProductImage = productImages.Where(u =>u.ProductId==cart.ProductId).ToList();
-                cart.Price = cart.Product!.Price;
-                ShoppingCartVM.OrderSummary. OrderTotal += (cart.Price * cart.Count);
+                {
+                    cart.Product!.ProductImage = productImages.Where(u => u.ProductId == cart.ProductId).ToList();
+                    cart.Price = cart.Product!.Price;
+                    ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
 
-                
-            }
-            return View(ShoppingCartVM);
+                }
+
+                return View(ShoppingCartVM);
+            
+            
         }
-
-
-      
-
-        
-        
-
-
-
+           
 
         //increment the counter to increase the count of product
+
         public IActionResult Plus(int cartId)
         {
             var cartFromDb = _unitOfWork.Cart.Get(u => u.Id == cartId);
             cartFromDb.Count += 1;
             _unitOfWork.Cart.Update(cartFromDb);
-            _unitOfWork.Save();
+
+            //Stock checking
+
+            var productFromDb = _unitOfWork.Product.Get(u => u.Id == cartFromDb.ProductId);
+
+            if(cartFromDb.Count > productFromDb.QuantityInStock)
+            {
+                TempData["error"] = "Product Ot of Stock";
+            }
+            else
+            {
+                _unitOfWork.Save();
+            }
+           
             return RedirectToAction(nameof(Index));
         }
 
@@ -112,6 +123,8 @@ namespace NainaBoutique.Areas.Customer.Controllers
             _unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
+
+
         public IActionResult Remove(int cartId)
         {
             var cartFromDb = _unitOfWork.Cart.Get(u => u.Id == cartId);
@@ -184,6 +197,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
         }
 
+        [Authorize]
         [HttpPost]
         public IActionResult ApplyCoupon(CouponModel couponmodel)
         {
@@ -223,7 +237,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
             if (coupon != null)
             {
-                //var couponcode = _unitOfWork.Coupon.Get(u => u.Id == coupon);
+                
 
                 //checking coupon is there in Applied Coupon Table
                 var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.ApplicationUser.Id == userId && u.Coupon.CouponCode == coupon);
@@ -282,6 +296,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
 
         [HttpPost]
+        [Authorize]
         [ActionName("Summary")]
         public IActionResult SummaryPost(string Paymentmethod , CouponModel couponmodel )
         {
@@ -290,6 +305,8 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
             //var coupon = TempData["AppliedCoupon"];
             var coupon = couponmodel.CouponCode;
+
+            
 
             ShoppingCartVM!.shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
                  includeProperties: "Product");
@@ -331,9 +348,6 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 //ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusPending;
                 ShoppingCartVM.OrderSummary.PaymentMethod = "Wallet";
             }
-
-
-
 
 
 
@@ -455,24 +469,10 @@ namespace NainaBoutique.Areas.Customer.Controllers
             }
             
 
-            //    var balanceToPay = Math.Abs(amountToPay);
-
-            //    _unitOfWork.ApplicationUser.Update(applicationUserDb);
-            //    _unitOfWork.Wallet.Update(wallet);
-            //    ShoppingCartVM.OrderSummary.PaymentMethod = "COD";
-
-            //    _unitOfWork.OrderSummary.Update(orderSumaryFromDb);
-            //    _unitOfWork.OrderSummary.UpdateStatus(ShoppingCartVM.OrderSummary.Id, SD.StatusApproved, SD.PaymentStatusDelayedPayment);
-            //    _unitOfWork.Save();
-            //}
-            //}
-
-            //_unitOfWork.Save();
-
-
             else
             {
-                var domain = "https://localhost:7275/";
+               
+                var domain = Request.Scheme + "://" + Request.Host.Value + "/";
                 var options = new SessionCreateOptions
                 {
                     SuccessUrl = domain + $"Customer/Cart/OrderConfirmation?id={ShoppingCartVM.OrderSummary.Id}",
@@ -490,10 +490,8 @@ namespace NainaBoutique.Areas.Customer.Controllers
                     {
 
 
-
                         PriceData = new SessionLineItemPriceDataOptions
                         {
-
 
                             UnitAmount = (long)(item.Price * 100),
                             Currency = "aed",

@@ -155,9 +155,9 @@ public class HomeController : Controller
 
         if (!String.IsNullOrEmpty(searchString))
         {
-           productList = productList.Where(s => s.ProductName.ToLower().Contains(searchString.ToLower())
-           || s.Category.CategoryName.ToLower().Contains(searchString.ToLower()) || s.Price.ToString().Contains(searchString)||
-           s.Sale_Price.ToString()!.Contains(searchString)|| s.Color.ToLower().Contains(searchString.ToLower())
+           productList = productList.Where(s => s.ProductName!.ToLower().Contains(searchString.ToLower())
+           || s.Category!.CategoryName!.ToLower().Contains(searchString.ToLower()) || s.Price.ToString().Contains(searchString)||
+           s.Sale_Price.ToString()!.Contains(searchString)|| s.Color!.ToLower().Contains(searchString.ToLower())
           );
             return View(productList);
         }
@@ -165,14 +165,14 @@ public class HomeController : Controller
 
         if(color != null)
         {
-            productList = productList.Where(s => s.Color.ToLower() == color);
+            productList = productList.Where(s => s.Color!.ToLower() == color);
             return View(productList);
         }
         
 
         if(size!=null && size.Any())
         {
-            productList = productList.Where(u => size.Contains(u.Size));
+            productList = productList.Where(u => size.Contains(u.Size!));
             return View(productList);
         }
         
@@ -225,34 +225,42 @@ public class HomeController : Controller
     public IActionResult AddtoCart(ShoppingCart shoppingCart)
 
     {
-        var claimsIdentity = (ClaimsIdentity)User.Identity;
 
-        var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-        shoppingCart.ApplicationUserId = userId;
 
-        ShoppingCart cartFomDb = _unitOfWork.Cart.Get(u => u.ApplicationUserId ==shoppingCart.ApplicationUserId &&  u.ProductId== shoppingCart.ProductId);
-
-        var favouriteFromDb = _unitOfWork.Favourite.Get(u => u.ProductId == shoppingCart.ProductId);
-        if (cartFomDb != null){
-            //cart exists
-          cartFomDb.Count += shoppingCart.Count;
-            _unitOfWork.Cart.Update(cartFomDb);
-          
-
-        }
-        else
+        if (ModelState.IsValid)
         {
-           // favouriteFromDb.Count = 1;
-            _unitOfWork.Cart.Add(shoppingCart);
-            if(favouriteFromDb != null)
-            {
-                _unitOfWork.Favourite.Remove(favouriteFromDb);
-            }
-           
 
+
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
+
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            shoppingCart.ApplicationUserId = userId;
+
+            ShoppingCart cartFomDb = _unitOfWork.Cart.Get(u => u.ApplicationUserId == shoppingCart.ApplicationUserId && u.ProductId == shoppingCart.ProductId);
+
+            var favouriteFromDb = _unitOfWork.Favourite.Get(u => u.ProductId == shoppingCart.ProductId);
+            if (cartFomDb != null)
+            {
+                //cart exists
+                cartFomDb.Count += shoppingCart.Count;
+                _unitOfWork.Cart.Update(cartFomDb);
+
+
+            }
+            else
+            {
+                // favouriteFromDb.Count = 1;
+                _unitOfWork.Cart.Add(shoppingCart);
+                if (favouriteFromDb != null)
+                {
+                    _unitOfWork.Favourite.Remove(favouriteFromDb);
+                }
+
+
+            }
+            TempData["success"] = "Cart Updated Successfully";
+            _unitOfWork.Save();
         }
-        TempData["success"] = "Cart Updated Successfully";
-        _unitOfWork.Save();
         return RedirectToAction(nameof(Index));
     }
 
@@ -261,21 +269,22 @@ public class HomeController : Controller
     [Authorize]
     public IActionResult AddtoFav(FavouritesModel favouritesModel)
 
-    {
-        var claimsIdentity = (ClaimsIdentity)User.Identity;
+        {
+            var claimsIdentity = (ClaimsIdentity)User.Identity;
 
-        var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-        favouritesModel.ApplicationUserId = userId;
+            var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
+            favouritesModel.ApplicationUserId = userId;
 
-        FavouritesModel favouritesFomDb = _unitOfWork.Favourite.Get(u => u.ApplicationUserId == favouritesModel.ApplicationUserId && u.ProductId == favouritesModel.ProductId);
-     
+            FavouritesModel favouritesFomDb = _unitOfWork.Favourite.Get(u => u.ApplicationUserId == favouritesModel.ApplicationUserId && u.ProductId == favouritesModel.ProductId);
 
-        _unitOfWork.Favourite.Add(favouritesModel);
+
+            _unitOfWork.Favourite.Add(favouritesModel);
+
+
+
+            TempData["success"] = "Favourites Updated Successfully";
+            _unitOfWork.Save();
         
-       
-
-        TempData["success"] = "Favourites Updated Successfully";
-        _unitOfWork.Save();
         return RedirectToAction(nameof(Index));
     }
 

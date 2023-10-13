@@ -138,10 +138,14 @@ namespace NainaBoutique.Areas.Admin.Controllers
         {
             var orderSummary = _unitOfWork.OrderSummary.Get(u => u.Id == OrderVM.OrderSummary.Id);
 
-
+            //Stock Management 
             var orderDetail = _unitOfWork.OrderDetail.Get(u => u.Id == orderSummary.Id);
-           
+            var productFromDb = _unitOfWork.Product.Get(u => u.Id == orderDetail.ProductId);
 
+            productFromDb.QuantityInStock = productFromDb.QuantityInStock + orderDetail.Count;
+            _unitOfWork.Product.Update(productFromDb);
+           
+            //Card Payment .Refund to card
             if (orderSummary.PaymentStatus == SD.PaymentStatusApproved ) 
             {
                 var options = new RefundCreateOptions
@@ -156,6 +160,8 @@ namespace NainaBoutique.Areas.Admin.Controllers
                 _unitOfWork.OrderSummary.UpdateStatus(orderSummary.Id, SD.StatusCancelled, SD.StatusRefunded);
             }
 
+
+            //COD Refund to wallet
             if (orderSummary.PaymentStatus == SD.PaymentStatusDelayedPayment)
             { 
                 WalletModel walletModel = new WalletModel()
@@ -180,28 +186,15 @@ namespace NainaBoutique.Areas.Admin.Controllers
                 _unitOfWork.OrderSummary.UpdateStatus(orderSummary.Id, SD.StatusCancelled, SD.StatusCancelled);
 
             }
-
+            
 
             _unitOfWork.Save();
             TempData["Success"] = "Order  Cancelled Successfully";
+
             return RedirectToAction(nameof(Details), new { orderId = OrderVM.OrderSummary.Id });
 
 
-            //if (orderSummary.OrderStatus != "Cancelled" || orderSummary.OrderStatus != "Refunded")
-            //{
-
-            //    orderDetail.Product.QuantityInStock = orderDetail.Product.QuantityInStock - orderDetail.Count;
-            //    _unitOfWork.Product.Update(orderDetail.Product);
-
-
-            //}
-
-
         }
-
-
-
-
 
 
 

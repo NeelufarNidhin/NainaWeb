@@ -70,7 +70,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
             
             if (amount != null)
             {
-                var domain = "https://localhost:7275/";
+                var domain = Request.Scheme + "://" + Request.Host.Value + "/";
                 var options = new SessionCreateOptions
                 {
                     LineItems = new List<SessionLineItemOptions>(),

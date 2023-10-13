@@ -90,17 +90,12 @@ namespace NainaBoutique.Areas.Admin.Controllers
 
                 if (categoryName != null)
                 {
-
-                    TempData["error"] = "Category Already Exists";
-                    return RedirectToAction("Index");
-                }
-                else
-                {
                     _unitOfWork.Category.Update(category);
                     _unitOfWork.Save();
                     TempData["success"] = "Category Updated Successfully";
                     return RedirectToAction("Index");
                 }
+                
             }
             return View();
 
