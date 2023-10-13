@@ -7218,11 +7218,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.Models/NainaBoutique.Models.csproj",
+      "projectUniqueName": "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.Models/NainaBoutique.Models.csproj",
       "projectName": "NainaBoutique.Models",
-      "projectPath": "/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.Models/NainaBoutique.Models.csproj",
+      "projectPath": "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.Models/NainaBoutique.Models.csproj",
       "packagesPath": "/Users/neelufarnidhin/.nuget/packages/",
-      "outputPath": "/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.Models/obj/",
+      "outputPath": "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.Models/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/neelufarnidhin/.nuget/NuGet/NuGet.Config"

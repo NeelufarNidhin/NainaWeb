@@ -8910,11 +8910,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/NainaBoutique.DataAccess.csproj",
+      "projectUniqueName": "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.DataAccess/NainaBoutique.DataAccess.csproj",
       "projectName": "NainaBoutique.DataAccess",
-      "projectPath": "/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/NainaBoutique.DataAccess.csproj",
+      "projectPath": "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.DataAccess/NainaBoutique.DataAccess.csproj",
       "packagesPath": "/Users/neelufarnidhin/.nuget/packages/",
-      "outputPath": "/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.DataAccess/obj/",
+      "outputPath": "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.DataAccess/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/neelufarnidhin/.nuget/NuGet/NuGet.Config"
@@ -8929,8 +8929,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.Models/NainaBoutique.Models.csproj": {
-              "projectPath": "/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.Models/NainaBoutique.Models.csproj"
+            "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.Models/NainaBoutique.Models.csproj": {
+              "projectPath": "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.Models/NainaBoutique.Models.csproj"
             }
           }
         }

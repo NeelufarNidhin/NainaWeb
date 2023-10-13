@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.Utility/NainaBoutique.Utility.csproj": {}
+    "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.Utility/NainaBoutique.Utility.csproj": {}
   },
   "projects": {
-    "/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.Utility/NainaBoutique.Utility.csproj": {
+    "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.Utility/NainaBoutique.Utility.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.Utility/NainaBoutique.Utility.csproj",
+        "projectUniqueName": "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.Utility/NainaBoutique.Utility.csproj",
         "projectName": "NainaBoutique.Utility",
-        "projectPath": "/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.Utility/NainaBoutique.Utility.csproj",
+        "projectPath": "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.Utility/NainaBoutique.Utility.csproj",
         "packagesPath": "/Users/neelufarnidhin/.nuget/packages/",
-        "outputPath": "/Users/neelufarnidhin/Projects/NainaBoutique/NainaBoutique.Utility/obj/",
+        "outputPath": "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.Utility/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/neelufarnidhin/.nuget/NuGet/NuGet.Config"
