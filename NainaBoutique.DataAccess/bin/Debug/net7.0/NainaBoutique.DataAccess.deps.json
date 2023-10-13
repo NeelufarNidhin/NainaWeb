@@ -15,7 +15,8 @@
           "Microsoft.EntityFrameworkCore.Design": "7.0.10",
           "Microsoft.EntityFrameworkCore.SqlServer": "7.0.10",
           "Microsoft.EntityFrameworkCore.Tools": "7.0.10",
-          "NainaBoutique.Models": "1.0.0"
+          "NainaBoutique.Models": "1.0.0",
+          "NainaBoutique.Utility": "1.0.0"
         },
         "runtime": {
           "NainaBoutique.DataAccess.dll": {}
@@ -1563,6 +1564,14 @@
         "runtime": {
           "NainaBoutique.Models.dll": {}
         }
+      },
+      "NainaBoutique.Utility/1.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Identity.UI": "7.0.10"
+        },
+        "runtime": {
+          "NainaBoutique.Utility.dll": {}
+        }
       }
     }
   },
@@ -2791,6 +2800,11 @@
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
     },
     "NainaBoutique.Models/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NainaBoutique.Utility/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

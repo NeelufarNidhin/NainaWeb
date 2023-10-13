@@ -57,17 +57,52 @@ public class ApplicationDbContext : IdentityDbContext
         return base.SaveChanges();
     }
 
-    //public void UpdateOTP(string email, string otpdb)
-    //{
-    //    var otpFromDb = new OtpModel()
-    //    {
-    //        Email=email,
-    //        Otp=otpdb
-    //    };
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<CategoryModel>().HasData(
 
-        
-        
-    //}
+            new CategoryModel { Id = 1, CategoryName = "Party Dresses", Description = "Get your Hands on most exquite Party Dresses Collection from our store made with Love",RecStatus ='A', CreatedAt = DateTime.Now  },
+            new CategoryModel { Id = 2, CategoryName = "Bows", Description = "Get your Hands on most exquite Bows Collection from our store made with Love" , RecStatus = 'A', CreatedAt = DateTime.Now },
+            new CategoryModel { Id = 3, CategoryName = "Rompers", Description = "Get your Hands on most exquite Rompers Collection from our store made with Love", RecStatus = 'A', CreatedAt = DateTime.Now }
+
+            );
+
+        modelBuilder.Entity<ProductModel>().HasData(
+            new ProductModel
+            {
+                Id = 1,
+                ProductName = "Star Ruffle Party Dress Black",
+                Description = "Beautiful Party wear dress with Self Tie Star Bow Ruffle Party Dress Black perfect for every occasion",
+                Price = 150,
+                Sale_Price = 135,
+                QuantityInStock = 10,
+                Color = "Black",
+                Size = "3-4yr",
+                CategoryId = 1,
+                RecStatus = 'A',
+                CreatedAt = DateTime.Now
+            },
+
+            new ProductModel
+            {
+                Id = 1,
+                ProductName = "Korean Smocked Sparkle Dress",
+                Description = "Beautiful flowy party wear dress perfection for summer.",
+                Price = 240,
+                Sale_Price = 216,
+                QuantityInStock = 15,
+                Color = "Biege",
+                Size = "3-4yr",
+                CategoryId = 1,
+                RecStatus = 'A',
+                CreatedAt = DateTime.Now
+            });
+
+
+
+
+    }
 
 }
+
 

@@ -32,3 +32,5 @@
 /Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.DataAccess/obj/Debug/net7.0/NainaBoutique.DataAccess.pdb
 /Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.DataAccess/obj/Debug/net7.0/NainaBoutique.DataAccess.genruntimeconfig.cache
 /Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.DataAccess/obj/Debug/net7.0/ref/NainaBoutique.DataAccess.dll
+/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.DataAccess/bin/Debug/net7.0/NainaBoutique.Utility.dll
+/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.DataAccess/bin/Debug/net7.0/NainaBoutique.Utility.pdb

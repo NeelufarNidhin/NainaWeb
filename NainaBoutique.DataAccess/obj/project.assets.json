@@ -3073,6 +3073,19 @@
         "runtime": {
           "bin/placeholder/NainaBoutique.Models.dll": {}
         }
+      },
+      "NainaBoutique.Utility/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "Microsoft.AspNetCore.Identity.UI": "7.0.10"
+        },
+        "compile": {
+          "bin/placeholder/NainaBoutique.Utility.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/NainaBoutique.Utility.dll": {}
+        }
       }
     }
   },
@@ -8890,6 +8903,11 @@
       "type": "project",
       "path": "../NainaBoutique.Models/NainaBoutique.Models.csproj",
       "msbuildProject": "../NainaBoutique.Models/NainaBoutique.Models.csproj"
+    },
+    "NainaBoutique.Utility/1.0.0": {
+      "type": "project",
+      "path": "../NainaBoutique.Utility/NainaBoutique.Utility.csproj",
+      "msbuildProject": "../NainaBoutique.Utility/NainaBoutique.Utility.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -8901,7 +8919,8 @@
       "Microsoft.EntityFrameworkCore.Design >= 7.0.10",
       "Microsoft.EntityFrameworkCore.SqlServer >= 7.0.10",
       "Microsoft.EntityFrameworkCore.Tools >= 7.0.10",
-      "NainaBoutique.Models >= 1.0.0"
+      "NainaBoutique.Models >= 1.0.0",
+      "NainaBoutique.Utility >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -8931,6 +8950,9 @@
           "projectReferences": {
             "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.Models/NainaBoutique.Models.csproj": {
               "projectPath": "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.Models/NainaBoutique.Models.csproj"
+            },
+            "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.Utility/NainaBoutique.Utility.csproj": {
+              "projectPath": "/Users/neelufarnidhin/Projects/NainaWeb/NainaBoutique.Utility/NainaBoutique.Utility.csproj"
             }
           }
         }
