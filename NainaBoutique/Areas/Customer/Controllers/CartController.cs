@@ -19,6 +19,8 @@ using static TheArtOfDev.HtmlRenderer.Adapters.RGraphicsPath;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Stripe.Checkout;
 using Microsoft.Win32;
+//using static ClosedXML.Excel.XLPredefinedFormat;
+//using static System.Runtime.InteropServices.JavaScript.JSType;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -97,7 +99,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
             if(cartFromDb.Count > productFromDb.QuantityInStock)
             {
-                TempData["error"] = "Product Ot of Stock";
+                TempData["error"] = "Product Out of Stock";
             }
             else
             {
@@ -134,64 +136,46 @@ namespace NainaBoutique.Areas.Customer.Controllers
         }
 
 
-
-        public IActionResult Summary(string coupon, AddressModel addressModel)
+        
+        public IActionResult Summary()
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 
-            //   var appliedcoupon = TempData["AppliedCoupon"];
-
-            //string appliedcoupon = HttpContext.Session.GetString("TextboxData");
-
 
             ShoppingCartVM = new()
-            {
+                {
 
-                shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
-                includeProperties: "Product"),
-                OrderSummary = new()
-               
-               //AddressModel = new()
-
-            };
+                    shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
+                    includeProperties: "Product"),
+                    OrderSummary = new(),
 
 
-            //var AddressM = _db.Address.FirstOrDefault(u => u.UserId == userId);
-            ////foreach (var item in ShoppingCartVM.AddressModelList)
-            ////{
-            //ShoppingCartVM.AddressModel.Address = AddressM.Address;
-            //    ShoppingCartVM.AddressModel.City = AddressM.City;
-            //    ShoppingCartVM.AddressModel.State = AddressM.State;
-            //    ShoppingCartVM.AddressModel.PostalCode = AddressM.PostalCode;
-            //    ShoppingCartVM.AddressModel.MobileNumber = AddressM.MobileNumber;
+                    AddressModel = new()
 
-            //}
+                };
 
-
-
-
-            //  IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
             ShoppingCartVM.OrderSummary.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
 
-
             ShoppingCartVM.OrderSummary.Name = ShoppingCartVM.OrderSummary.ApplicationUser.Name;
-            ShoppingCartVM.OrderSummary.MobileNumber = ShoppingCartVM.OrderSummary.ApplicationUser.MobileNumber;
-            ShoppingCartVM.OrderSummary.Address = ShoppingCartVM.OrderSummary.ApplicationUser.Address;
-            ShoppingCartVM.OrderSummary.City = ShoppingCartVM.OrderSummary.ApplicationUser.City;
-            ShoppingCartVM.OrderSummary.State = ShoppingCartVM.OrderSummary.ApplicationUser.State;
-            ShoppingCartVM.OrderSummary.PostalCode = ShoppingCartVM.OrderSummary.ApplicationUser.PostalCode;
+                ShoppingCartVM.OrderSummary.MobileNumber = ShoppingCartVM.OrderSummary.ApplicationUser.MobileNumber;
+                ShoppingCartVM.OrderSummary.Address = ShoppingCartVM.OrderSummary.ApplicationUser.Address;
+                ShoppingCartVM.OrderSummary.City = ShoppingCartVM.OrderSummary.ApplicationUser.City;
+                ShoppingCartVM.OrderSummary.State = ShoppingCartVM.OrderSummary.ApplicationUser.State;
+                ShoppingCartVM.OrderSummary.PostalCode = ShoppingCartVM.OrderSummary.ApplicationUser.PostalCode;
+            
 
-            foreach (var cart in ShoppingCartVM.shoppingCartList)
-            {
-                // cart.Product.ProductImage = productImages.Where(u => u.ProductId == cart.ProductId).ToList();
-                cart.Price = cart.Product!.Price;
-                ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
+         ShoppingCartVM.OrderSummary.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
+                foreach (var cart in ShoppingCartVM.shoppingCartList)
+                {
+                    // cart.Product.ProductImage = productImages.Where(u => u.ProductId == cart.ProductId).ToList();
+                    cart.Price = cart.Product!.Price;
+                    ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
 
-            }
+                }
 
-       
+            
            return View(ShoppingCartVM);
 
 
@@ -199,7 +183,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult ApplyCoupon(CouponModel couponmodel)
+        public IActionResult ApplyCoupon(string coupon)
         {
 
 
@@ -207,7 +191,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 
-            var coupon = couponmodel.CouponCode;
+            var couponfromDb = _unitOfWork.Coupon.Get(u=>u.CouponCode == coupon);
 
             //TempData["AppliedCoupon"] = coupon;
 
@@ -215,7 +199,8 @@ namespace NainaBoutique.Areas.Customer.Controllers
             ShoppingCartVM!.shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
                  includeProperties: "Product");
 
-            ShoppingCartVM.OrderSummary.OrderDate = DateTime.Now;
+            var datetime = new System.DateTime();
+            ShoppingCartVM.OrderSummary.OrderDate = datetime;
             ShoppingCartVM.OrderSummary.ApplicationUserId = userId;
 
             //var coupon = ShoppingCartVM.OrderSummary.CouponId;
@@ -296,20 +281,25 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
 
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         [ActionName("Summary")]
         public IActionResult SummaryPost(string Paymentmethod , CouponModel couponmodel )
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
+           
+
             //var coupon = TempData["AppliedCoupon"];
             var coupon = couponmodel.CouponCode;
 
-            
+           
 
-            ShoppingCartVM!.shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
+
+            ShoppingCartVM.shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
                  includeProperties: "Product");
+
+
 
             ShoppingCartVM.OrderSummary.OrderDate = DateTime.Now;
             ShoppingCartVM.OrderSummary.ApplicationUserId = userId;
@@ -323,8 +313,10 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 ShoppingCartVM.OrderSummary.OrderTotal += (cart.Price * cart.Count);
 
             }
-               
-            if(Paymentmethod == null ){
+
+
+
+            if (Paymentmethod == null ){
                 TempData["error"] = "Please select Payment Method";
                 // return RedirectToAction(nameof(Summary));
                 return View("Summary", ShoppingCartVM);
@@ -344,11 +336,30 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 }
             else if (Paymentmethod == "Wallet")
             {
-                //ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusPending;
-                //ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusPending;
+                ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusPending;
+                ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusPending;
                 ShoppingCartVM.OrderSummary.PaymentMethod = "Wallet";
             }
+             var addressModel = _unitOfWork.Address.Get(u => u.UserId == userId);
+            var orderSummary = _unitOfWork.OrderSummary.Get(u => u.ApplicationUserId == userId);
+            if (addressModel != null)
 
+            {
+
+
+                orderSummary.Address = addressModel.Address;
+                orderSummary.City = addressModel.City;
+                orderSummary.State = addressModel.State;
+                orderSummary.PostalCode = addressModel.PostalCode;
+                orderSummary.MobileNumber = addressModel.MobileNumber;
+
+
+                _unitOfWork.OrderSummary.Update(orderSummary);
+                _unitOfWork.Address.Update(addressModel);
+                _unitOfWork.Save();
+
+
+            }
 
 
             if (coupon != null)
@@ -403,7 +414,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
                 };
 
-
+                
 
                 _unitOfWork.OrderDetail.Add(orderDetail);
                 _unitOfWork.Save();
@@ -458,7 +469,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
                     _unitOfWork.ApplicationUser.Update(applicationUserDb);
                     _unitOfWork.Wallet.Update(wallet);
 
-
+                    
 
                     _unitOfWork.OrderSummary.UpdateStatus(ShoppingCartVM.OrderSummary.Id, SD.StatusApproved, SD.PaymentStatusApproved);
                     _unitOfWork.Save();
@@ -618,9 +629,9 @@ namespace NainaBoutique.Areas.Customer.Controllers
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            var AddressList = _unitOfWork.Address.GetAll(u => u.UserId == userId).ToList();
 
-            //var  AddressList = _unitOfWork.Address.GetAll().ToList();
+
+            var AddressList = _unitOfWork.Address.Get(u=>u.UserId == userId);
 
             return View(AddressList);
         }

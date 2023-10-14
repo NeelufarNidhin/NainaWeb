@@ -57,6 +57,8 @@ namespace NainaBoutique.Areas.Admin.Controllers
                 OrderDetail = _unitOfWork.OrderDetail.GetAll(u => u.OrderSummaryId == orderId, includeProperties: "Product")
             };
 
+            
+
             return View(OrderVM);
         }
 
@@ -110,7 +112,21 @@ namespace NainaBoutique.Areas.Admin.Controllers
         public IActionResult ShipOrder()
         {
 
+
+
             var orderSummary = _unitOfWork.OrderSummary.Get(u => u.Id == OrderVM.OrderSummary.Id);
+
+            //stock management after shipping the order
+            var orderDetails = _unitOfWork.OrderDetail.Get(u => u.OrderSummaryId == orderSummary.Id);
+
+            var productFromDb = _unitOfWork.Product.Get(u => u.Id == orderDetails.ProductId);
+
+            if(productFromDb != null)
+            {
+                productFromDb.QuantityInStock = productFromDb.QuantityInStock - orderDetails.Count;
+                _unitOfWork.Product.Update(productFromDb);
+                _unitOfWork.Save();
+            }
             
             orderSummary.TrackingNumber = OrderVM.OrderSummary.TrackingNumber;
             orderSummary.Carrier = OrderVM.OrderSummary.Carrier;
@@ -139,8 +155,8 @@ namespace NainaBoutique.Areas.Admin.Controllers
             var orderSummary = _unitOfWork.OrderSummary.Get(u => u.Id == OrderVM.OrderSummary.Id);
 
             //Stock Management 
-            var orderDetail = _unitOfWork.OrderDetail.Get(u => u.Id == orderSummary.Id);
-            var productFromDb = _unitOfWork.Product.Get(u => u.Id == orderDetail.ProductId);
+            var orderDetail = _unitOfWork.OrderDetail.Get(u => u.OrderSummaryId == orderSummary.Id);
+            var productFromDb = _unitOfWork.Product.Get(u => u.Id ==orderDetail.ProductId);
 
             productFromDb.QuantityInStock = productFromDb.QuantityInStock + orderDetail.Count;
             _unitOfWork.Product.Update(productFromDb);
@@ -168,7 +184,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
                 {
                     UserId = orderSummary.ApplicationUserId,
                     WalletBalance = orderSummary.OrderTotal,
-                    OrderId = orderSummary.Id
+                        OrderId = orderSummary.Id
 
                 };
 

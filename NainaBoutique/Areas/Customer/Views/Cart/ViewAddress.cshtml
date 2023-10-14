@@ -4,32 +4,32 @@
 }
 
 
-@model IEnumerable<AddressModel>
+@model AddressModel
 
 
+<form method="get">
+
+    @*@foreach (var item in Model)
+    {*@
+        <button type="submit" asp-action="Summary" asp-area="Customer" asp-controller="Cart">
+
+            <h5> Address  </h5>
+            <br />
+
+            <h5>  @Model.Address </h5>
+            <br />
+            <h5> @Model.City </h5>
+            <br />
+            <h5> @Model.State </h5>
+            <br />
+            <h5>@Model.PostalCode</h5>
+            <br />
+            <h5> @Model.MobileNumber </h5>
 
 
-@foreach (var item in Model)
-{
-    <a class="btn" asp-action="Summary" asp-area="Customer" asp-controller="Cart">
-
-        <h5> Address  </h5>
-        <br />
-
-        <h5>@item.Address </h5>
-        <br />
-        <h5> @item.City </h5>
-        <br />
-        <h5> @item.State </h5>
-        <br />
-        <h5>@item.PostalCode</h5>
-        <br />
-        <h5> @item.MobileNumber </h5>
-
-
-    </a>
-}
-
+        </button>
+    @*}*@
+</form>
 
 @section Scripts{
     @{
