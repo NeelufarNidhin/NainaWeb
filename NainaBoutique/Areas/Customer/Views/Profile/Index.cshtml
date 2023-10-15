@@ -2,14 +2,14 @@
 
 <form method="post">
     <input type="hidden" asp-for="@Model.ApplicationUser.Id" />
-
     <section class="vh-100" style="background-color: #f4f5f7;">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
                 <div class="col col-lg-6 mb-4 mb-lg-0">
                     <div class="card mb-3" style="border-radius: .5rem;">
                         <div class="row g-0">
-                            <div class="col-md-4 gradient-custom text-center text-white" style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+                            <div class="col-md-4 gradient-custom text-center text-white"
+                                 style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
                                 <h5>@Model.ApplicationUser.Name</h5>
                                 <i class="far fa-edit mb-5"></i>
                             </div>
@@ -17,8 +17,6 @@
                                 <div class="card-body p-4">
                                     <h6>USER PROFILE</h6>
                                     <hr class="mt-0 mb-4">
-
-                                    <!-- Email and Phone -->
                                     <div class="row pt-1">
                                         <div class="col-6 mb-3">
                                             <h6>Email</h6>
@@ -26,23 +24,19 @@
                                         </div>
                                         <div class="col-6 mb-3">
                                             <h6>Phone</h6>
-                                            <p class="text-muted">@Model.ApplicationUser.MobileNumber</p>
+                                            <p class="text-muted"> @Model.ApplicationUser.MobileNumber</p>
                                         </div>
                                     </div>
-
-                                    <!-- Address -->
                                     <h6>Address</h6>
                                     <hr class="mt-0 mb-4">
                                     <div class="row pt-1">
-                                        <div class="col-12">
-                                            <p>@Model.ApplicationUser.Address</p>
-                                            <p>@Model.ApplicationUser.City</p>
-                                            <p>@Model.ApplicationUser.State</p>
-                                            <p>@Model.ApplicationUser.PostalCode</p>
+                                        <div class="col-12 mb-3">
+                                            <h6>@Model.ApplicationUser.Address</h6>
+                                            <h6>@Model.ApplicationUser.City</h6>
+                                            <h6>@Model.ApplicationUser.State</h6>
+                                            <h6>@Model.ApplicationUser.PostalCode</h6>
                                         </div>
                                     </div>
-
-                                    <!-- Edit Button -->
                                     <div class="form-group">
                                         <input type="submit" value="Edit" class="btn btn-primary" asp-action="Edit" />
                                     </div>
@@ -53,7 +47,7 @@
                 </div>
             </div>
         </div>
-    </section>
+        </section>
 </form>
 
 @section Scripts {

@@ -4,7 +4,7 @@
 
 
 
-@model OrderVM
+@*@model OrderVM*@
 
 @{
     var status = Context.Request.Query["status"];
@@ -54,10 +54,10 @@
 
             <ul class="list-group list-group-horizontal-sm">
 
-                @*<li class="list-group-item @inprocess">
+                <li class="list-group-item @inprocess">
 
-                        <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="Inprocess">In Process </a>
-                    </li>*@
+                    <a style="text-decoration:none" asp-controller="Order" asp-action="Index" asp-route-status="Inprocess">In Process </a>
+                </li>
 
 
                 <li class="list-group-item @pending">
@@ -88,38 +88,28 @@
         <table id="tblOrderData" class="table table-bordered table-striped" width="100%">
             <thead>
                 <tr>
-                    <th>
-                        ID
-                    </th>
-                    <th>
-                        Name
-                    </th>
+                    <th>  ID</th>
+                    <th>Name </th>
                     <th>Order Date </th>
-                    @*<th>Size</th>*@
-                    <th>
-                        Payment Method
-                    </th>
-                    <th>
-                        Order Status
-                    </th>
-                    <th>
-                        Total
-                    </th>
-                    <th>
-                        Order Status
-                    </th>
+                    <th>Payment Method</th>
+                    <th>Oder Status</th>
+                    <th>Total</th>
+                    <th>Order Status</th>
                     <th></th>
-
-
                 </tr>
             </thead>
-
         </table>
     </div>
 
 </div>
 
+
+
 @section Scripts{
 
     <script src="~/js/order.js"></script>
 }
+
+
+
+

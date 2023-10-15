@@ -468,6 +468,9 @@ namespace NainaBoutique.DataAccess.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("CouponId")
+                        .HasColumnType("int");
+
                     b.Property<int>("MobileNumber")
                         .HasColumnType("int");
 

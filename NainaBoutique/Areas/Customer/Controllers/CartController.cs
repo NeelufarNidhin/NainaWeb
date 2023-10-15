@@ -19,6 +19,8 @@ using static TheArtOfDev.HtmlRenderer.Adapters.RGraphicsPath;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Stripe.Checkout;
 using Microsoft.Win32;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using NainaBoutique.Models;
 //using static ClosedXML.Excel.XLPredefinedFormat;
 //using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -27,7 +29,7 @@ using Microsoft.Win32;
 namespace NainaBoutique.Areas.Customer.Controllers
 {
     [Area("Customer")]
-    //[Authorize]
+    [Authorize]
     public class CartController : Controller
     {
         public readonly IUnitOfWork _unitOfWork;
@@ -150,9 +152,13 @@ namespace NainaBoutique.Areas.Customer.Controllers
                     shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
                     includeProperties: "Product"),
                     OrderSummary = new(),
+                CouponList = _unitOfWork.Coupon.GetAll().Select(u => new SelectListItem
+                {
+                    Text = u.CouponCode,
+                    Value = u.Id.ToString()
+                }),
 
-
-                    AddressModel = new()
+                AddressModel = new()
 
                 };
 
@@ -183,31 +189,30 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
         [Authorize]
         [HttpPost]
-        public IActionResult ApplyCoupon(string coupon)
+        public IActionResult ApplyCoupon(ShoppingCartVM shoppingCartVM)
         {
 
 
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-
-            var couponfromDb = _unitOfWork.Coupon.Get(u=>u.CouponCode == coupon);
-
-            //TempData["AppliedCoupon"] = coupon;
+            TempData["AppliedCoupon"] = shoppingCartVM.OrderSummary.CouponId.ToString();
 
 
             ShoppingCartVM!.shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
                  includeProperties: "Product");
 
+            var coupon = _unitOfWork.Coupon.Get(u=>u.Id == ShoppingCartVM.OrderSummary.CouponId);
+
             var datetime = new System.DateTime();
             ShoppingCartVM.OrderSummary.OrderDate = datetime;
             ShoppingCartVM.OrderSummary.ApplicationUserId = userId;
 
-            //var coupon = ShoppingCartVM.OrderSummary.CouponId;
+           
 
             foreach (var cart in ShoppingCartVM.shoppingCartList)
             {
-                // cart.Product.ProductImage = productImages.Where(u => u.ProductId == cart.ProductId).ToList();
+               
                 cart.Price = cart.Product!.Price;
 
 
@@ -216,23 +221,14 @@ namespace NainaBoutique.Areas.Customer.Controllers
             }
 
 
-
-            //  IEnumerable<ProductImage> productImages = _unitOfWork.ProductImage.GetAll();
-
-
             if (coupon != null)
             {
                 
 
                 //checking coupon is there in Applied Coupon Table
-                var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.ApplicationUser.Id == userId && u.Coupon.CouponCode == coupon);
+                var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.ApplicationUser.Id == userId && u.CouponId == ShoppingCartVM.OrderSummary.CouponId);
 
-
-                //checking status of the coupon
-                CouponModel couponModel = _unitOfWork.Coupon.Get(u => u.CouponCode == coupon);
-
-
-                //var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.ApplicationUser.Id == userId && u.Coupon.CouponCode == couponcode);
+                CouponModel couponModel = _unitOfWork.Coupon.Get(u => u.Id == ShoppingCartVM.OrderSummary.CouponId);
 
 
                 if (couponFromDb != null)
@@ -250,26 +246,34 @@ namespace NainaBoutique.Areas.Customer.Controllers
                         CouponId = couponModel.Id
 
                     };
+
+
                     //Discount calculation
 
                     if (ShoppingCartVM.OrderSummary.OrderTotal >= 250)
                     {
                         var discount = couponModel.Discount;
+
                         //chk discount less than max discount
                         var maxdiscount = (ShoppingCartVM.OrderSummary.OrderTotal) * (discount / 100);
                         if (maxdiscount <= couponModel.MaxAmount)
                         {
                             ShoppingCartVM.OrderSummary.OrderTotal -= ((ShoppingCartVM.OrderSummary.OrderTotal) * (discount / 100));
                         _db.AppliedCoupons.Add(appliedCoupon);
+                            
+                            _db.SaveChanges();
 
-                        _db.SaveChanges();
-
-                    }
+                        }
                         else
                         {
                             ShoppingCartVM.OrderSummary.OrderTotal -= 1000;
+                            _db.SaveChanges();
                         }
-
+                        
+                    }
+                    else
+                    {
+                        TempData["error"] = "Coupon cannot be applied as Total Amount less than 250";
                     }
 
                 }
@@ -281,32 +285,27 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
 
         [HttpPost]
-        //[Authorize]
+        [Authorize]
         [ActionName("Summary")]
-        public IActionResult SummaryPost(string Paymentmethod , CouponModel couponmodel )
+        public IActionResult SummaryPost(string PaymentMethod, int couponId)
         {
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-           
 
-            //var coupon = TempData["AppliedCoupon"];
-            var coupon = couponmodel.CouponCode;
-
-           
 
 
             ShoppingCartVM.shoppingCartList = _unitOfWork.Cart.GetAll(u => u.ApplicationUserId == userId,
                  includeProperties: "Product");
 
 
-
+           
             ShoppingCartVM.OrderSummary.OrderDate = DateTime.Now;
             ShoppingCartVM.OrderSummary.ApplicationUserId = userId;
 
             foreach (var cart in ShoppingCartVM.shoppingCartList)
             {
-                // cart.Product.ProductImage = productImages.Where(u => u.ProductId == cart.ProductId).ToList();
+               
                 cart.Price = cart.Product!.Price;
 
 
@@ -316,64 +315,61 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
 
 
-            if (Paymentmethod == null ){
+            if (PaymentMethod == null ){
+
                 TempData["error"] = "Please select Payment Method";
-                // return RedirectToAction(nameof(Summary));
+               
                 return View("Summary", ShoppingCartVM);
             }
 
-            if (Paymentmethod == "COD")
+            if (PaymentMethod == "COD")
                 {
                     ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusDelayedPayment;
                     ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusApproved;
                     ShoppingCartVM.OrderSummary.PaymentMethod = "COD";
                 }
-                else if (Paymentmethod == "Card")
+                else if (PaymentMethod == "Card")
                 {
                     ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusPending;
                     ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusPending;
                     ShoppingCartVM.OrderSummary.PaymentMethod = "Card";
                 }
-            else if (Paymentmethod == "Wallet")
+            else if (PaymentMethod == "Wallet")
             {
                 ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusPending;
                 ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusPending;
                 ShoppingCartVM.OrderSummary.PaymentMethod = "Wallet";
             }
-             var addressModel = _unitOfWork.Address.Get(u => u.UserId == userId);
-            var orderSummary = _unitOfWork.OrderSummary.Get(u => u.ApplicationUserId == userId);
-            if (addressModel != null)
+            //  var addressModel = _unitOfWork.Address.Get(u => u.UserId == userId);
+            // var orderSummary = _unitOfWork.OrderSummary.Get(u => u.ApplicationUserId == userId);
+            //if (addressModel != null)
 
+            //{
+
+
+            //    orderSummary.Address = addressModel.Address;
+            //    orderSummary.City = addressModel.City;
+            //    orderSummary.State = addressModel.State;
+            //    orderSummary.PostalCode = addressModel.PostalCode;
+            //    orderSummary.MobileNumber = addressModel.MobileNumber;
+
+
+            //    _unitOfWork.OrderSummary.Update(orderSummary);
+            //    _unitOfWork.Address.Update(addressModel);
+            //    _unitOfWork.Save();
+
+
+            //}
+            var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.CouponId == couponId && u.UserId == userId);
+
+            if (couponFromDb != null)
             {
-
-
-                orderSummary.Address = addressModel.Address;
-                orderSummary.City = addressModel.City;
-                orderSummary.State = addressModel.State;
-                orderSummary.PostalCode = addressModel.PostalCode;
-                orderSummary.MobileNumber = addressModel.MobileNumber;
-
-
-                _unitOfWork.OrderSummary.Update(orderSummary);
-                _unitOfWork.Address.Update(addressModel);
-                _unitOfWork.Save();
-
-
-            }
-
-
-            if (coupon != null)
-            {
-                //checking coupon is there in Applied Coupon Table
-                var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.ApplicationUser.Id == userId && u.Coupon.CouponCode == coupon);
-
+               
 
                 //checking status of the coupon
-                CouponModel couponModel = _unitOfWork.Coupon.Get(u => u.CouponCode == coupon);
+                CouponModel couponModel = _unitOfWork.Coupon.Get(u => u.Id == couponId);
 
 
-                if (couponFromDb != null)
-                {
 
                     //Discount calculation
 
@@ -392,10 +388,12 @@ namespace NainaBoutique.Areas.Customer.Controllers
                             ShoppingCartVM.OrderSummary.OrderTotal -= 1000;
                         }
 
-                    }
+                    
+                    
                 }
 
             }
+
 
             _unitOfWork.OrderSummary.Add(ShoppingCartVM.OrderSummary);
             _unitOfWork.Save();
@@ -420,20 +418,17 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 _unitOfWork.Save();
             }
 
-            //  return View(ShoppingCartVM);
+            
 
-            if (Paymentmethod == "COD")
+            if (ShoppingCartVM.OrderSummary.PaymentMethod == "COD")
 
             {
-                //ShoppingCartVM.OrderSummary.PaymentStatus = SD.PaymentStatusDelayedPayment;
-                //ShoppingCartVM.OrderSummary.OrderStatus = SD.StatusApproved;
-                //ShoppingCartVM.OrderSummary.PaymentMethod = "COD";
-                //_unitOfWork.Save();
+                
                 return RedirectToAction(nameof(OrderConfirmation), new { id = ShoppingCartVM.OrderSummary.Id });
             }
-            // return RedirectToAction(nameof(OrderCheckout));
+           
 
-            else if (Paymentmethod == "Wallet")
+            else if (ShoppingCartVM.OrderSummary.PaymentMethod == "Wallet")
             {
                 IEnumerable<WalletModel> walletList = _unitOfWork.Wallet.GetAll(u => u.UserId == ShoppingCartVM.OrderSummary.ApplicationUserId);
 
@@ -635,6 +630,9 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
             return View(AddressList);
         }
+
+
+
 
     }
 }

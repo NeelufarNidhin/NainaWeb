@@ -58,6 +58,7 @@
     <PackageReference Include="Stripe.net" Version="42.5.0" />
     <PackageReference Include="Polybioz.HtmlRenderer.PdfSharp.Core" Version="1.0.0" />
     <PackageReference Include="ClosedXML" Version="0.102.1" />
+    <PackageReference Include="QuestPDF" Version="2023.9.1" />
   </ItemGroup>
 
   <ItemGroup>

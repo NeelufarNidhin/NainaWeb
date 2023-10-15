@@ -15,6 +15,9 @@ using NainaBoutique.Models.ViewModels;
 using NainaBoutique.Utility;
 using PdfSharpCore;
 using PdfSharpCore.Pdf;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using Stripe;
 using TheArtOfDev.HtmlRenderer.PdfSharp;
 
@@ -234,7 +237,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
         [HttpGet]
 
         [Authorize(Roles = SD.Role_User)]
-        public ActionResult GeneratePdf(int orderId)
+        public ActionResult GeneratePdff(int orderId)
         {
 
 
@@ -309,7 +312,9 @@ namespace NainaBoutique.Areas.Admin.Controllers
             htmlcontent += "</div>";
             htmlcontent += "</div>";
 
-            PdfGenerator.AddPdfPages(document, htmlcontent, PageSize.A4);
+
+            Environment.ExpandEnvironmentVariables(@"%SystemRoot%\Fonts");
+           // PdfGenerator.AddPdfPages(document, htmlcontent, PageSize.A4);
             byte[]? response = null;
             using (MemoryStream ms = new MemoryStream())
             {
@@ -321,7 +326,145 @@ namespace NainaBoutique.Areas.Admin.Controllers
             return File(response, "application/pdf", Filename);
         }
 
-        
+
+
+        [HttpGet]
+
+        [Authorize(Roles = SD.Role_User)]
+        public FileStreamResult GetPDF(int orderId)
+        {
+
+            
+            OrderVM = new()
+            {
+                OrderSummary = _unitOfWork.OrderSummary.Get(u => u.Id == orderId, includeProperties: "ApplicationUser"),
+                OrderDetail = _unitOfWork.OrderDetail.GetAll(u => u.OrderSummaryId == orderId, includeProperties: "Product")
+
+            };
+
+            Document document = Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Size(PageSizes.A4);
+                    page.Margin(2, Unit.Centimetre);
+                    page.PageColor(Colors.White);
+                    page.DefaultTextStyle(x => x.FontSize(12));
+                    page.Header()
+                        //.Text("Naina Boutique")
+                        //.SemiBold().FontSize(26).FontColor(Colors.Black);
+                        .Row(row =>
+                        {
+
+                            
+                            row.RelativeItem().Column(column =>
+                            {
+                                column.Item().AlignCenter().Text("NAINA BOUTIQUE").Bold().FontSize(30);
+                                column.Item().Text(" ");
+                                column.Item().Text(" ");
+                                column.Item().Text($"Invoice #{OrderVM.OrderSummary.Id} ");
+
+                                column.Item().Text(text =>
+                            {
+                                text.Span("OrderDate: ").SemiBold();
+                                text.Span($"{OrderVM.OrderSummary.OrderDate}");
+                            });
+
+                                column.Item().Text(text =>
+                                {
+                                    text.Span("Name :").SemiBold();
+                                    text.Span($"{OrderVM.OrderSummary.Name}");
+                                });
+
+                                column.Item().Text(text =>
+                                {
+                                    text.Span("Address: ").SemiBold();
+                                    text.Span($"{OrderVM.OrderSummary.Address + ", " + OrderVM.OrderSummary.City}");
+                                });
+                                column.Item().Text(text =>
+                                {
+                                    text.Span("State: ").SemiBold();
+                                    text.Span($" {OrderVM.OrderSummary.State + "," + OrderVM.OrderSummary.PostalCode}");
+                                });
+                                column.Item().Text(text =>
+                                {
+                                    text.Span("MobileNumber: ").SemiBold();
+                                    text.Span($"{OrderVM.OrderSummary.MobileNumber}");
+                                });
+                            });
+                        });
+
+                        page.Content()
+                        .Height(250)
+                        .AlignCenter()
+                        .AlignMiddle()
+                        //.BorderBottom(1)
+                        .PaddingVertical(4).Table(table =>
+                        {
+
+                            table.ColumnsDefinition(columns =>
+                            {
+                                // s.no, name,qty, price, total
+                                columns.ConstantColumn(25);
+                                columns.RelativeColumn(3);
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                                columns.RelativeColumn();
+                            });
+                            table.Header
+                            (header =>
+                            {
+                                header.Cell().Border(1).BorderColor(Colors.Grey.Lighten2).Text("#Id");
+                                header.Cell().Border(1).BorderColor(Colors.Grey.Lighten2).Text("Name");
+                                header.Cell().Border(1).BorderColor(Colors.Grey.Lighten2).AlignRight().Text("Quantity");
+                                header.Cell().Border(1).BorderColor(Colors.Grey.Lighten2).AlignRight().Text("Price");
+                                header.Cell().Border(1).BorderColor(Colors.Grey.Lighten2).AlignRight().Text("Total");
+
+                            });
+
+                           
+
+                            if (OrderVM != null)
+                            {
+                                foreach (var product in OrderVM.OrderDetail)
+                                {
+                                    table.Cell().Border(1).BorderColor(Colors.Grey.Lighten2).Text(product.ProductId.ToString());
+                                    table.Cell().Border(1).BorderColor(Colors.Grey.Lighten2).Text(product.Product!.ProductName);
+                                    table.Cell().Border(1).BorderColor(Colors.Grey.Lighten2).AlignRight().Text(product.Count.ToString());
+                                    table.Cell().Border(1).BorderColor(Colors.Grey.Lighten2).AlignRight().Text(product.Price.ToString("F2") + " AED");
+                                    table.Cell().Border(1).BorderColor( Colors.Grey.Lighten2).AlignRight().Text((product.Count * product.Price).ToString("F2") + " AED");
+                                    
+
+                                }
+                            }
+
+                            table.Cell().Text(" ");
+                            table.Cell().Text(" ");
+                            table.Cell().Text(" ");
+                            table.Cell().AlignRight().Text("Grand total:");
+                            table.Cell().AlignRight().Text($"{OrderVM!.OrderSummary.OrderTotal.ToString("F2")}" + "AED");
+                                
+                           
+
+
+                        });
+
+                    
+
+                    page.Footer()
+                        .AlignCenter()
+                        .Text(x =>
+                        {
+                            x.Span("Page ");
+                            x.CurrentPageNumber();
+                        });
+                });
+            });
+            byte[] pdfBytes = document.GeneratePdf();
+            MemoryStream ms = new MemoryStream(pdfBytes);
+            return new FileStreamResult(ms, "application/pdf");
+
+        }
 
 
 
@@ -331,8 +474,11 @@ namespace NainaBoutique.Areas.Admin.Controllers
         [HttpGet]
         public IActionResult GetAll(string status )
         {
-            IEnumerable<OrderSummary> objOrderSummaryList = _unitOfWork.OrderSummary.GetAll(includeProperties: "ApplicationUser").ToList();
+            
+            IEnumerable<OrderSummary> objOrderSummaryList;
 
+
+            
 
             if (User.IsInRole(SD.Role_Admin))
             {

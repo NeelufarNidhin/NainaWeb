@@ -94,7 +94,7 @@
                         <!--<div class="row">
                             <div class="col-3 ">-->
                         <!-- Button to trigger the popup -->
-                        <!--<a onclick="showInPopup('@Url.Action("AddAddress","Cart")','Add Address')" class="btn btn-success">Add Address</a>
+                        <!--<a onclick="showInPopup('Url.Action("AddAddress","Cart")','Add Address')" class="btn btn-success">Add Address</a>
 
                             </div>
 
@@ -128,31 +128,28 @@
                             </ul>
 
                             <div class="row">
-                                <div class="col-3 form-group">
-                                    @*<label for="coupon">Coupon Code</label>*@
-                                    <label asp-for="@Model.Coupon.CouponCode" >Coupon Code</label>
-                                    <input  asp-for="@Model.Coupon.CouponCode" type="text" name="coupon" class="form-control" />
+                               
+                                <div class="mb-3 row p-1">
+                                <label asp-for="@Model.OrderSummary.CouponId" class="form-control"></label>
+                                <select asp-for="@Model.OrderSummary.CouponId" asp-items="@Model.CouponList" class="form-select">
+                                    <option disabled selected>-Select Coupon-</option>
+                                </select>
+                                    </div>
+                              
 
-                                </div>
+                           
                                 <div class="col-3 ">
-                                    <button type="submit" name="coupon" class="btn btn-secondary form-control" asp-area="Customer" asp-controller="cart" asp-action="ApplyCoupon">Apply</button>
+                                    <button type="submit" name="coupon" class="btn btn-secondary form-control"  asp-area="Customer" asp-controller="cart" asp-action="ApplyCoupon">Apply</button>
                                 </div>
                                 <div class="col-3 ">
                                     <button type="submit" name="coupon" class="btn btn-secondary form-control" asp-area="Customer" asp-controller="cart" asp-action="RemoveCoupon">Remove</button>
                                     <p>@ViewBag.Message</p>
                                 </div>
-                            </div>
-
-
+                           
 
 
                             <h6 class="text-info">Total (AED) :@Model.OrderSummary.OrderTotal</h6>
-                            @*<h6 class="text-info">Total (AED) :@ViewData["OrderTotal"]</h6>*@
-
-
-
-
-
+                          
                             <div>
                                 <p>Please select your Payment Method</p>
                                 <input type="radio" id="COD" asp-for="OrderSummary.PaymentMethod" name="PaymentMethod" value="COD">
@@ -177,7 +174,7 @@
                         </p>
                     </div>
                     <div class="col-12  col-md-4 pt-2">
-                        <button type="submit" asp-action="Summary" class="btn btn-secondary form-control">Checkout</button>
+                        <button type="submit" asp-action="Summary" asp-route-couponId=@Model.OrderSummary.CouponId  class="btn btn-secondary form-control">Checkout</button>
                     </div>
                 </div>
             </div>

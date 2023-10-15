@@ -401,7 +401,7 @@ Model.OrderSummary.OrderStatus == SD.StatusShipped)
 <form method="get">
 
     <input asp-for="OrderSummary.Id" hidden />
-    <a href="@Url.Action("GeneratePdf", "Order", new { orderId = @Model.OrderSummary.Id })">Generate PDF</a>
+    <a href="@Url.Action("GetPdf", "Order", new { orderId = @Model.OrderSummary.Id })">Generate PDF</a>
 </form>
 
 @section Scripts{

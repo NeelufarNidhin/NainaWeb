@@ -12,10 +12,11 @@ using Stripe;
 using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using NainaBoutique.DataAccess.DbInitializer;
+using QuestPDF.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
+QuestPDF.Settings.License = LicenseType.Community;
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ??

@@ -1,7 +1,5 @@
 ﻿var dataTable;
 
-
-
 $(document).ready(function () {
     var url = window.location.search;
     if (url.includes("inprocess")) {
@@ -28,17 +26,13 @@ $(document).ready(function () {
 
 });
 
-
 function loadDataTable(status) {
     dataTable = $('#tblOrderData').DataTable({
-       
-        "ajax": { url: '/admin/order/getall?status=' + status },
-          
+        "ajax": { url: '/admin/order/getall?status=' + status },     
         "columns": [
             { data: 'id', "autowidth": true },
             { data: 'name', "autowidth": true },
             { data: 'orderDate', "autowidth": true },
-            //{ data: 'size', "autowidth": true },
             { data: 'paymentMethod', "autowidth": true },
             { data: 'orderStatus', "autowidth": true },
             { data: 'orderTotal', "autowidth": true },
