@@ -488,8 +488,9 @@ namespace NainaBoutique.Areas.Customer.Controllers
                     Mode = "payment",
                     AllowPromotionCodes = true,
                 };
+                CouponModel couponmodel = _unitOfWork.Coupon.Get(u => u.Id == couponId);
 
-
+                
                 foreach (var item in ShoppingCartVM.shoppingCartList)
                 {
                     var sessionLineItem = new SessionLineItemOptions

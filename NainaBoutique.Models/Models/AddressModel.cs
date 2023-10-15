@@ -22,6 +22,7 @@ namespace NainaBoutique.Models.Models
             public int PostalCode { get; set; }
             public int MobileNumber { get; set; }
 
+            public int Status { get; set; }
 
     }
 }

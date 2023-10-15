@@ -1,0 +1,77 @@
+﻿@model AddressVM
+
+
+<div class="container">
+    <div class="card shadow border-0">
+
+        <div class="card-header bg-secondary bg-gradient text-light ml-0 py-4">
+            <div class="row px-4">
+                <div class="col-6">
+                    <h5 class="pt-2 text-white">
+                        Select Existing Address
+                    </h5>
+                </div>
+                <div class="col-6 text-end">
+                    <a asp-controller="Cart" asp-action="Summary" class="btn btn-outline-danger btn-sm">Back to Summary</a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row pb-3">
+            @foreach (var address in Model.Address)
+            {
+
+
+                <div class="col-lg-3 col-sm-6">
+                    <div class="row-p-2">
+                        <div class="col-lg-12 p-1">
+
+                            @*    <div class="card border-0 p-3 shadow border-top border-5 rounded"> *@
+
+
+                            <form method="post" class="row" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-lg-6 col-sm-12">
+                                        <button type="submit" asp-route-addressId="@address.Id" asp-action="SelectAddress" style="width:220px;">
+
+                                            <small>
+                                                <label>
+                                                    Street Address:
+                                                </label>@address.Address<br />
+                                                <label> City: </label>
+
+                                                <label>
+                                                    City:
+                                                </label>@address.City <br />
+                                                <label>State</label>@address.State<br />
+                                                <label>Postal Code</label>@address.PostalCode
+                                            </small>
+                                        </button>
+
+                                    </div>
+
+
+
+                                </div>
+                            </form>
+
+
+                            @*  </div> *@
+
+                        </div>
+
+                    </div>
+                </div>
+            }
+
+        </div>
+
+
+
+
+
+    </div>
+
+
+</div>

@@ -1,7 +1,13 @@
 ﻿@model IEnumerable<ProductModel>
 
 
+<!DOCTYPE html>
+<html>
 
+<head>
+    <!-- Include Bootstrap CSS -->
+    @*<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">*@
+</head>
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -14,20 +20,7 @@
                         <input type="text" name="searchString" placeholder="Start Typing To Search" value="@ViewData["CurrentFilter"]" />
                         <input type="submit" value="Search" />
                     </div>
-                    <!-- Color Filter -->
-                    <div class="mb-3">
-                        <h5>Color</h5>
-                        <div class="d-flex flex-wrap">
-                            <button type="submit" name="color" value="green" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: green"></button>
-                            <button type="submit" name="color" value="black" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%;  background-color: black"></button>
-                            <button type="submit" name="color" value="pink" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%;  background-color: pink"></button>
-                            <button type="submit" name="color" value="white" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: white"></button>
-                            <button type="submit" name="color" value="beige" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: beige"></button>
-                            <button type="submit" name="color" value="blue" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: blue"></button>
-                            <button type="submit" name="color" value="red" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: red"></button>
 
-                        </div>
-                    </div>
                     <!-- Size Filter -->
                     <div class="mb-3">
                         <h5>Size</h5>
@@ -82,20 +75,56 @@
                             <label class="form-check-label" for="price4">250-500 AED</label>
                         </div>
                         @*<div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="price5" name="price" value="500-570">
-                        <label class="form-check-label" for="price5">500-750 AED</label>
-                    </div>
-                    <div class="form-check">
-                        <input type="checkbox" class="form-check-input" id="price6" name="price" value="750-1000">
-                        <label class="form-check-label" for="price6">750-1000 AED</label>
-                    </div>*@
+                <input type="checkbox" class="form-check-input" id="price5" name="price" value="500-570">
+                <label class="form-check-label" for="price5">500-750 AED</label>
+            </div>
+            <div class="form-check">
+                <input type="checkbox" class="form-check-input" id="price6" name="price" value="750-1000">
+                <label class="form-check-label" for="price6">750-1000 AED</label>
+            </div>*@
 
+                    </div>
+                    <!-- Color Filter -->
+                    <div class="mb-3">
+                        <h5>Color</h5>
+                        <div class="row">
+                            <div class="p-0.5">
+
+                                <button type="submit" name="color" value="green" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: green"></button>
+                                <label>Green</label>
+                            </div>
+                            <div class="p-0.5">
+
+                                <button type="submit" name="color" value="black" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%;  background-color: black"> </button>
+                                <label>Black</label>
+                            </div>
+                            <div class="p-0.5">
+                                <button type="submit" name="color" value="pink" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%;  background-color: pink"></button>
+                                <label>Pink</label>
+                            </div>
+                            <div class="p-0.5">
+                                <button type="submit" name="color" value="white" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: white"></button>
+                                <label>White</label>
+                            </div>
+                            <div class="p-0.5">
+                                <button type="submit" name="color" value="beige" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: beige"></button>
+                                <label>Biege</label>
+                            </div>
+                            <div class="p-0.5">
+                                <button type="submit" name="color" value="blue" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: blue"></button>
+                                <label>Blue</label>
+                            </div>
+                            <div class="p-0.5">
+                                <button type="submit" name="color" value="red" style=" width: 20px; height: 20px; border: .5px solid; border-radius: 50%; background-color: red"></button>
+                                <label>Red</label>
+                            </div>
+                        </div>
                     </div>
 
                 </form>
             </aside>
-           
-                <!-- Right Content with Product Listing -->
+
+            <!-- Right Content with Product Listing -->
             <main class="col-lg-9 col-md-8 col-sm-12 p-3">
                 <form asp-controller="Home" asp-action="Index" method="get" id="filterform">
                     <h1 class="mb-4">Product Listing</h1>
@@ -110,7 +139,8 @@
                             <option value="nameZA">Name: Z to A</option>
                         </select>
                         <input type="submit" value="sort" class="btn-btn secondary" />
-                    </div></form>
+                    </div>
+                </form>
                 <!---carousel-->
                 <div id="carouselExampleCaptions" class="carousel slide">
                     <div class="carousel-indicators">
@@ -166,16 +196,32 @@
                                 {
                                     <img src="https://placehold.co/500x600.png" class="card-img-top" alt="Placeholder Image">
                                 }
-                                <div class="card-body">
-                                    <h5 class="card-title">@product.ProductName</h5>
-                                    <p class="card-text">Size: @product.Size</p>
-                                    <p class="card-text">
-                                        <span class="text-decoration-line-through">Price: @product.Price AED</span>
-                                        <br />
-                                        Now: @product.Sale_Price AED
-                                    </p>
-                                    <a asp-action="Details" asp-route-productId="@product.Id" class="btn btn-primary">Details</a>
-                                </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@product.ProductName</h5>
+                                <p class="card-text">Size: @product.Size</p>
+                                <p class="card-text">
+                                    @if (@product.Price > @product.Sale_Price)
+                                        {
+                                        <span class="text-decoration-line-through">
+                                            Price: @product.Price AED
+                                        </span>
+                                            <br />
+                                            <span>
+                                            Now: @product.Sale_Price AED
+                                        </span>
+                                        }
+
+                                    else{
+
+                                <span>  Price: @product.Price AED </span>
+                                    }
+
+
+                                </p>
+                                <a asp-action="Details" asp-route-productId="@product.Id" class="btn btn-secondary">DETAILS</a>
+                               
+                                
+                            </div>
                             </div>
                         </div>
                     }
@@ -183,33 +229,31 @@
             </main>
         </div>
     </div>
-    
+
     <!-- Include Bootstrap JS (if needed) -->
     <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script> -->
     <!-- Include your custom JavaScript (if needed) -->
     <!-- <script src="scripts.js"></script> -->
 </body>
+</html>
 
-
-<script>
-
-    const form = document.getElementById("filterform");
+<script>const form = document.getElementById("filterform");
     const sizecheckboxes = document.querySelectorAll('input[type ="checkbox"][name="size"]');
     const pricecheckboxes = document.querySelectorAll('input[type ="checkbox"][name="price"]');
 
-    
+
 
     sizecheckboxes.forEach(checkbox => {
         checkbox.addEventListener("click", function () {
             form.submit();
         });
-         
+
     });
     pricecheckboxes.forEach(checkbox => {
         checkbox.addEventListener("click", function () {
             form.submit();
         });
-         
-    });
 
-</script>
+    });</script>
+
+

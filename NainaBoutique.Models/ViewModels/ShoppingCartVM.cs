@@ -11,7 +11,8 @@ namespace NainaBoutique.Models.ViewModels
 		public OrderSummary OrderSummary { get; set; }
         public IEnumerable<SelectListItem> CouponList { get; set; }
         public AppliedCoupon AppliedCoupon { get; set; }
-		public  AddressModel AddressModel { get; set; }
+		public AddressModel AddressModel;
+		
     }
 }
 

@@ -2,33 +2,29 @@
 
 @model WalletModel
 
-<form method="post">
-    <div class="row">
-        <div class="col-md-4 offset-md-4">
+<div class="card shadow border-0 my-4">
+    <div class="card-header bg-secondary bg-gradient ml-0 py-3">
+
+        <div class="row">
+
+            <h1 class="text-white">Wallets</h1>
+        </div>
+    </div>
+        <div class="card-body" p-4>
+            <div class="d-flex just-content-between pb-5 pt-2">
+                <span class="text-uppercase text-sedondary text-center">
+                    Your Balance is  @ViewBag.Message
+                </span>
+
+                <input type="hidden" />
+                <div>
+                    
 
 
-            <h3>Wallets</h3>
+                </div>
 
-            <input type="hidden" />
-            <div>
-
-                <h5 class="text-uppercase text-sedondary text-center">Your Balance is  @ViewBag.Message</h5>
 
             </div>
-
-
-
-
-        </div>
-
-
-    </div>
-
-
-
-
-
-
 
 
     <h3>Wallet History</h3>
@@ -56,18 +52,19 @@
 
     </table>
 
+    <form method="post">
 
 
-    <div>
-        <button type="submit" class="btn btn-secondary " asp-action="TopUpWallet" asp-controller="Wallet">TopUp Wallet</button>
-    </div>
-    <div class="col-6">
-        <label class="form-label" asp-for="WalletBalance"> Amount  </label>
-        <input type="number" name="amount" class="form-control" asp-for="WalletBalance" />
-        <span asp-validation-for="WalletBalance" class="text-danger"></span>
-    </div>
+        <div>
+            <button type="submit" class="btn btn-secondary " asp-action="TopUpWallet" asp-controller="Wallet">TopUp Wallet</button>
+        </div>
+        <div class="col-6">
+            <label class="form-label" asp-for="WalletBalance"> Amount  </label>
+            <input type="number" name="amount" class="form-control" asp-for="WalletBalance" />
+            <span asp-validation-for="WalletBalance" class="text-danger"></span>
+        </div>
 
-</form>
+    </form>
 
 <!--<a class="btn btn-primary" id="openModalButton">Recharge Wallet</a>-->
 <!-- First Modal -->

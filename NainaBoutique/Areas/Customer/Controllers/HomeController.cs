@@ -222,7 +222,7 @@ public class HomeController : Controller
 
     [HttpPost]
     [Authorize]
-    public IActionResult AddtoCart(ShoppingCart shoppingCart)
+    public IActionResult AddtoCart(int productId,ShoppingCart shoppingCart)
 
     {
 
