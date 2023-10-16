@@ -101,12 +101,10 @@
                             <input type="submit" asp-action="ExportExcel" asp-controller="DashBoard" asp-area="Admin" class="btn btn-secondary" value="EXPORT TO EXCEL" />
                         </div>
 
-                        @*<div class="form-group">
-                            <a class="btn btn-secondary" href="@Url.Action("ExportExcel", "DashBoard")">EXPORT TO EXCEL</a>
-                        </div>*@
 
 
-</form>
+
+                </form>
 
 
             </div>
@@ -114,22 +112,54 @@
 
         <h1>Sales Report</h1>
 
-        <!--<form method="get">-->
 
-            @*<input asp-for="item.Id" hidden />*@
-            <!--<a class="btn btn-secondary" href="@Url.Action("ExportExcel", "DashBoard")">Generate PDF Sales Report</a>
-        </form>-->
+        div class="row pt-2">
+        <div class="col-6 col-md-3">
+            <a type="button" class="btn btn-primary from-control" asp-area="Admin" asp-controller="Order" asp-action="Report">Sales Report</a>
+        </div>
 
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Product ID</th>
-                    <th>Product Name</th>
-                    <th>Total Sales</th>
-                </tr>
-            </thead>
-            <tbody>
-                @*@foreach (var item in Model.OrderDetail)
+    </div>
+    <!-- Add Chart Containers -->
+    <div class="row">
+        <div class="col-md-4">
+
+            <canvas id="trendingChart" width="400" height="400"></canvas>
+            <h2>Trending Products</h2>
+
+
+        </div>
+        <div class="col-md-4">
+
+            <canvas id="revenueChart" width="400" height="400"></canvas>
+            <h2>Total Revenue</h2>
+        </div>
+
+        <div class="col-md-4">
+
+            <canvas id="ordersChart" width="400" height="400"></canvas>
+            <h2>Total Orders</h2>
+        </div>
+
+    </div>
+    </div>
+
+    
+
+    <!--<form method="get">-->
+    @*<input asp-for="item.Id" hidden />*@
+    <!--<a class="btn btn-secondary" href="@Url.Action("ExportExcel", "DashBoard")">Generate PDF Sales Report</a>
+    </form>-->
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Product Name</th>
+                <th>Total Sales</th>
+            </tr>
+        </thead>
+        <tbody>
+            @*@foreach (var item in Model.OrderDetail)
                 {
                     <tr>
                         <td>@item.ProductId</td>
@@ -137,13 +167,13 @@
                         <td>@item.Price</td>
                     </tr>
                 }*@
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 
 
-       
-            </div>
-            <!-- /.card -->
+
+    </div>
+    <!-- /.card -->
 </section>
 <!-- right col -->
         </div>
@@ -157,6 +187,8 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script src="~/js/report.js"></script>
+
+
 
 
 }

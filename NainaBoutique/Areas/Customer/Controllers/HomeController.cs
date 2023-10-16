@@ -3,6 +3,7 @@ using System.Net;
 using System.Net.Mail;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
@@ -55,16 +56,23 @@ public class HomeController : Controller
 
 
 
-
-    //public IActionResult Index()
-        
-    //{
-    //    IEnumerable<ProductModel> productList = _unitOfWork.Product.GetAll(includeProperties: "Category,ProductImage");
-
+     public async Task<IActionResult>MailMe(string email, string subject, string message)
+    {
+       // var user = await _userManager.GetUserAsync(User);
+      await  emailSender.SendEmailAsync(email, subject, message);
 
 
-    //    return View(productList);
-    //}
+        return View("Thankyou");
+    }
+
+
+    public IActionResult Contact()
+
+    { 
+
+
+        return View("Contact");
+    }
 
     public async Task<IActionResult> Index(string searchString, string color,List< string> size, List<string> price, string sortOrder)
     {

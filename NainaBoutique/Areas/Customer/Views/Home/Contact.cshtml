@@ -1,0 +1,66 @@
+﻿
+
+
+
+<section class="page-wrapper">
+    <div class="contact-section">
+        <div class="container">
+            <div class="row">
+                <!-- Contact Form -->
+                <div class="contact-form col-md-6 ">
+                    <form id="contact-form" method="post" action="" role="form">
+
+                        <div class="form-group mt-5 mb-2">
+                            <input type="text" placeholder="Your Name" class="form-control" name="name" id="name">
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <input type="email" placeholder="Your Email" class="form-control" name="email" id="email">
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <input type="text" placeholder="Subject" class="form-control" name="subject" id="subject">
+                        </div>
+
+                        <div class="form-group mb-2">
+                            <textarea rows="6" placeholder="Message" class="form-control" name="message" id="message"></textarea>
+                        </div>
+                        <br />
+                        <div id="mail-success" class="success">
+                            Thank you. The Mailman is on His Way :)
+                        </div>
+
+                        @*<div id="mail-fail" class="error">
+                            Sorry, don't know what happened. Try later :(
+                        </div>*@
+
+                        <div id="cf-submit">
+                            <input type="submit" asp-action="MailMe" asp-controller="Home" asp-area="Customer" class="btn btn-secondary" value="Submit">
+                        </div>
+
+                    </form>
+                </div>
+                <!-- ./End Contact Form -->
+
+
+                <div class="contact-details col-md-6 ">
+                    <h5> Reach us on </h5>
+                    <ul class="contact-short-info">
+                        <li>
+                            <i class="tf-ion-ios-home"></i>
+                            <span>HAMDAN STREET ABUDHABI </span>
+                        </li>
+                        <li>
+                            <i class="tf-ion-android-globe"></i>
+                            <span>Mob: +971-576-000-920</span>
+                        </li>
+                        <li>
+                            <i class="tf-ion-android-mail"></i>
+                            <span>Email: nainaboutique@gmail.com</span>
+                        </li>
+                    </ul>
+                </div> <!-- end row -->
+            </div> <!-- end container -->
+        </div>
+    </div>
+    </section>
