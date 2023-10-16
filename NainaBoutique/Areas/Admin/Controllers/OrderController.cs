@@ -138,7 +138,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
 
             if(orderSummary.PaymentStatus == SD.PaymentStatusDelayedPayment)
             {
-                orderSummary.PaymentDueDate =DateTime.Now.AddDays(14);
+                orderSummary.PaymentDueDate = DateTime.Now.AddDays(14);
             }
             
 
@@ -262,8 +262,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
                     page.PageColor(Colors.White);
                     page.DefaultTextStyle(x => x.FontSize(12));
                     page.Header()
-                        //.Text("Naina Boutique")
-                        //.SemiBold().FontSize(26).FontColor(Colors.Black);
+                        
                         .Row(row =>
                         {
 

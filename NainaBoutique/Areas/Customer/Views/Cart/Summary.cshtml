@@ -91,15 +91,6 @@
 
 
 
-                        <!--<div class="row">
-                            <div class="col-3 ">-->
-                        <!-- Button to trigger the popup -->
-                        <!--<a onclick="showInPopup('Url.Action("AddAddress","Cart")','Add Address')" class="btn btn-success">Add Address</a>
-
-                            </div>
-
-
-                        </div>-->
 
                         <div class="col-12 col-12 col-lg-6 pb-4">
                             <h4 class="d-flex align-items-center mb-3">
@@ -128,67 +119,71 @@
                             </ul>
 
                             <div class="row">
-                               
-                                <div class="mb-3 row p-1">
-                                <label asp-for="@Model.OrderSummary.CouponId" class="form-control"></label>
-                                <select asp-for="@Model.OrderSummary.CouponId" asp-items="@Model.CouponList" class="form-select">
-                                    <option disabled selected>-Select Coupon-</option>
-                                </select>
-                                    </div>
-                              
 
-                           
+                                <div class="mb-3 row p-1">
+                                    <label asp-for="@Model.OrderSummary.CouponId" class="form-control"></label>
+                                    <select asp-for="@Model.OrderSummary.CouponId" asp-items="@Model.CouponList" class="form-select">
+                                        <option disabled selected>-Select Coupon-</option>
+                                    </select>
+                                </div>
+
+
+
                                 <div class="col-3 ">
-                                    <button type="submit" name="coupon" class="btn btn-secondary form-control"  asp-area="Customer" asp-controller="cart" asp-action="ApplyCoupon">Apply</button>
+                                    <button type="submit" name="coupon" class="btn btn-secondary form-control" asp-area="Customer" asp-controller="cart" asp-action="ApplyCoupon">Apply</button>
                                 </div>
                                 <div class="col-3 ">
                                     <button type="submit" name="coupon" class="btn btn-secondary form-control" asp-area="Customer" asp-controller="cart" asp-action="RemoveCoupon">Remove</button>
                                     <p>@ViewBag.Message</p>
                                 </div>
-                           
 
 
-                            <h6 class="text-info">Total (AED) :@Model.OrderSummary.OrderTotal</h6>
-                          
-                            <div>
-                                <p>Please select your Payment Method</p>
-                                <input type="radio" id="COD" asp-for="OrderSummary.PaymentMethod" name="PaymentMethod" value="COD">
-                                <label>Cash On Delivery</label><br>
-                                <input type="radio" id="Card" name="PaymentMethod" value="Card" asp-for="OrderSummary.PaymentMethod">
-                                <label>Card Payment</label><br>
-                                <input type="radio" id="Wallet" name="PaymentMethod" value="Wallet" asp-for="OrderSummary.PaymentMethod">
-                                <label>Wallet Payment</label><br>
-                                @*<span asp-validation-for="OrderSummary.PaymentMethod" class="text-danger"></span>*@
 
+                                <h6 class="text-info">Total (AED) :@Model.OrderSummary.OrderTotal</h6>
+
+                                <div>
+                                    <p>Please select your Payment Method</p>
+                                    <input type="radio" id="COD" asp-for="OrderSummary.PaymentMethod" name="PaymentMethod" value="COD">
+                                    <label>Cash On Delivery</label><br>
+                                    <input type="radio" id="Card" name="PaymentMethod" value="Card" asp-for="OrderSummary.PaymentMethod">
+                                    <label>Card Payment</label><br>
+                                    <input type="radio" id="Wallet" name="PaymentMethod" value="Wallet" asp-for="OrderSummary.PaymentMethod">
+                                    <label>Wallet Payment</label><br>
+                                    @*<span asp-validation-for="OrderSummary.PaymentMethod" class="text-danger"></span>*@
+
+                                </div>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-12 col-md-8 pt-2">
+                            <p>
+                                Estimate Delivery Time:@DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString();
+                            </p>
+                        </div>
+                        <div class="col-12  col-md-4 pt-2">
+                            <button type="submit" asp-action="Summary" asp-route-couponId=@Model.OrderSummary.CouponId class="btn btn-secondary form-control">Checkout</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card-footer">
-                <div class="row">
-                    <div class="col-12 col-md-8 pt-2">
-                        <p>
-                            Estimate Delivery Time:@DateTime.Now.AddDays(7).ToShortDateString() - @DateTime.Now.AddDays(14).ToShortDateString();
-                        </p>
-                    </div>
-                    <div class="col-12  col-md-4 pt-2">
-                        <button type="submit" asp-action="Summary" asp-route-couponId=@Model.OrderSummary.CouponId  class="btn btn-secondary form-control">Checkout</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+          
 </form>
 
 
+<div class="col-12 col-md-4">
+    <a class="btn btn-primary" asp-route-userId="@Model.OrderSummary.ApplicationUserId" asp-area="Customer" asp-controller="Address" asp-action="Index"> Select Address</a>
 
+</div>
 
 <a class="btn btn-secondary" id="openModalButton">Add Address</a>
 
 @*<input type="button" value="Some text" onclick="window.location.href='<%= Url.Action(" ViewAddress", "Cart" ) %>';" />*@
-<a class="btn btn-secondary" asp-controller="Address" asp-action="Index" asp-area="Customer">Select Address</a>
+
 
 
 <!-- First Modal -->
@@ -209,8 +204,9 @@
                                 <h3>Add new Address </h3>
                             </div>
                             <div class="card-body">
-                                <form asp-action="AddAddress" asp-controller="Cart" method="post">
+                                <form method="post" class="row" asp-action="AddAddress" enctype="multipart/form-data">
 
+                                    <input asp-for="@Model.AddressModel.UserId" hidden />
                                     <div class="col-mb-12">
 
 
@@ -236,7 +232,7 @@
                                         <input asp-for="AddressModel.MobileNumber" class="form-control" />
                                     </div>
                                     <div class="col-6 col-mb-12">
-                                        <button type="submit" class="btn btn-secondary form-control">Add</button>
+                                        <button type="submit" class="btn btn-secondary form-control">Create</button>
                                     </div>
                                 </form>
                             </div>
@@ -257,10 +253,10 @@
 
 
 
-@*@section Scripts{
+@section Scripts{
 
      <partial name="_ValidationScriptsPartial" />
-    }*@
+    
 
 
 <script>$(document).ready(function () {
@@ -278,3 +274,5 @@
             $('#myModal').modal('hide'); // Hide the modal
         });
     });</script>
+
+}

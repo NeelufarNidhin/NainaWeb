@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NainaBoutique.DataAccess.Repository.IRepository;
 using NainaBoutique.Models.ViewModels;
@@ -12,6 +13,9 @@ using Stripe;
 
 namespace NainaBoutique.Areas.Customer.Controllers
 {
+
+    [Area("Customer")]
+    [Authorize]
     public class AddressController : Controller
     {
 

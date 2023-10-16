@@ -106,7 +106,7 @@
                         </div>
                         <div class="row mb-3 mt-3 mt-md-0">
                             @if (Model.OrderSummary.PaymentStatus == SD.PaymentStatusDelayedPayment &&
-Model.OrderSummary.OrderStatus == SD.StatusShipped)
+                        Model.OrderSummary.OrderStatus == SD.StatusShipped)
                             {
                                 <button type="submit" class="btn btn-success form-control my-1">Pay Now</button>
                             }
@@ -126,13 +126,13 @@ Model.OrderSummary.OrderStatus == SD.StatusShipped)
                    Model.OrderSummary.OrderStatus != SD.StatusCancelled &&
                    Model.OrderSummary.OrderStatus != SD.StatusRefunded)
                             {
-                                <button type="submit" asp-action="CancelOrder" class="btn btn-primary form-control my-1">Cancel Order</button>
+                                <button type="submit" asp-action="CancelOrder" class="btn btn-secondary form-control my-1">Cancel Order</button>
                             }
 
                         </div>
 
                         <div class=" col-12 offset-md-2 text-right">
-                            <a asp-action="Index" class="btn btn-oultline-info form-control btn-sm">Back To Orders</a>
+                            <a asp-action="Index"  asp-controller=" Order" class="btn btn-oultline-info form-control btn-sm">Back To Orders</a>
                         </div>
                     </div>
                 </div>
@@ -401,7 +401,7 @@ Model.OrderSummary.OrderStatus == SD.StatusShipped)
 <form method="get">
 
     <input asp-for="OrderSummary.Id" hidden />
-    <a href="@Url.Action("GetPdf", "Order", new { orderId = @Model.OrderSummary.Id })">Generate PDF</a>
+    <a class="btn btn-secondary" href="@Url.Action("GetPdf", "Order", new { orderId = @Model.OrderSummary.Id })">Generate PDF</a>
 </form>
 
 @section Scripts{

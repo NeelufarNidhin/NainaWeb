@@ -51,13 +51,13 @@ namespace NainaBoutique.Areas.Customer.Controllers
         public IActionResult Index()
         {
 
-            //To obtain the userId of the Logged in user if the info not available in model passed
+            //TO OBTAIN USERID OF LOGGED IN USER
 
                 var claimsIdentity = (ClaimsIdentity)User.Identity;
                 var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
 
-            // To list all the details available in our shopping cart
+            // TO LIST SHOPPING CART DETAILS
 
                 ShoppingCartVM ShoppingCartVM = new()
                 {
@@ -87,7 +87,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
         }
            
 
-        //increment the counter to increase the count of product
+        //INCREMENT COUNTER TO INCREASE PRODUCT COUNT
 
         public IActionResult Plus(int cartId)
         {
@@ -95,8 +95,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
             cartFromDb.Count += 1;
             _unitOfWork.Cart.Update(cartFromDb);
 
-            //Stock checking
-
+           //STOCK CHECKING
             var productFromDb = _unitOfWork.Product.Get(u => u.Id == cartFromDb.ProductId);
 
             if(cartFromDb.Count > productFromDb.QuantityInStock)
@@ -111,7 +110,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        //decrement the counter to decrease the count of product
+       //DECREMENT COUNT TO DECREASE PRODUCT COUNT
         public IActionResult Minus(int cartId)
         {
             var cartFromDb = _unitOfWork.Cart.Get(u => u.Id == cartId);
@@ -162,15 +161,33 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
                 };
 
-            ShoppingCartVM.OrderSummary.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
 
+            ShoppingCartVM.AddressModel = _unitOfWork.Address.Get(u => u.UserId == userId && u.Status == 1);
+
+            ShoppingCartVM.OrderSummary.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
             ShoppingCartVM.OrderSummary.Name = ShoppingCartVM.OrderSummary.ApplicationUser.Name;
+
+            if (ShoppingCartVM.AddressModel != null)
+            {
+                ShoppingCartVM.OrderSummary.Address = ShoppingCartVM.AddressModel.Address;
+                ShoppingCartVM.OrderSummary.City = ShoppingCartVM.AddressModel.City;
+                ShoppingCartVM.OrderSummary.PostalCode = ShoppingCartVM.AddressModel.PostalCode;
+                ShoppingCartVM.OrderSummary.State = ShoppingCartVM.AddressModel.State;
+                ShoppingCartVM.OrderSummary.MobileNumber = ShoppingCartVM.AddressModel.MobileNumber;
+
+
+            }
+
+            else
+            {
+
+               
                 ShoppingCartVM.OrderSummary.MobileNumber = ShoppingCartVM.OrderSummary.ApplicationUser.MobileNumber;
                 ShoppingCartVM.OrderSummary.Address = ShoppingCartVM.OrderSummary.ApplicationUser.Address;
                 ShoppingCartVM.OrderSummary.City = ShoppingCartVM.OrderSummary.ApplicationUser.City;
                 ShoppingCartVM.OrderSummary.State = ShoppingCartVM.OrderSummary.ApplicationUser.State;
                 ShoppingCartVM.OrderSummary.PostalCode = ShoppingCartVM.OrderSummary.ApplicationUser.PostalCode;
-            
+            }
 
          ShoppingCartVM.OrderSummary.ApplicationUser = _unitOfWork.ApplicationUser.Get(u => u.Id == userId);
                 foreach (var cart in ShoppingCartVM.shoppingCartList)
