@@ -32,7 +32,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            List<ProductModel> productList = _unitOfWork.Product.GetAll(u =>u.RecStatus =='A' , includeProperties: "Category").ToList();
+            List<ProductModel> productList = _unitOfWork.Product.GetAll(includeProperties: "Category").ToList();
 
             return View(productList);
         }

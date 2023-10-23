@@ -133,7 +133,16 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
-                    return LocalRedirect(returnUrl);
+
+                    if (Input.Email == "nilu.nidhin@gmail.com")
+                    {
+                        return Redirect("/Admin/Dashboard/Index");
+                    }
+                    else
+                    {
+                        return LocalRedirect(returnUrl);
+                    }
+
                 }
                 if (result.RequiresTwoFactor)
                 {

@@ -25,7 +25,7 @@ using TheArtOfDev.HtmlRenderer.PdfSharp;
 
 namespace NainaBoutique.Areas.Admin.Controllers
 {
-    [Area("admin")]
+    [Area("Admin")]
     [Authorize]
     public class OrderController : Controller
     {
@@ -43,6 +43,9 @@ namespace NainaBoutique.Areas.Admin.Controllers
             _db = db;
         }
         // GET: /<controller>/
+
+
+
         public IActionResult Index()
         {
             return View();
