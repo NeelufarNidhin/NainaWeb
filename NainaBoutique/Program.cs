@@ -97,6 +97,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
 SeedDatabase();
+
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");

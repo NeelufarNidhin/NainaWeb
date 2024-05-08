@@ -71,7 +71,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            CategoryModel? categoryFromDb = _unitOfWork.Category.Get(u=>u.Id==id);
+            CategoryModel categoryFromDb = _unitOfWork.Category.Get(u=>u.Id==id);
             if(categoryFromDb == null)
             {
                 return NotFound();

@@ -74,7 +74,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            GiftcardModel? giftcardFromDb = _unitOfWork.Giftcard.Get(u => u.Id == id);
+            GiftcardModel giftcardFromDb = _unitOfWork.Giftcard.Get(u => u.Id == id);
             if (giftcardFromDb == null)
             {
                 return NotFound();

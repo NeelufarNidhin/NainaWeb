@@ -62,7 +62,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Upsert(ProductViewModel productVM, List<IFormFile>? files)
+        public IActionResult Upsert(ProductViewModel productVM, List<IFormFile> files)
         {
             if (ModelState.IsValid)
             {

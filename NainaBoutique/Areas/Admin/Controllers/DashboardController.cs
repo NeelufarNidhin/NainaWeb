@@ -32,7 +32,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
         public readonly ApplicationDbContext _db;
         public readonly IUnitOfWork _unitOfWork;
         [BindProperty]
-        public ReportVM? ReportVM { get; set; }
+        public ReportVM ReportVM { get; set; }
         public ProductViewModel cc { get; set; }
 
         public DashboardController(IUnitOfWork unitOfWork, ApplicationDbContext db)
@@ -42,7 +42,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
         }
 
         // GET: /<controller>/
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
             IEnumerable<OrderSummary> orderSummary = _unitOfWork.OrderSummary.GetAll().ToList();
 

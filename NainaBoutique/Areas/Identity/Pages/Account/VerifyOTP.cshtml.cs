@@ -43,10 +43,10 @@ namespace NainaBoutique.Areas.Identity.Pages.Account
             
 
             [Required]
-            public string? Email { get; set; }
+            public string Email { get; set; }
 
             [Required]
-            public string? OTP { get; set; }
+            public string OTP { get; set; }
 
 
             [Display(Name = "Remember me?")]

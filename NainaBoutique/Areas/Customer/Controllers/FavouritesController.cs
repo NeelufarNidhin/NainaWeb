@@ -18,7 +18,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
     public class FavouritesController : Controller
     {
         public readonly IUnitOfWork _unitOfWork;
-        public FavouritesVM? FavouritesVM { get; set; }
+        public FavouritesVM FavouritesVM { get; set; }
         public FavouritesController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;

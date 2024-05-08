@@ -74,7 +74,7 @@ public class HomeController : Controller
         return View("Contact");
     }
 
-    public async Task<IActionResult> Index(string searchString, string color,List< string> size, List<string> price, string sortOrder)
+    public IActionResult Index(string searchString, string color,List< string> size, List<string> price, string sortOrder)
     {
 
         ViewData["CurrentFilter"] = searchString;

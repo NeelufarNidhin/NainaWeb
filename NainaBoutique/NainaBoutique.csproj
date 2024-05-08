@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UserSecretsId>aspnet-NainaBoutique-69c4df48-868c-4d30-94f7-40f2b3a34c9f</UserSecretsId>
   </PropertyGroup>

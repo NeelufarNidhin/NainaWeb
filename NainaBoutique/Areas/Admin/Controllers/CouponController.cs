@@ -74,7 +74,7 @@ namespace NainaBoutique.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            CouponModel? couponFromDb = _unitOfWork.Coupon.Get(u => u.Id == id);
+            CouponModel couponFromDb = _unitOfWork.Coupon.Get(u => u.Id == id);
             if (couponFromDb == null)
             {
                 return NotFound();

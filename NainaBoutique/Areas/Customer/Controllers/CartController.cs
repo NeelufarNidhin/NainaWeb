@@ -36,7 +36,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
         public readonly ApplicationDbContext _db;
 
         [BindProperty]
-        public ShoppingCartVM? ShoppingCartVM { get; set; }
+        public ShoppingCartVM ShoppingCartVM { get; set; }
 
         public CartController(IUnitOfWork unitOfWork, ApplicationDbContext db)
         {
@@ -144,8 +144,6 @@ namespace NainaBoutique.Areas.Customer.Controllers
             var claimsIdentity = (ClaimsIdentity)User.Identity;
             var userId = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-
-
             ShoppingCartVM = new()
             {
 
@@ -161,7 +159,6 @@ namespace NainaBoutique.Areas.Customer.Controllers
                 AddressModel = new()
 
             };
-
 
             ShoppingCartVM.AddressModel = _unitOfWork.Address.Get(u => u.UserId == userId && u.Status == 1);
 
@@ -553,10 +550,6 @@ namespace NainaBoutique.Areas.Customer.Controllers
 
 
 
-
-
-
-
         [HttpPost]
         public IActionResult RemoveCoupon()
         {
@@ -568,7 +561,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
             if (coupon != null)
             {
                 //checking coupon is there in Applied Coupon Table
-                var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.ApplicationUser.Id == userId && u.Coupon.CouponCode == coupon);
+                var couponFromDb = _db.AppliedCoupons.FirstOrDefault(u => u.ApplicationUser.Id == userId && u.Coupon.CouponCode == coupon.ToString());
 
                 _db.AppliedCoupons.Remove(couponFromDb);
                 _unitOfWork.Save();
@@ -605,6 +598,12 @@ namespace NainaBoutique.Areas.Customer.Controllers
             return View(order);
         }
 
+         public IActionResult AddAddress()
+        {
+            return View(new AddressModel());
+        }
+
+
         [HttpPost]
         public IActionResult AddAddress(AddressModel addressModel)
         {
@@ -634,11 +633,7 @@ namespace NainaBoutique.Areas.Customer.Controllers
         }
 
 
-        public IActionResult AddAddress()
-        {
-            return View(new AddressModel());
-        }
-
+       
         public IActionResult ViewAddress()
 
 

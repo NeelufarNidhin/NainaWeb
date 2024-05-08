@@ -19,7 +19,7 @@ namespace NainaBoutique.DataAccess.Repository
             _db.OrderSummaries.Update(orderSummary);
             }
 
-        public void UpdateStatus(int id, string orderStatus, string? paymentStatus = null)
+        public void UpdateStatus(int id, string orderStatus, string paymentStatus = null)
         {
             var orderFromDb = _db.OrderSummaries.FirstOrDefault(u => u.Id == id);
 
