@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'naina-boutique'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5F399BCDD14D4BF5947E205E921F98B6 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_ED2D5A5C1F8549D2BBEAD699AE089D71 }}
           package: .
